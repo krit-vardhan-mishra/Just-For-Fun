@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/nav_homeFragment">
+
+    <fragment
+        android:id="@+id/nav_homeFragment"
+        android:name="com.just_for_fun.justforfun.ui.fragments.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_searchFragment"
+        android:name="com.just_for_fun.justforfun.ui.fragments.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/nav_graph_addFragment"
+        android:name="com.just_for_fun.justforfun.ui.fragments.add.AddFragment"
+        android:label="Add"
+        tools:layout="@layout/fragment_add" />
+
+    <fragment
+        android:id="@+id/nav_notificationFragment"
+        android:name="com.just_for_fun.justforfun.ui.fragments.notification.NotificationFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notification" />
+
+    <fragment
+        android:id="@+id/nav_accountFragment"
+        android:name="com.just_for_fun.justforfun.ui.fragments.account.AccountFragment"
+        android:label="Account"
+        tools:layout="@layout/fragment_account" />
+</navigation>
