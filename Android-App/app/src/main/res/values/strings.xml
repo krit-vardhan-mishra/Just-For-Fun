@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Just For Fun</string>
+    <string name="view_all">View All</string>
+    <string name="bookmark_content_desc">Add To Bookmark</string>
+    <string name="poster_content_desc">Movie Name</string>
+    <string name="add_post">Add Post</string>
+    <string name="banner_image">Banner Image</string>
+    <string name="user_biography">THIS SECTION WILL HAVE USER BIO\nHERE USER CAN WRITE ABOUT HIMSELF\nWHAT TYPE OF CINEMA DO THEY LOVE.</string>
+</resources>
