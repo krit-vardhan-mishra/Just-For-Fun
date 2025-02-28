@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Toolbar with Back Button -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,7 +13,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="Settings" />
 
-    <!-- PreferenceFragment will load preferences here -->
     <FrameLayout
         android:id="@+id/settings_container"
         android:layout_width="match_parent"

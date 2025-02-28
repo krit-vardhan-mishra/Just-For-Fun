@@ -2,6 +2,8 @@ package com.just_for_fun.justforfun.ui.fragments.account
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,6 +23,10 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.settingsButton.setOnClickListener {
+            findNavController().navigate(R.id.settingsFragment)
+        }
+
+        view.findViewById<ImageButton>(R.id.settings_button).setOnClickListener {
             findNavController().navigate(R.id.settingsFragment)
         }
     }
