@@ -1,16 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/movieImageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.just_for_fun.justforfun.viewmodel.MainViewModel" />
+    </data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/review_bar"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:orientation="horizontal"
+            android:layout_margin="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/activity_movie_poster"
+                android:layout_width="150dp"
+                android:layout_height="230dp"
+                android:contentDescription="Movie Poster"
+                android:src="@drawable/mm_poster"
+                android:background="@android:color/transparent"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/activity_movie_movie_or_show"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Movie/Show"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:textSize="25sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/activity_movie_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mr and Mrs 55"
+                    android:textSize="40sp"
+                    android:layout_marginStart="15dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/activity_movie_movie_or_show" />
+
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                    android:id="@+id/activity_movie_rating_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rating="4.3"
+                    android:layout_marginStart="10dp"
+                    style="@style/Widget.MaterialRatingBar.RatingBar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/activity_movie_title"/>
+
+                <TextView
+                    android:id="@+id/activity_movie_user_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="4.5/5"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/activity_movie_rating_bar"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/activity_movie_total_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.7"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/activity_movie_rating_bar"
+                    app:layout_constraintStart_toEndOf="@+id/activity_movie_user_rating" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/activity_movie_description"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:text="DESCRIPTION ABOUT THE MOVIE WILL BE WRITTEN HERE."
+            app:layout_constraintTop_toBottomOf="@id/review_bar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/activity_movie_other_things"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/activity_movie_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cast_and_crew"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movie_activity_cast_and_crew"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/more_like_this"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movie_activity_more_like_this"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reviews"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <include layout="@layout/fragment_movie_your_review" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/activity_movie_others_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
