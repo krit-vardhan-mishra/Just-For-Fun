@@ -33,4 +33,10 @@
         android:name="com.just_for_fun.justforfun.ui.fragments.account.AccountFragment"
         android:label="Account"
         tools:layout="@layout/fragment_account" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.just_for_fun.justforfun.ui.fragments.setting.SettingsFragment"
+        android:label="Settings" />
+
 </navigation>

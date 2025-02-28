@@ -1,15 +1,14 @@
 package com.just_for_fun.justforfun.ui.fragments.notification
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.just_for_fun.justforfun.R
-import com.just_for_fun.justforfun.databinding.FragmentHomeBinding
+import com.just_for_fun.justforfun.adapter.NotificationAdapter
 import com.just_for_fun.justforfun.databinding.FragmentNotificationBinding
-import com.just_for_fun.justforfun.ui.fragments.home.HomeViewModel
+import com.just_for_fun.justforfun.items.NotificationType
 
 class NotificationFragment : Fragment(R.layout.fragment_notification) {
 
@@ -20,8 +19,31 @@ class NotificationFragment : Fragment(R.layout.fragment_notification) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentNotificationBinding.bind(view)
 
+        val notifications = listOf(
+            NotificationType.COMMENTED,
+            NotificationType.FOLLOWED,
+            NotificationType.LIKED,
+            NotificationType.COMMENTED,
+            NotificationType.LIKED,
+            NotificationType.FOLLOWED,
+            NotificationType.COMMENTED,
+            NotificationType.FOLLOWED,
+            NotificationType.LIKED,
+            NotificationType.COMMENTED,
+            NotificationType.COMMENTED,
+            NotificationType.FOLLOWED,
+            NotificationType.LIKED,
+            NotificationType.COMMENTED,
+            NotificationType.FOLLOWED,
+            NotificationType.FOLLOWED
+        )
+
+        val adapter = NotificationAdapter(notifications)
+
+        binding.notificationsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.notificationsRecyclerView.adapter = adapter
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
     }
-
 }

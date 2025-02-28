@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.home.HomeFragment">
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <ImageView
             android:id="@+id/banner_view_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"

@@ -63,4 +63,5 @@ dependencies {
     implementation (libs.androidx.navigation.ui.ktx.v275)
     implementation (libs.androidx.viewpager2)
     implementation (libs.roundedimageview)
+    implementation (libs.androidx.preference)
 }

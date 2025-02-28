@@ -18,6 +18,7 @@ navigationFragmentKtx = "2.8.8"
 navigationFragmentKtxVersion = "2.7.5"
 navigationUiKtx = "2.8.8"
 navigationUiKtxVersion = "2.7.5"
+preference = "1.2.1"
 roundedimageview = "2.3.0"
 viewpager2 = "1.1.0"
 
@@ -29,6 +30,7 @@ androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-lived
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-navigation-fragment-ktx-v275 = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtxVersion" }
 androidx-navigation-ui-ktx-v275 = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtxVersion" }
+androidx-preference = { module = "androidx.preference:preference", version.ref = "preference" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

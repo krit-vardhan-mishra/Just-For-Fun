@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Account Settings -->
+    <PreferenceCategory app:title="Account Settings">
+        <EditTextPreference
+            app:key="username"
+            app:title="Username"
+            app:dialogTitle="Enter your username"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="email"
+            app:title="Email"
+            app:dialogTitle="Enter your email"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <!-- Notification Settings -->
+    <PreferenceCategory app:title="Notification Settings">
+        <SwitchPreferenceCompat
+            app:key="push_notifications"
+            app:title="Enable Push Notifications"
+            app:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            app:key="email_notifications"
+            app:title="Enable Email Notifications"
+            app:defaultValue="true" />
+    </PreferenceCategory>
+
+    <!-- Appearance Settings -->
+    <PreferenceCategory app:title="Appearance">
+        <ListPreference
+            app:key="theme"
+            app:title="Theme"
+            app:dialogTitle="Select Theme"
+            app:entries="@array/theme_options"
+            app:entryValues="@array/theme_values"
+            app:defaultValue="system"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <!-- Privacy Settings -->
+    <PreferenceCategory app:title="Privacy">
+        <SwitchPreferenceCompat
+            app:key="hide_spoilers"
+            app:title="Hide Spoilers"
+            app:defaultValue="true" />
+
+        <Preference
+            app:key="blocked_users"
+            app:title="Blocked Users"
+            app:summary="Manage blocked accounts" />
+    </PreferenceCategory>
+
+    <!-- Help & Support -->
+    <PreferenceCategory app:title="Help and Support">
+        <Preference
+            app:key="contact_support"
+            app:title="Contact Support"
+            app:summary="Get help with the app" />
+
+        <Preference
+            app:key="privacy_policy"
+            app:title="Privacy Policy"
+            app:summary="View our privacy policy" />
+    </PreferenceCategory>
+
+    <!-- About App -->
+    <PreferenceCategory app:title="About">
+        <Preference
+            app:key="app_version"
+            app:title="App Version"
+            app:summary="1.0.0" />
+
+        <Preference
+            app:key="open_source_licenses"
+            app:title="Open Source Licenses"
+            app:summary="View licenses of used libraries" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

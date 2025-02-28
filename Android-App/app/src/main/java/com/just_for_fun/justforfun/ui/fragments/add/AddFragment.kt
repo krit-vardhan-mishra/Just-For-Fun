@@ -23,5 +23,4 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
     }
-
 }
