@@ -1,6 +1,7 @@
 package com.just_for_fun.justforfun.ui.fragments.search
 
 import android.content.Context
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,6 +14,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapter.PosterAdapter
 import com.just_for_fun.justforfun.databinding.FragmentSearchBinding
+import com.just_for_fun.justforfun.items.MovieItem
+import com.just_for_fun.justforfun.ui.activities.MovieActivity
 import com.just_for_fun.justforfun.util.PosterItemDecoration
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
@@ -33,13 +36,13 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         setupBasedOnYourSearches()
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView, items: List<Int>, viewName: String) {
-        val adapter = PosterAdapter(items,
-            onPosterClick = { imageRes ->
-                Toast.makeText(context, "Clicked $viewName poster: $imageRes", Toast.LENGTH_SHORT).show()
+    private fun setupRecyclerView(recyclerView: RecyclerView, items: List<MovieItem>, viewName: String) {
+        val adapter = PosterAdapter(items.map { it.posterResId },
+            onPosterClick = { position ->
+                openMovieActivity(items[position])
             },
-            onBookmarkClick = { imageRes ->
-                Toast.makeText(context, "Bookmarked $viewName: $imageRes", Toast.LENGTH_SHORT).show()
+            onBookmarkClick = { position ->
+                Toast.makeText(context, "Bookmarked ${items[position].title}", Toast.LENGTH_SHORT).show()
             }
         )
 
@@ -48,6 +51,17 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             this.adapter = adapter
             addItemDecoration(PosterItemDecoration(15))
         }
+    }
+
+    private fun openMovieActivity(movie: MovieItem) {
+        val intent = Intent(requireContext(), MovieActivity::class.java).apply {
+            putExtra("MOVIE_TITLE", movie.title)
+            putExtra("MOVIE_POSTER", movie.posterResId)
+            putExtra("MOVIE_DESCRIPTION", movie.description)
+            putExtra("MOVIE_RATING", movie.rating)
+            putExtra("MOVIE_TYPE", movie.type)
+        }
+        startActivity(intent)
     }
 
     private fun setupMostSearched() = setupRecyclerView(

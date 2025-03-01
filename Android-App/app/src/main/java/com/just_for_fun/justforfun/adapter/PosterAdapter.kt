@@ -16,6 +16,15 @@ class PosterAdapter(
     inner class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val poster: AppCompatImageButton = itemView.findViewById(R.id.poster)
         val bookmark: AppCompatImageButton = itemView.findViewById(R.id.bookmark_button)
+
+        init {
+            poster.setOnClickListener {
+                onPosterClick(adapterPosition)
+            }
+            bookmark.setOnClickListener {
+                onBookmarkClick(adapterPosition)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PosterViewHolder {
@@ -30,8 +39,5 @@ class PosterAdapter(
         val imageRes = posterItems[position]
 
         holder.poster.setImageResource(imageRes)
-
-        holder.poster.setOnClickListener { onPosterClick(imageRes) }
-        holder.bookmark.setOnClickListener { onBookmarkClick(imageRes) }
     }
 }
