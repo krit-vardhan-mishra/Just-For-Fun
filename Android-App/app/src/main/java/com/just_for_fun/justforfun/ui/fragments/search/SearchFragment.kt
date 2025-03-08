@@ -36,7 +36,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         setupBasedOnYourSearches()
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView, items: List<MovieItem>, viewName: String) {
+    private fun setupRecyclerView(recyclerView: RecyclerView, items: List<MovieItem>) {
         val adapter = PosterAdapter(items.map { it.posterResId },
             onPosterClick = { position ->
                 openMovieActivity(items[position])
@@ -66,20 +66,17 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun setupMostSearched() = setupRecyclerView(
         binding.searchFragmentMostSearchedList,
-        viewModel.mostSearchedItems,
-        "Most Searched"
+        viewModel.mostSearchedItems
     )
 
     private fun setupPreviousSearches() = setupRecyclerView(
         binding.searchFragmentPreviousSearchList,
-        viewModel.previousSearches,
-        "Previous Searches"
+        viewModel.previousSearches
     )
 
     private fun setupBasedOnYourSearches() = setupRecyclerView(
         binding.searchFragmentBasedOnYourSearchList,
-        viewModel.basedOnYourSearchItems,
-        "Based on Your Searches"
+        viewModel.basedOnYourSearchItems
     )
 
     private fun setupBottomNavListener() {

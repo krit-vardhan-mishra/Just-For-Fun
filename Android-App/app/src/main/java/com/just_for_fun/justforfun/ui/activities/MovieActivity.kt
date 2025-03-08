@@ -2,8 +2,8 @@ package com.just_for_fun.justforfun.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,13 +15,14 @@ import com.just_for_fun.justforfun.data.CastCrewMember
 import com.just_for_fun.justforfun.data.Reply
 import com.just_for_fun.justforfun.data.Review
 import com.just_for_fun.justforfun.databinding.ActivityMovieBinding
+import com.just_for_fun.justforfun.databinding.ActivityMovieOrShowsBinding
 import com.just_for_fun.justforfun.items.MovieItem
 import com.just_for_fun.justforfun.util.SpacingItemDecoration
 import java.util.Date
 
 class MovieActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMovieBinding
+    private lateinit var binding: ActivityMovieOrShowsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,7 +156,7 @@ class MovieActivity : AppCompatActivity() {
         }
 
         // Setup your review submission
-        binding.root.findViewById<Button>(R.id.post_review_button)?.setOnClickListener {
+        binding.root.findViewById<ImageButton>(R.id.post_review_button)?.setOnClickListener {
             val reviewEditText = binding.root.findViewById<EditText>(R.id.your_review_edit_text)
             val reviewText = reviewEditText?.text.toString()
 

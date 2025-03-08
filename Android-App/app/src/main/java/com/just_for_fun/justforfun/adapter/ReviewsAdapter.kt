@@ -237,3 +237,189 @@ class ReviewsAdapter(private var reviews: List<Review>) :
         }
     }
 }
+
+/*package com.just_for_fun.justforfun.adapter
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RatingBar
+import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
+import com.just_for_fun.justforfun.R
+
+data class Review(
+    val username: String,
+    val comment: String,
+    val rating: Float,
+    val userAvatar: Int = R.drawable.account_circle,
+    val date: String,
+    var likes: Int = 0,
+    var isLikedByUser: Boolean = false,
+    var replies: List<Reply> = emptyList()
+)
+
+data class Reply(
+    val username: String,
+    val comment: String,
+    val userAvatar: Int = R.drawable.account_circle,
+    val date: String
+)
+
+class ReviewsAdapter(private val reviews: List<Review>) :
+    RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>() {
+
+    inner class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val userAvatar: ImageView = itemView.findViewById(R.id.review_user_avatar)
+        val username: TextView = itemView.findViewById(R.id.review_username)
+        val rating: RatingBar = itemView.findViewById(R.id.review_rating)
+        val date: TextView = itemView.findViewById(R.id.review_date)
+        val comment: TextView = itemView.findViewById(R.id.review_comment)
+        val likeButton: LinearLayout = itemView.findViewById(R.id.review_like_button)
+        val likeIcon: ImageView = itemView.findViewById(R.id.review_like_icon)
+        val likesCount: TextView = itemView.findViewById(R.id.review_likes_count)
+        val replyButton: LinearLayout = itemView.findViewById(R.id.review_reply_button)
+        val repliesCount: TextView = itemView.findViewById(R.id.review_replies_count)
+        val reportButton: ImageButton = itemView.findViewById(R.id.review_report_button)
+        val repliesContainer: LinearLayout = itemView.findViewById(R.id.review_replies_container)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_review, parent, false)
+        return ReviewViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
+        val review = reviews[position]
+        val context = holder.itemView.context
+
+        // Set basic review info
+        holder.userAvatar.setImageResource(review.userAvatar)
+        holder.username.text = review.username
+        holder.comment.text = review.comment
+        holder.rating.rating = review.rating
+        holder.date.text = review.date
+
+        // Set like count and icon state
+        holder.likesCount.text = review.likes.toString()
+        holder.likeIcon.setImageResource(
+            if (review.isLikedByUser) R.drawable.ic_thumb_up_filled
+            else R.drawable.ic_thumb_up
+        )
+
+        // Set replies count
+        holder.repliesCount.text = review.replies.size.toString()
+
+        // Like button click listener
+        holder.likeButton.setOnClickListener {
+            review.isLikedByUser = !review.isLikedByUser
+            review.likes += if (review.isLikedByUser) 1 else -1
+
+            // Update UI
+            holder.likesCount.text = review.likes.toString()
+            holder.likeIcon.setImageResource(
+                if (review.isLikedByUser) R.drawable.ic_thumb_up_filled
+                else R.drawable.ic_thumb_up
+            )
+
+            Toast.makeText(
+                context,
+                if (review.isLikedByUser) "Review liked" else "Like removed",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        // Reply button click listener
+        holder.replyButton.setOnClickListener {
+            // Toggle replies visibility
+            if (holder.repliesContainer.visibility == View.VISIBLE) {
+                holder.repliesContainer.visibility = View.GONE
+            } else {
+                // Clear existing replies first
+                holder.repliesContainer.removeAllViews()
+
+                // Add reply views
+                for (reply in review.replies) {
+                    val replyView = LayoutInflater.from(context)
+                        .inflate(R.layout.item_review_reply, holder.repliesContainer, false)
+
+                    replyView.findViewById<ImageView>(R.id.reply_user_avatar)
+                        .setImageResource(reply.userAvatar)
+                    replyView.findViewById<TextView>(R.id.reply_username)
+                        .text = reply.username
+                    replyView.findViewById<TextView>(R.id.reply_comment)
+                        .text = reply.comment
+                    replyView.findViewById<TextView>(R.id.reply_date)
+                        .text = reply.date
+
+                    holder.repliesContainer.addView(replyView)
+                }
+
+                // Add reply input at the bottom
+                val replyInputView = LayoutInflater.from(context)
+                    .inflate(R.layout.item_reply_input, holder.repliesContainer, false)
+
+                replyInputView.findViewById<View>(R.id.send_reply_button)
+                    .setOnClickListener {
+                        Toast.makeText(context, "Reply feature coming soon", Toast.LENGTH_SHORT).show()
+                    }
+
+                holder.repliesContainer.addView(replyInputView)
+                holder.repliesContainer.visibility = View.VISIBLE
+            }
+        }
+
+        // Report button click listener
+        holder.reportButton.setOnClickListener {
+            // Show popup menu with report options
+            val options = arrayOf("Report review", "Not helpful", "Block user")
+
+            android.app.AlertDialog.Builder(context)
+                .setTitle("Options")
+                .setItems(options) { _, which ->
+                    val message = when (which) {
+                        0 -> "Review reported"
+                        1 -> "Review marked as not helpful"
+                        2 -> "User blocked"
+                        else -> ""
+                    }
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+                .show()
+        }
+    }
+
+    override fun getItemCount() = reviews.size
+
+    companion object {
+        // Test data
+        fun getTestReviews(): List<Review> {
+            return listOf(
+                Review(
+                    username = "MovieBuff123",
+                    comment = "Absolutely loved this film! The character development was fantastic, " +
+                            "and the plot twists kept me on the edge of my seat. Definitely going to watch it again.",
+                    rating = 5.0f,
+                    date = "2 days ago",
+                    likes = 42,
+                    replies = listOf(
+                        Reply(
+                            username = "CinemaFan99",
+                            comment = "I agree! The ending was particularly excellent.",
+                            date = "1 day ago"
+                        ),
+                        Reply(
+                            username = "FilmCritic22",
+                            comment = "The cinematography was award-worthy. Those sunset scenes were gorgeous.",
+                            date = "12 hours ago"
+                        )
+                    )
+                ),
+                Review(
+                    username = "CriticalViewer",
+                    comment = "The acting was superb, but the pacing felt off in the middle section*/

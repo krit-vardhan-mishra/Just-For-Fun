@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/activity_celebrity_filmography"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Movies or TV Shows:"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:contentDescription="this text view will show movies or tv shows done by celebrity based on which option does user choose to see."
+        android:textSize="30sp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/celebrity_filmography"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+</LinearLayout>

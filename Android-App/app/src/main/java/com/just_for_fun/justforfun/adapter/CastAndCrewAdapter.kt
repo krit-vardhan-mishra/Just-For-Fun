@@ -12,11 +12,10 @@ import com.just_for_fun.justforfun.data.CastCrewMember
 class CastAndCrewAdapter(private val casAndCrew: List<CastCrewMember>) : RecyclerView.Adapter<CastAndCrewAdapter.CastCrewViewHolder>() {
 
     inner class CastCrewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image: ImageView = itemView.findViewById(R.id.movie_activity_cast_and_crew)
+        val image: ImageView = itemView.findViewById(R.id.cast_crew_image)
         val name: TextView = itemView.findViewById(R.id.cast_crew_name)
         val role: TextView = itemView.findViewById(R.id.cast_crew_role)
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastCrewViewHolder {
         val view = LayoutInflater.from(parent.context)

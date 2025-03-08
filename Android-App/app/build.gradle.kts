@@ -65,4 +65,13 @@ dependencies {
     implementation (libs.roundedimageview)
     implementation (libs.androidx.preference)
     implementation (libs.library)
+
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+
+    // Coroutines
+    implementation (libs.kotlinx.coroutines.android)
+
+    // Coil for image loading
+    implementation (libs.coil)
 }

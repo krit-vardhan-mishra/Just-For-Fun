@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/activity_celebrity_awards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Awards:"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:contentDescription="here all the awards received by the user will be shown"
+        android:textSize="30sp"/>
+
+    <ExpandableListView
+        android:id="@+id/celebrity_awards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

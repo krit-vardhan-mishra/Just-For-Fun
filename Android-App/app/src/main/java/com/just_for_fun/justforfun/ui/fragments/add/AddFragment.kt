@@ -1,15 +1,12 @@
 package com.just_for_fun.justforfun.ui.fragments.add
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.databinding.FragmentAddBinding
-import com.just_for_fun.justforfun.databinding.FragmentHomeBinding
-import com.just_for_fun.justforfun.ui.fragments.home.HomeViewModel
 
 class AddFragment : Fragment(R.layout.fragment_add) {
 
@@ -22,5 +19,33 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        binding.fragmentAddSearchType.setOnClickListener {
+            showPopupMenu()
+        }
+    }
+
+    private fun showPopupMenu() {
+        val popupMenu = PopupMenu(requireContext(), binding.fragmentAddSearchType)
+        popupMenu.menuInflater.inflate(R.menu.search_nav_bar, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_searchMovie -> {
+                    binding.fragmentAddSearchType.text = "MOVIE"
+                    true
+                }
+                R.id.nav_searchTVShow -> {
+                    binding.fragmentAddSearchType.text = "TV SHOW"
+                    true
+                }
+                else -> {
+                    binding.fragmentAddSearchType.text = "ALL"
+                    true
+                }
+            }
+        }
+
+        popupMenu.show()
     }
 }

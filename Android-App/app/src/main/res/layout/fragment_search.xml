@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#1e1e1e"
+        android:background="@color/status_bar_color"
         tools:context=".ui.fragments.search.SearchFragment">
 
         <ScrollView
@@ -23,7 +23,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/fragment_bg">
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_bar"
