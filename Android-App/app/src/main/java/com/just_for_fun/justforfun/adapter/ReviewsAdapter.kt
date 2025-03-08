@@ -237,7 +237,6 @@ class ReviewsAdapter(private var reviews: List<Review>) :
         }
     }
 }
-dmfmdksv
 
 /*package com.just_for_fun.justforfun.adapter
 
