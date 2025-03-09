@@ -9,7 +9,8 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.databinding.ActivityMainBinding
-import com.just_for_fun.justforfun.viewmodel.MainViewModel
+import androidx.core.view.get
+import com.just_for_fun.justforfun.ui.activities.MainViewModel
 
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         binding.bottomNavigationView.background = null
 
-        binding.bottomNavigationView.menu.getItem(2).isEnabled = false
+        binding.bottomNavigationView.menu[2].isEnabled = false
 
         binding.fab.setOnClickListener {
             navController.navigate(R.id.nav_graph_addFragment)
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             R.id.nav_searchFragment -> binding.bottomNavigationView.menu.findItem(R.id.nav_searchFragment).isChecked = true
             R.id.nav_notificationFragment -> binding.bottomNavigationView.menu.findItem(R.id.nav_notificationFragment).isChecked = true
             R.id.nav_accountFragment -> binding.bottomNavigationView.menu.findItem(R.id.nav_accountFragment).isChecked = true
-            R.id.nav_graph_addFragment -> binding.bottomNavigationView.menu.getItem(2).isChecked = true
+            R.id.nav_graph_addFragment -> binding.bottomNavigationView.menu[2].isChecked = true
         }
     }
 

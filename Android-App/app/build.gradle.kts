@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -42,7 +43,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -53,25 +53,25 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation (libs.material.v130alpha03)
-    implementation (libs.androidx.lifecycle.viewmodel.ktx)
-    implementation (libs.androidx.lifecycle.livedata.ktx)
-    implementation (libs.androidx.databinding.runtime)
-    implementation (libs.androidx.activity.ktx)
-    implementation (libs.material.v190)
-    implementation (libs.androidx.navigation.fragment.ktx.v275)
-    implementation (libs.androidx.navigation.ui.ktx.v275)
-    implementation (libs.androidx.viewpager2)
-    implementation (libs.roundedimageview)
-    implementation (libs.androidx.preference)
-    implementation (libs.library)
+    implementation(libs.material)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.databinding.runtime)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.viewpager2)
+    implementation(libs.roundedimageview)
+    implementation(libs.androidx.preference)
+    implementation(libs.library)
 
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation (libs.gson)
+    implementation(libs.coil)
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx.v262)
+    implementation (libs.androidx.lifecycle.livedata.ktx.v262)
+    implementation (libs.androidx.databinding.runtime.v802)
 
-    // Coroutines
-    implementation (libs.kotlinx.coroutines.android)
-
-    // Coil for image loading
-    implementation (libs.coil)
 }

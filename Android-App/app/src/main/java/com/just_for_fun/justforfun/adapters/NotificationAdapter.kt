@@ -1,4 +1,4 @@
-package com.just_for_fun.justforfun.adapter
+package com.just_for_fun.justforfun.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,14 +1,15 @@
-package com.just_for_fun.justforfun.adapter
+package com.just_for_fun.justforfun.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.just_for_fun.justforfun.R
 
 class PosterAdapter(
-    private val posterItems: List<Int>,
+    private val posterItems: List<String>,
     private val onPosterClick: (Int) -> Unit,
     private val onBookmarkClick: (Int) -> Unit
 ) : RecyclerView.Adapter<PosterAdapter.PosterViewHolder>() {
@@ -36,8 +37,11 @@ class PosterAdapter(
     override fun getItemCount(): Int = posterItems.size
 
     override fun onBindViewHolder(holder: PosterViewHolder, position: Int) {
-        val imageRes = posterItems[position]
+        val imageUrl = posterItems[position]
 
-        holder.poster.setImageResource(imageRes)
+        Glide.with(holder.itemView.context)
+            .load(imageUrl)
+            .placeholder(R.drawable.placeholder_image)
+            .into(holder.poster)
     }
 }

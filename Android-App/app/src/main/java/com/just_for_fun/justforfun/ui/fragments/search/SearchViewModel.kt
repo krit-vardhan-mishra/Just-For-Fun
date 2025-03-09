@@ -1,121 +1,85 @@
 package com.just_for_fun.justforfun.ui.fragments.search
 
-import androidx.lifecycle.ViewModel
-import com.just_for_fun.justforfun.R
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.just_for_fun.justforfun.data.TVShows
+import com.just_for_fun.justforfun.data.TestCases
 import com.just_for_fun.justforfun.items.MovieItem
+import java.io.IOException
 
-class SearchViewModel : ViewModel() {
-    val mostSearchedItems = listOf(
-        MovieItem(
-            R.drawable.ddlj_poster,
-            "Dilwale Dulhania Le Jayenge",
-            "A young man and woman fall in love on a European trip. When they return to India, the boy's dad challenges him to win the girl on his own.",
-            4.8f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.mm_poster,
-            "Mr and Mrs 55",
-            "A cartoonist marries a wealthy woman to save her inheritance, planning to divorce soon after, but love has other plans.",
-            4.3f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.lagaan_poster,
-            "Lagaan",
-            "A village challenges British soldiers to a cricket match to avoid paying high taxes during drought season.",
-            4.5f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.kranti_poster,
-            "Kranti",
-            "A revolutionary fights for freedom from British rule in pre-independence India.",
-            4.2f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.baazigar_poster,
-            "Baazigar",
-            "A young man with a vengeful plan strategically inserts himself into a wealthy businessman's life.",
-            4.6f,
-            "Movie"
-        )
-    )
+class SearchViewModel(application: Application) : AndroidViewModel(application) {
 
-    val previousSearches = listOf(
-        MovieItem(
-            R.drawable.kranti_poster,
-            "Kranti",
-            "A revolutionary fights for freedom from British rule in pre-independence India.",
-            4.2f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.mm_poster,
-            "Mr and Mrs 55",
-            "A cartoonist marries a wealthy woman to save her inheritance, planning to divorce soon after, but love has other plans.",
-            4.3f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.ddlj_poster,
-            "Dilwale Dulhania Le Jayenge",
-            "A young man and woman fall in love on a European trip. When they return to India, the boy's dad challenges him to win the girl on his own.",
-            4.8f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.baazigar_poster,
-            "Baazigar",
-            "A young man with a vengeful plan strategically inserts himself into a wealthy businessman's life.",
-            4.6f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.lagaan_poster,
-            "Lagaan",
-            "A village challenges British soldiers to a cricket match to avoid paying high taxes during drought season.",
-            4.5f,
-            "Movie"
-        )
-    )
+    private val _movies = MutableLiveData<List<MovieItem>>()
+    val movies: LiveData<List<MovieItem>> get() = _movies
 
-    val basedOnYourSearchItems = listOf(
-        MovieItem(
-            R.drawable.baazigar_poster,
-            "Baazigar",
-            "A young man with a vengeful plan strategically inserts himself into a wealthy businessman's life.",
-            4.6f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.ddlj_poster,
-            "Dilwale Dulhania Le Jayenge",
-            "A young man and woman fall in love on a European trip. When they return to India, the boy's dad challenges him to win the girl on his own.",
-            4.8f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.lagaan_poster,
-            "Lagaan",
-            "A village challenges British soldiers to a cricket match to avoid paying high taxes during drought season.",
-            4.5f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.mm_poster,
-            "Mr and Mrs 55",
-            "A cartoonist marries a wealthy woman to save her inheritance, planning to divorce soon after, but love has other plans.",
-            4.3f,
-            "Movie"
-        ),
-        MovieItem(
-            R.drawable.kranti_poster,
-            "Kranti",
-            "A revolutionary fights for freedom from British rule in pre-independence India.",
-            4.2f,
-            "Movie"
-        )
-    )
+    private val _tvShows = MutableLiveData<List<TVShows>>()
+    val tvShows: LiveData<List<TVShows>> get() = _tvShows
+
+    private val _mostSearchedItems = MutableLiveData<List<MovieItem>>()
+    val mostSearchedItems: LiveData<List<MovieItem>> get() = _mostSearchedItems
+
+    private val _previousSearches = MutableLiveData<List<MovieItem>>()
+    val previousSearches: LiveData<List<MovieItem>> get() = _previousSearches
+
+    private val _basedOnYourSearchItems = MutableLiveData<List<MovieItem>>()
+    val basedOnYourSearchItems: LiveData<List<MovieItem>> get() = _basedOnYourSearchItems
+
+    init {
+        loadDataFromJson()
+    }
+
+    private fun loadDataFromJson() {
+        try {
+            val assetManager = getApplication<Application>().assets
+            val inputStream = assetManager.open("sample_cases.json")
+            val jsonString = inputStream.bufferedReader().use { it.readText() }
+
+            val gson = Gson()
+            val contentType = object : TypeToken<TestCases>() {}.type
+            val contentData: TestCases = gson.fromJson(jsonString, contentType)
+
+            val movieItems = contentData.movies.map { movie ->
+                MovieItem(
+                    title = movie.title,
+                    posterUrl = movie.posterUrl,
+                    description = movie.description,
+                    rating = movie.rating,
+                    type = movie.type
+                )
+            }
+
+            val tvShowItems = contentData.tvShows.map { tvShow ->
+                MovieItem(
+                    title = tvShow.title,
+                    posterUrl = tvShow.posterUrl,
+                    description = tvShow.description,
+                    rating = tvShow.rating,
+                    type = tvShow.type
+                )
+            }
+
+            val allItems = movieItems + tvShowItems
+
+            _movies.value = movieItems
+            _tvShows.value = contentData.tvShows
+
+            _mostSearchedItems.value = allItems.shuffled().take(5)
+            _previousSearches.value = allItems.shuffled().take(5)
+            _basedOnYourSearchItems.value = allItems.shuffled().take(5)
+
+        } catch (e: IOException) {
+            Log.d("LoadDataFromJSON", e.printStackTrace().toString())
+
+            _movies.value = emptyList()
+            _tvShows.value = emptyList()
+            _mostSearchedItems.value = emptyList()
+            _previousSearches.value = emptyList()
+            _basedOnYourSearchItems.value = emptyList()
+        }
+    }
 }

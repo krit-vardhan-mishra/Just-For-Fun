@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceFragmentCompat
 import com.just_for_fun.justforfun.R
 
 class FragmentSetting : Fragment() {
@@ -35,5 +36,11 @@ class FragmentSetting : Fragment() {
                 .replace(R.id.settings_container, SettingsFragment())
                 .commit()
         }
+    }
+}
+
+class SettingsFragment : PreferenceFragmentCompat() {
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.settings_preferences, rootKey)
     }
 }

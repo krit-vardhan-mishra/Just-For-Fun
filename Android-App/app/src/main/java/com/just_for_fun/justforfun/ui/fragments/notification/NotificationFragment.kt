@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.just_for_fun.justforfun.R
-import com.just_for_fun.justforfun.adapter.NotificationAdapter
+import com.just_for_fun.justforfun.adapters.NotificationAdapter
 import com.just_for_fun.justforfun.databinding.FragmentNotificationBinding
 import com.just_for_fun.justforfun.items.NotificationType
 

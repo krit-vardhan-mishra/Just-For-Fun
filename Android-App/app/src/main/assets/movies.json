@@ -1,0 +1,30 @@
+[
+  {
+    "poster": "mm_poster",
+    "title": "Mr & Mrs. 55",
+    "description": "Mr & Mrs. 55 is a classic romantic comedy",
+    "rating": 4.1,
+    "type": "Comedy"
+  },
+  {
+    "poster": "lagaan_poster",
+    "title": "Lagaan",
+    "description": "Lagaan is the story of villagers who play cricket against the Britisher to get a lease on their land",
+    "rating": 4.3,
+    "type": "Drama"
+  },
+  {
+    "poster": "kranti_poster",
+    "title": "Kranti",
+    "description": "Description 3",
+    "rating": 3.9,
+    "type": "Action"
+  },
+  {
+    "poster": "ddlj_poster",
+    "title": "Dilwale Dulhaniya Le Jayenge",
+    "description": "Description 4",
+    "rating": 4.5,
+    "type": "Romance"
+  }
+]
