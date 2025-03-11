@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JustForFun"
-        tools:targetApi="31"
+        tools:targetApi="33"
         android:enableOnBackInvokedCallback="true">
 
         <activity android:name=".ui.activities.MainActivity"
@@ -27,12 +27,6 @@
             </intent-filter>
 
         </activity>
-
-        <activity
-            android:name=".ui.fragments.movie.MovieFragment"
-            android:exported="false" />
-
-        <activity android:name=".ui.fragments.celebrity.CelebrityActivity" />
 
     </application>
 

@@ -6,13 +6,17 @@ import android.os.Handler
 import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.ImageSliderAdapter
 import com.just_for_fun.justforfun.adapters.MoviesAdapter
 import com.just_for_fun.justforfun.adapters.TVShowsAdapter
+import com.just_for_fun.justforfun.data.Movies
+import com.just_for_fun.justforfun.data.TVShows
 import com.just_for_fun.justforfun.databinding.FragmentHomeBinding
-import com.just_for_fun.justforfun.ui.fragments.details.MovieOrShowDetailsFragment
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -29,7 +33,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        // Image slider setup
+        setupImageSlider()
+        setupMoviesRecyclerView()
+        setupTVShowsRecyclerView()
+        setupAutoSlider()
+    }
+
+    private fun setupImageSlider() {
         val images = listOf(
             R.drawable.two, R.drawable.three, R.drawable.four,
             R.drawable.six, R.drawable.five, R.drawable.eight,
@@ -38,38 +48,50 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             R.drawable.thirteen, R.drawable.fourteen, R.drawable.fifteen
         )
 
-        val adapter = ImageSliderAdapter(requireContext(), images)
-        binding.viewPager.adapter = adapter
+        val sliderAdapter = ImageSliderAdapter(requireContext(), images)
+        binding.viewPager.adapter = sliderAdapter
+    }
+
+    private fun setupMoviesRecyclerView() {
+        binding.fragmentHomeMoviesRecyclerViewer.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
-            binding.fragmentHomeMoviesRecyclerViewer.adapter = MoviesAdapter(movies) { movie ->
-                val bundle = Bundle().apply {
-                    putParcelable("MOVIE", movie)
-                }
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment, MovieOrShowDetailsFragment().apply {
-                        arguments = bundle
-                    })
-                    .addToBackStack(null)
-                    .commit()
-            }
+            binding.fragmentHomeMoviesRecyclerViewer.adapter =
+                MoviesAdapter(movies ?: emptyList(), ::onMovieClick)
         }
+    }
+
+    private fun setupTVShowsRecyclerView() {
+        binding.fragmentHomeShowsRecyclerViewer.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         viewModel.tvShows.observe(viewLifecycleOwner) { tvShows ->
-            binding.fragmentHomeShowsRecyclerViewer.adapter = TVShowsAdapter(tvShows) { tvShow ->
-                val bundle = Bundle().apply {
-                    putParcelable("TV_SHOW", tvShow)
-                }
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment, MovieOrShowDetailsFragment().apply {
-                        arguments = bundle
-                    })
-                    .addToBackStack(null)
-                    .commit()
-            }
+            binding.fragmentHomeShowsRecyclerViewer.adapter =
+                TVShowsAdapter(tvShows ?: emptyList(), ::onTVShowClick)
         }
+    }
 
-        setupAutoSlider()
+    fun onMovieClick(movie: Movies) {
+        val bundle = bundleOf(
+            "MOVIE_TITLE" to movie.title,
+            "MOVIE_POSTER" to movie.posterUrl,
+            "MOVIE_DESCRIPTION" to movie.description,
+            "MOVIE_RATING" to movie.rating,
+            "MOVIE_TYPE" to "Movie"
+        )
+        findNavController().navigate(R.id.movieFragment, bundle)
+    }
+
+    fun onTVShowClick(tvShow: TVShows) {
+        val bundle = bundleOf(
+            "MOVIE_TITLE" to tvShow.title,
+            "MOVIE_POSTER" to tvShow.posterUrl,
+            "MOVIE_DESCRIPTION" to tvShow.description,
+            "MOVIE_RATING" to tvShow.rating,
+            "MOVIE_TYPE" to "TV Show"
+        )
+        findNavController().navigate(R.id.movieFragment, bundle)
     }
 
     private fun setupAutoSlider() {

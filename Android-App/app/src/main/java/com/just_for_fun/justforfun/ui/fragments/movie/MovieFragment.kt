@@ -43,14 +43,12 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Get movie details from arguments or activity intent
         val title = requireActivity().intent.getStringExtra("MOVIE_TITLE") ?: "Unknown Movie"
         val posterUrl = requireActivity().intent.getStringExtra("MOVIE_POSTER")
         val description = requireActivity().intent.getStringExtra("MOVIE_DESCRIPTION") ?: "No description available"
         val rating = requireActivity().intent.getFloatExtra("MOVIE_RATING", 0.0f)
         val type = requireActivity().intent.getStringExtra("MOVIE_TYPE") ?: "Movie"
 
-        // Set up UI with movie details
         binding.activityMovieTitle.text = title
         binding.activityMovieMovieOrShow.text = type
         Glide.with(this)
@@ -61,7 +59,6 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
         binding.activityMovieRatingBar.rating = rating
         binding.activityMovieUserRating.text = "${rating}/5"
 
-        // Set up all the components
         setupMovieDetails()
         observeViewModel()
     }
@@ -108,28 +105,10 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
 
     private fun setupMoreLikeThis() {
         val similarMovies = listOf(
-            MovieItem(
-                "R.drawable.mm_poster",
-                "Mr & Mrs. 55",
-                "Mr & Mrs. 55 is a classic romantic comedy",
-                4.1,
-                "Comedy"
-            ),
-            MovieItem(
-                "R.drawable.lagaan_poster",
-                "Lagaan",
-                "Lagaan is story of villager who play cricket against the Britisher to get lease on their lagaan",
-                4.3,
-                "Drama"
-            ),
-            MovieItem("R.drawable.kranti_poster", "Kranti", "Description 3", 3.9, "Action"),
-            MovieItem(
-                "R.drawable.ddlj_poster",
-                "Dilwale Dulhaniya Le Jayenge",
-                "Description 4",
-                4.5,
-                "Romance"
-            )
+            MovieItem(R.drawable.mm_poster, "Mr & Mrs. 55", "Mr & Mrs. 55 is a classic romantic comedy", 4.1f, "Comedy"),
+            MovieItem(R.drawable.lagaan_poster, "Lagaan", "Lagaan is story of villager who play cricket against the Britisher to get lease on their lagaan", 4.3f, "Drama"),
+            MovieItem(R.drawable.kranti_poster, "Kranti", "Description 3", 3.9f, "Action"),
+            MovieItem(R.drawable.ddlj_poster, "Dilwale Dulhaniya Le Jayenge", "Description 4", 4.5f, "Romance")
         )
 
         val similarMoviesAdapter = SimilarMoviesAdapter(similarMovies) { movie ->
@@ -206,7 +185,6 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
             isNestedScrollingEnabled = false
         }
 
-        // Review submission functionality
         binding.root.findViewById<ImageButton>(R.id.post_review_button)?.setOnClickListener {
             val reviewEditText = binding.root.findViewById<EditText>(R.id.your_review_edit_text)
             val reviewText = reviewEditText?.text.toString()
@@ -217,26 +195,6 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
             } else {
                 Toast.makeText(requireContext(), "Please write a review first", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-
-    companion object {
-        fun newInstance(
-            title: String,
-            posterUrl: String,
-            description: String,
-            rating: Float,
-            type: String
-        ): MovieFragment {
-            val fragment = MovieFragment()
-            val args = Bundle()
-            args.putString("MOVIE_TITLE", title)
-            args.putString("MOVIE_POSTER", posterUrl)
-            args.putString("MOVIE_DESCRIPTION", description)
-            args.putFloat("MOVIE_RATING", rating)
-            args.putString("MOVIE_TYPE", type)
-            fragment.arguments = args
-            return fragment
         }
     }
 }

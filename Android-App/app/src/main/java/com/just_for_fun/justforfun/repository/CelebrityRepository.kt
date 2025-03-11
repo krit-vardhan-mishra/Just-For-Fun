@@ -26,16 +26,16 @@ class CelebrityRepository() {
     private val sampleMovies = listOf(
         MovieItem(
             title = "Mr. & Mrs. 55",
-            posterUrl = "R.drawable.mm_poster",
+            posterUrl = R.drawable.mm_poster,
             description = "Classic romantic comedy",
-            rating = 4.5,
+            rating = 4.5f,
             type = "Movie"
         ),
         MovieItem(
             title = "Mughal-e-Azam",
-            posterUrl = "R.drawable.mughal_e_azam_poster",
+            posterUrl = R.drawable.mughal_e_azam_poster,
             description = "Epic historical drama",
-            rating = 4.8,
+            rating = 4.8f,
             type = "Movie"
         )
     )
@@ -43,9 +43,9 @@ class CelebrityRepository() {
     private val sampleTVShows = listOf(
         MovieItem(
             title = "Historical Dramas",
-            posterUrl = "R.drawable.kranti_poster",
+            posterUrl = R.drawable.kranti_poster,
             description = "TV documentary series",
-            rating = 4.2,
+            rating = 4.2f,
             type = "TV Show"
         )
     )

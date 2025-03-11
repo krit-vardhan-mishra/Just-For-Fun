@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.just_for_fun.justforfun.R
 
 class PosterAdapter(
-    private val posterItems: List<String>,
+    private val posterItems: List<Int>,
     private val onPosterClick: (Int) -> Unit,
     private val onBookmarkClick: (Int) -> Unit
 ) : RecyclerView.Adapter<PosterAdapter.PosterViewHolder>() {
@@ -20,10 +20,14 @@ class PosterAdapter(
 
         init {
             poster.setOnClickListener {
-                onPosterClick(adapterPosition)
+                bindingAdapterPosition.takeIf { it != RecyclerView.NO_POSITION }?.let { position ->
+                    onPosterClick(position)
+                }
             }
             bookmark.setOnClickListener {
-                onBookmarkClick(adapterPosition)
+                bindingAdapterPosition.takeIf { it != RecyclerView.NO_POSITION }?.let { position ->
+                    onBookmarkClick(position)
+                }
             }
         }
     }
@@ -37,10 +41,9 @@ class PosterAdapter(
     override fun getItemCount(): Int = posterItems.size
 
     override fun onBindViewHolder(holder: PosterViewHolder, position: Int) {
-        val imageUrl = posterItems[position]
-
+        val imageResId = posterItems[position]
         Glide.with(holder.itemView.context)
-            .load(imageUrl)
+            .load(imageResId)
             .placeholder(R.drawable.placeholder_image)
             .into(holder.poster)
     }

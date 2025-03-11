@@ -50,7 +50,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView, items: List<MovieItem>) {
-        val adapter = PosterAdapter(items.map { it.posterUrl },
+        val adapter = PosterAdapter(
+            posterItems = items.map { it.posterUrl },
             onPosterClick = { position -> openMovieActivity(items[position]) },
             onBookmarkClick = { position ->
                 Toast.makeText(context, "Bookmarked ${items[position].title}", Toast.LENGTH_SHORT).show()

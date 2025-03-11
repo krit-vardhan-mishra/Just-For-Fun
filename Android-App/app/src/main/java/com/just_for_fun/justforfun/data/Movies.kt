@@ -5,10 +5,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Movies(
-    val posterUrl: String,
+    val posterUrl: Int,
     val title: String,
     val description: String,
-    val rating: Double,
+    val rating: Float,
     val type: String,
     val director: String,
     val releaseYear: Int,

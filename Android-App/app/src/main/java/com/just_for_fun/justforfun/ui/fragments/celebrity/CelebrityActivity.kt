@@ -77,7 +77,8 @@ class CelebrityActivity : AppCompatActivity() {
         // Similar to movies adapter
     }
 
-    private fun setupAwardsAdapter(awards: List<Awards>) {
+    private fun
+            setupAwardsAdapter(awards: List<Awards>) {
         val adapter = AwardsAdapter(awards)
         binding.activityCelebrityAwardsListView.adapter = adapter
         binding.activityCelebrityAwardsListView.layoutManager =
