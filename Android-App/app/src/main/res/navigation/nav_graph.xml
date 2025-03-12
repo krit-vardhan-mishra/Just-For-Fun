@@ -35,32 +35,57 @@
         tools:layout="@layout/fragment_account" />
 
     <fragment
-        android:id="@+id/settingsFragment"
+        android:id="@+id/nav_settingsFragment"
         android:name="com.just_for_fun.justforfun.ui.fragments.setting.FragmentSetting"
         android:label="Settings"
         tools:layout="@layout/fragment_setting"/>
 
     <fragment
-        android:id="@+id/movieFragment"
+        android:id="@+id/nav_movieFragment"
         android:name="com.just_for_fun.justforfun.ui.fragments.movie.MovieFragment"
         android:label="Movie"
         tools:layout="@layout/fragment_movie_or_shows" >
-        <argument
-            android:name="MOVIE_TITLE"
-            app:argType="string" />
-        <argument
-            android:name="MOVIE_POSTER"
-            app:argType="integer" />
-        <argument
-            android:name="MOVIE_DESCRIPTION"
-            app:argType="string" />
-        <argument
-            android:name="MOVIE_RATING"
-            app:argType="float" />
-        <argument
-            android:name="MOVIE_TYPE"
-            app:argType="string" />
+        <argument android:name="MOVIE_TITLE" app:argType="string" />
+        <argument android:name="MOVIE_POSTER" app:argType="integer" />
+        <argument android:name="MOVIE_DESCRIPTION" app:argType="string" />
+        <argument android:name="MOVIE_RATING" app:argType="float" />
+        <argument android:name="MOVIE_TYPE" app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_celebrityFragment"
+        android:name="com.just_for_fun.justforfun.ui.fragments.celebrity.CelebrityFragment"
+        android:label="Celebrity Fragment"
+        tools:layout="@layout/fragment_celebrity">
+
+        <action
+            android:id="@+id/action_celebrityFragment_to_celebrityAwardsFragment"
+            app:destination="@id/nav_celebrityFragmentAwards" />
+
+        <action
+            android:id="@+id/action_celebrityFragment_to_celebrityFilmographyFragment"
+            app:destination="@id/nav_celebrityFragmentFilmography" />
+
+        <action
+            android:id="@+id/action_celebrityFragment_to_movieFragment"
+            app:destination="@id/nav_movieFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_celebrityFragmentAwards"
+        android:name="com.just_for_fun.justforfun.ui.fragments.celebrity.CelebrityFragment"
+        android:label="Celebrity Fragment Awards"
+        tools:layout="@layout/fragment_celebrity_awards">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_celebrityFragmentFilmography"
+        android:name="com.just_for_fun.justforfun.ui.fragments.celebrity.filmography.CelebrityFilmographyFragment"
+        android:label="Celebrity Filmography"
+        tools:layout="@layout/fragment_celebrity_filmography">
+        <argument
+            android:name="TYPE"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

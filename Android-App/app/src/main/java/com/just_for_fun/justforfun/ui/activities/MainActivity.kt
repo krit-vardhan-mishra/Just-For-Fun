@@ -15,16 +15,15 @@ import com.just_for_fun.justforfun.ui.activities.MainViewModel
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainViewModel
     private lateinit var navController: NavController
-
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 

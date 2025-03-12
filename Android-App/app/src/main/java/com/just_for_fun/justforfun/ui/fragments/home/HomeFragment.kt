@@ -7,6 +7,7 @@ import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -20,16 +21,16 @@ import com.just_for_fun.justforfun.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: HomeViewModel by viewModels()
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var viewModel: HomeViewModel
     private lateinit var sliderHandler: Handler
     private lateinit var sliderRunnable: Runnable
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentHomeBinding.bind(view)
+        binding = FragmentHomeBinding.bind(view)
 
+        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -80,7 +81,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             "MOVIE_RATING" to movie.rating,
             "MOVIE_TYPE" to "Movie"
         )
-        findNavController().navigate(R.id.movieFragment, bundle)
+        findNavController().navigate(R.id.nav_movieFragment, bundle)
     }
 
     fun onTVShowClick(tvShow: TVShows) {
@@ -91,7 +92,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             "MOVIE_RATING" to tvShow.rating,
             "MOVIE_TYPE" to "TV Show"
         )
-        findNavController().navigate(R.id.movieFragment, bundle)
+        findNavController().navigate(R.id.nav_movieFragment, bundle)
     }
 
     private fun setupAutoSlider() {
@@ -120,11 +121,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onResume() {
         super.onResume()
         sliderHandler.postDelayed(sliderRunnable, 3000)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        sliderHandler.removeCallbacks(sliderRunnable)
-        _binding = null
     }
 }

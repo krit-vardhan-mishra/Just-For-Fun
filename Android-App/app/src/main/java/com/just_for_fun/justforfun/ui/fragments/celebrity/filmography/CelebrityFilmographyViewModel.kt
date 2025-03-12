@@ -1,11 +1,12 @@
 package com.just_for_fun.justforfun.ui.fragments.celebrity.filmography
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.items.MovieItem
 
-class CelebrityFilmographyViewModel : ViewModel() {
+class CelebrityFilmographyViewModel(application: Application) : AndroidViewModel(application) {
     private val _filmography = MutableLiveData<List<MovieItem>>()
     val filmography: MutableLiveData<List<MovieItem>> get() = _filmography
 

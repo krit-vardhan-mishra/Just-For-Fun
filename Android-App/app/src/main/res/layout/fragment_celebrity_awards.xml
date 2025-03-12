@@ -17,7 +17,7 @@
         android:textSize="30sp"/>
 
     <ExpandableListView
-        android:id="@+id/celebrity_awards"
+        android:id="@+id/celebrity_awards_expandable_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

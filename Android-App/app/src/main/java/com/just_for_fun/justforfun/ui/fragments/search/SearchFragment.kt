@@ -7,8 +7,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -22,12 +23,13 @@ import com.just_for_fun.justforfun.util.PosterItemDecoration
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private lateinit var binding: FragmentSearchBinding
-    private val viewModel: SearchViewModel by viewModels()
+    private lateinit var viewModel: SearchViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchBinding.bind(view)
 
+        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -66,14 +68,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun openMovieActivity(movie: MovieItem) {
-        val intent = Intent(requireContext(), MovieFragment::class.java).apply {
-            putExtra("MOVIE_TITLE", movie.title)
-            putExtra("MOVIE_POSTER", movie.posterUrl)
-            putExtra("MOVIE_DESCRIPTION", movie.description)
-            putExtra("MOVIE_RATING", movie.rating)
-            putExtra("MOVIE_TYPE", movie.type)
+        val args = Bundle().apply {
+            putString("MOVIE_TITLE", movie.title)
+            putInt("MOVIE_POSTER", movie.posterUrl)
+            putString("MOVIE_DESCRIPTION", movie.description)
+            putFloat("MOVIE_RATING", movie.rating)
+            putString("MOVIE_TYPE", movie.type)
         }
-        startActivity(intent)
+        findNavController().navigate(R.id.nav_movieFragment, args)
     }
 
     private fun setupBottomNavListener() {

@@ -117,6 +117,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
+                    android:padding="5dp"
                     android:hint="@string/user_biography"
                     app:layout_constraintTop_toBottomOf="@id/user_id"
                     app:layout_constraintStart_toStartOf="parent"
@@ -127,10 +128,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="5dp"
                     android:text="YOUR FAVORITES"
                     android:textSize="20sp"
+                    android:padding="5dp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@id/user_bio"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -142,15 +144,19 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
+                    android:padding="5dp"
                     android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@id/favorites_header"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <ListView
+                    android:id="@+id/fragment_account_your_review"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
+                    android:padding="5dp"
+                    android:layout_margin="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/fragment_account_fav_recycler_view" />
 

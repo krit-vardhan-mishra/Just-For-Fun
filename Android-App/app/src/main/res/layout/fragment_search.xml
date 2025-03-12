@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="viewModel" type="com.just_for_fun.justforfun.ui.fragments.search.SearchViewModel"/>
+        <variable name="viewModel"
+            type="com.just_for_fun.justforfun.ui.fragments.search.SearchViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:background="@color/status_bar_color"
         tools:context=".ui.fragments.search.SearchFragment">
 

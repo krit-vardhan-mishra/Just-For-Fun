@@ -1,5 +1,6 @@
 package com.just_for_fun.justforfun.ui.fragments.account
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 
-class AccountViewModel : ViewModel()
+class AccountViewModel(application: Application) : AndroidViewModel(application)

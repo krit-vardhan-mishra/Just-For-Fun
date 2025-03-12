@@ -4,5 +4,7 @@ data class Awards (
     val id: String,
     val name: String,
     val year: Int,
-    val category: String
+    val awardName: String,
+    val category: String,
+    val description: String
 )

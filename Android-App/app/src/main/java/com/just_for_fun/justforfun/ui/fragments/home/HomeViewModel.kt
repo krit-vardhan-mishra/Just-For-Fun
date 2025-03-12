@@ -4,13 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.data.Movies
 import com.just_for_fun.justforfun.data.TVShows
-import com.just_for_fun.justforfun.data.TestCases
-import java.io.IOException
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 

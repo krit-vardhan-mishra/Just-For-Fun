@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.data.Movies
 import com.just_for_fun.justforfun.data.TVShows
 import com.just_for_fun.justforfun.databinding.FragmentMovieOrShowDetailsBinding
 
-class MovieOrShowDetailsFragment : Fragment() {
+class MovieOrShowDetailsFragment : Fragment(R.layout.fragment_movie_or_show_details) {
 
-    private var _binding: FragmentMovieOrShowDetailsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentMovieOrShowDetailsBinding
+    private lateinit var viewModel: MovieOrShowDetailsViewModel
 
     private var movie: Movies? = null
     private var tvShow: TVShows? = null
@@ -30,12 +32,18 @@ class MovieOrShowDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMovieOrShowDetailsBinding.inflate(inflater, container, false)
+        binding = FragmentMovieOrShowDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentMovieOrShowDetailsBinding.bind(view)
+
+        viewModel = ViewModelProvider(this)[MovieOrShowDetailsViewModel::class.java]
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         movie?.let { displayMovieDetails(it) }
         tvShow?.let { displayTvShowDetails(it) }
     }
@@ -54,11 +62,6 @@ class MovieOrShowDetailsFragment : Fragment() {
         Glide.with(this)
             .load(tvShow.posterUrl)
             .into(binding.detailsPoster)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {

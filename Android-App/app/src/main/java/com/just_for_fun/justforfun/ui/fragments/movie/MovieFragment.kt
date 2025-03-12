@@ -2,14 +2,13 @@ package com.just_for_fun.justforfun.ui.fragments.movie
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.just_for_fun.justforfun.R
@@ -21,33 +20,34 @@ import com.just_for_fun.justforfun.data.Reply
 import com.just_for_fun.justforfun.data.Review
 import com.just_for_fun.justforfun.databinding.FragmentMovieOrShowsBinding
 import com.just_for_fun.justforfun.items.MovieItem
-import com.just_for_fun.justforfun.ui.fragments.celebrity.CelebrityActivity
 import com.just_for_fun.justforfun.util.SpacingItemDecoration
 import java.util.Date
 
 class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
 
     private lateinit var binding: FragmentMovieOrShowsBinding
-    private val viewModel: MovieViewModel by viewModels()
+    private lateinit var viewModel: MovieViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMovieOrShowsBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
-    }
+    private val similarMovies = listOf(
+        MovieItem(R.drawable.mm_poster, "Mr & Mrs. 55", "Mr & Mrs. 55 is a classic romantic comedy", 4.1f, "Comedy"),
+        MovieItem(R.drawable.lagaan_poster, "Lagaan", "Lagaan is story of villager who play cricket against the Britisher to get lease on their lagaan", 4.3f, "Drama"),
+        MovieItem(R.drawable.kranti_poster, "Kranti", "Description 3", 3.9f, "Action"),
+        MovieItem(R.drawable.ddlj_poster, "Dilwale Dulhaniya Le Jayenge", "Description 4", 4.5f, "Romance")
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentMovieOrShowsBinding.bind(view)
 
-        val title = requireActivity().intent.getStringExtra("MOVIE_TITLE") ?: "Unknown Movie"
-        val posterUrl = requireActivity().intent.getStringExtra("MOVIE_POSTER")
-        val description = requireActivity().intent.getStringExtra("MOVIE_DESCRIPTION") ?: "No description available"
-        val rating = requireActivity().intent.getFloatExtra("MOVIE_RATING", 0.0f)
-        val type = requireActivity().intent.getStringExtra("MOVIE_TYPE") ?: "Movie"
+        viewModel = ViewModelProvider(this)[MovieViewModel::class.java]
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        val title = arguments?.getString("MOVIE_TITLE") ?: "Unknown Movie"
+        val posterUrl = arguments?.getString("MOVIE_POSTER") ?: R.drawable.fallback_poster
+        val description = arguments?.getString("MOVIE_DESCRIPTION") ?: "No description available"
+        val rating = arguments?.getFloat("MOVIE_RATING") ?: 0.0f
+        val type = arguments?.getString("MOVIE_TYPE") ?: "Movie"
 
         binding.activityMovieTitle.text = title
         binding.activityMovieMovieOrShow.text = type
@@ -66,12 +66,12 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
     private fun observeViewModel() {
         viewModel.selectedCastMember.observe(viewLifecycleOwner) { castMember ->
             castMember?.let {
-                val intent = Intent(requireContext(), CelebrityActivity::class.java).apply {
-                    putExtra("CELEBRITY_NAME", it.name)
-                    putExtra("CELEBRITY_ROLE", it.role)
-                    putExtra("CELEBRITY_IMAGE", it.id)
+                val args = Bundle().apply {
+                    putString("CELEBRITY_NAME", it.name)
+                    putString("CELEBRITY_ROLE", it.role)
+                    putInt("CELEBRITY_IMAGE", it.id)
                 }
-                startActivity(intent)
+                findNavController().navigate(R.id.nav_celebrityFragment, args)
                 viewModel.onCastMemberNavigated()
             }
         }
@@ -104,24 +104,15 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
     }
 
     private fun setupMoreLikeThis() {
-        val similarMovies = listOf(
-            MovieItem(R.drawable.mm_poster, "Mr & Mrs. 55", "Mr & Mrs. 55 is a classic romantic comedy", 4.1f, "Comedy"),
-            MovieItem(R.drawable.lagaan_poster, "Lagaan", "Lagaan is story of villager who play cricket against the Britisher to get lease on their lagaan", 4.3f, "Drama"),
-            MovieItem(R.drawable.kranti_poster, "Kranti", "Description 3", 3.9f, "Action"),
-            MovieItem(R.drawable.ddlj_poster, "Dilwale Dulhaniya Le Jayenge", "Description 4", 4.5f, "Romance")
-        )
-
         val similarMoviesAdapter = SimilarMoviesAdapter(similarMovies) { movie ->
-            Toast.makeText(requireContext(), "Selected: ${movie.title}", Toast.LENGTH_SHORT).show()
-
-            val intent = Intent(requireContext(), requireActivity()::class.java).apply {
-                putExtra("MOVIE_TITLE", movie.title)
-                putExtra("MOVIE_POSTER", movie.posterUrl)
-                putExtra("MOVIE_DESCRIPTION", movie.description)
-                putExtra("MOVIE_RATING", movie.rating)
-                putExtra("MOVIE_TYPE", movie.type)
+            val args = Bundle().apply {
+                putString("MOVIE_TITLE", movie.title)
+                putInt("MOVIE_POSTER", movie.posterUrl)
+                putString("MOVIE_DESCRIPTION", movie.description)
+                putFloat("MOVIE_RATING", movie.rating)
+                putString("MOVIE_TYPE", movie.type)
             }
-            startActivity(intent)
+            findNavController().navigate(R.id.nav_movieFragment, args)
         }
 
         binding.movieActivityMoreLikeThis.apply {

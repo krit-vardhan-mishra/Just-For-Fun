@@ -5,13 +5,17 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.just_for_fun.justforfun.data.TVShows
 import com.just_for_fun.justforfun.data.TestCases
 import com.just_for_fun.justforfun.items.MovieItem
 import java.io.IOException
-
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.just_for_fun.justforfun.data.Movies
+import java.lang.reflect.Type
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _movies = MutableLiveData<List<MovieItem>>()
@@ -39,27 +43,86 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             val inputStream = assetManager.open("sample_cases.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
 
-            val gson = Gson()
+            val gson = GsonBuilder()
+                .registerTypeAdapter(TestCases::class.java, object : JsonDeserializer<TestCases> {
+                    override fun deserialize(
+                        json: JsonElement,
+                        typeOfT: Type,
+                        context: JsonDeserializationContext
+                    ): TestCases {
+                        val jsonObject = json.asJsonObject
+                        val moviesArray = jsonObject.getAsJsonArray("movies")
+                        val tvShowsArray = jsonObject.getAsJsonArray("tvShows")
+
+                        val movies = mutableListOf<Movies>()
+                        val tvShows = mutableListOf<TVShows>()
+
+                        for (element in moviesArray) {
+                            val movieObj = element.asJsonObject
+                            val resourceName = movieObj.get("posterUrl").asString.replace("R.drawable.", "")
+                            val resourceId = getApplication<Application>().resources.getIdentifier(
+                                resourceName, "drawable", getApplication<Application>().packageName
+                            )
+
+                            val movie = Movies(
+                                posterUrl = resourceId,
+                                title = movieObj.get("title").asString,
+                                description = movieObj.get("description").asString,
+                                rating = movieObj.get("rating").asFloat,
+                                type = movieObj.get("type").asString,
+                                director = movieObj.get("director").asString,
+                                releaseYear = movieObj.get("releaseYear").asInt,
+                                totalAwards = movieObj.get("totalAwards").asString
+                            )
+                            movies.add(movie)
+                        }
+
+                        for (element in tvShowsArray) {
+                            val tvObj = element.asJsonObject
+                            val resourceName = tvObj.get("posterUrl").asString.replace("R.drawable.", "")
+                            val resourceId = getApplication<Application>().resources.getIdentifier(
+                                resourceName, "drawable", getApplication<Application>().packageName
+                            )
+
+                            val tvShow = TVShows(
+                                posterUrl = resourceId,
+                                title = tvObj.get("title").asString,
+                                description = tvObj.get("description").asString,
+                                rating = tvObj.get("rating").asFloat,
+                                type = tvObj.get("type").asString,
+                                totalSeasons = tvObj.get("totalSeasons").asInt,
+                                totalEpisodes = tvObj.get("totalEpisodes").asInt,
+                                showRunner = tvObj.get("showRunner").asString,
+                                yearAired = tvObj.get("yearAired").asString
+                            )
+                            tvShows.add(tvShow)
+                        }
+
+                        return TestCases(movies, tvShows)
+                    }
+                })
+                .create()
+
             val contentType = object : TypeToken<TestCases>() {}.type
             val contentData: TestCases = gson.fromJson(jsonString, contentType)
 
-            val movieItems = contentData.movies.map { movie ->
+            val movieItems = contentData.movies.map { movies ->
                 MovieItem(
-                    title = movie.title,
-                    posterUrl = movie.posterUrl,
-                    description = movie.description,
-                    rating = movie.rating,
-                    type = movie.type
+                    title = movies.title,
+                    posterUrl = movies.posterUrl,
+                    description = movies.description,
+                    rating = movies.rating,
+                    type = movies.type
                 )
             }
 
-            val tvShowItems = contentData.tvShows.map { tvShow ->
+            val tvShowItems = contentData.tvShows.map { tvShows ->
                 MovieItem(
-                    title = tvShow.title,
-                    posterUrl = tvShow.posterUrl,
-                    description = tvShow.description,
-                    rating = tvShow.rating,
-                    type = tvShow.type
+                    title = tvShows.title,
+                    posterUrl = tvShows.posterUrl,
+                    description = tvShows.description,
+                    rating = tvShows.rating,
+                    type = tvShows.type
                 )
             }
 
@@ -73,7 +136,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             _basedOnYourSearchItems.value = allItems.shuffled().take(5)
 
         } catch (e: IOException) {
-            Log.d("LoadDataFromJSON", e.printStackTrace().toString())
+            Log.e("SearchViewModel", "Error loading data", e)
 
             _movies.value = emptyList()
             _tvShows.value = emptyList()

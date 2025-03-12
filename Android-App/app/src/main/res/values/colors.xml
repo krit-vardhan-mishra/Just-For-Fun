@@ -13,4 +13,5 @@
     <color name="fragment_bg">#FFFF</color>
     <color name="colorPrimary">#6200EE</color>
     <color name="reply_background">#F5F5F5</color>
+    <color name="down_arrow_color">#000000</color>
 </resources>

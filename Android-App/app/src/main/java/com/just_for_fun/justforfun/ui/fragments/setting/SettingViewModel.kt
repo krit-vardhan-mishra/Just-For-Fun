@@ -1,5 +1,7 @@
 package com.just_for_fun.justforfun.ui.fragments.setting
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 
-class SettingViewModel : ViewModel()
+
+class SettingViewModel(application: Application) : AndroidViewModel(application)

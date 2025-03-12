@@ -1,12 +1,12 @@
 package com.just_for_fun.justforfun.ui.fragments.movie
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.just_for_fun.justforfun.data.CastCrewMember
 
-class MovieViewModel : ViewModel() {
-    // Existing properties...
+class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private val _isTvShow = MutableLiveData<Boolean>(false)
     val isTvShow: LiveData<Boolean> get() = _isTvShow
 
@@ -28,7 +28,6 @@ class MovieViewModel : ViewModel() {
     private val _episodes = MutableLiveData<Int>(0)
     val episodes: LiveData<Int> get() = _episodes
 
-    // Add the selectedCastMember property and a function to clear it
     private val _selectedCastMember = MutableLiveData<CastCrewMember?>()
     val selectedCastMember: LiveData<CastCrewMember?> get() = _selectedCastMember
 
@@ -39,13 +38,4 @@ class MovieViewModel : ViewModel() {
     fun onCastMemberNavigated() {
         _selectedCastMember.value = null
     }
-
-    // Setter functions for the existing properties...
-    fun setContentType(isTv: Boolean) { _isTvShow.value = isTv }
-    fun setTitle(newTitle: String) { _title.value = newTitle }
-    fun setDescription(newDescription: String) { _description.value = newDescription }
-    fun setRating(newRating: Float) { _rating.value = newRating }
-    fun setTotalRating(newTotalRating: Float) { _totalRating.value = newTotalRating }
-    fun setSeasons(newSeasons: Int) { _seasons.value = newSeasons }
-    fun setEpisodes(newEpisodes: Int) { _episodes.value = newEpisodes }
 }
