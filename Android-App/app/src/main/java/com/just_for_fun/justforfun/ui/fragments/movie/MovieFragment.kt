@@ -44,7 +44,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
         binding.lifecycleOwner = viewLifecycleOwner
 
         val title = arguments?.getString("MOVIE_TITLE") ?: "Unknown Movie"
-        val posterUrl = arguments?.getString("MOVIE_POSTER") ?: R.drawable.fallback_poster
+        val posterUrl = arguments?.getInt("MOVIE_POSTER") ?: R.drawable.fallback_poster
         val description = arguments?.getString("MOVIE_DESCRIPTION") ?: "No description available"
         val rating = arguments?.getFloat("MOVIE_RATING") ?: 0.0f
         val type = arguments?.getString("MOVIE_TYPE") ?: "Movie"
