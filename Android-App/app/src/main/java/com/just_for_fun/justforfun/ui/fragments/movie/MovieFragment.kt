@@ -3,7 +3,6 @@ package com.just_for_fun.justforfun.ui.fragments.movie
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
@@ -12,53 +11,22 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.CastAndCrewAdapter
 import com.just_for_fun.justforfun.adapters.ReviewsAdapter
 import com.just_for_fun.justforfun.adapters.SimilarMoviesAdapter
 import com.just_for_fun.justforfun.data.CastCrewMember
-import com.just_for_fun.justforfun.data.Reply
 import com.just_for_fun.justforfun.data.Review
 import com.just_for_fun.justforfun.databinding.FragmentMovieOrShowsBinding
 import com.just_for_fun.justforfun.items.MovieItem
 import com.just_for_fun.justforfun.util.PosterItemDecoration
 import com.just_for_fun.justforfun.util.delegates.viewBinding
-import com.just_for_fun.justforfun.util.deserializer.ReplyDeserializer
-import com.just_for_fun.justforfun.util.deserializer.ReviewDeserializer
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.IOException
 
 class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
 
     private val binding by viewBinding(FragmentMovieOrShowsBinding::bind)
     private val viewModel: MovieViewModel by viewModel()
-
-    private val similarMovies = listOf(
-        MovieItem(
-            R.drawable.mm_poster,
-            "Mr & Mrs. 55",
-            "Mr & Mrs. 55 is a classic romantic comedy",
-            4.1f,
-            "Comedy"
-        ),
-        MovieItem(
-            R.drawable.lagaan_poster,
-            "Lagaan",
-            "Lagaan is story of villager who play cricket against the Britisher to get lease on their lagaan",
-            4.3f,
-            "Drama"
-        ),
-        MovieItem(R.drawable.kranti_poster, "Kranti", "Description 3", 3.9f, "Action"),
-        MovieItem(
-            R.drawable.ddlj_poster,
-            "Dilwale Dulhaniya Le Jayenge",
-            "Description 4",
-            4.5f,
-            "Romance"
-        )
-    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,7 +48,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
             .into(binding.activityMoviePoster)
         binding.activityMovieDescription.text = description
         binding.activityMovieRatingBar.rating = rating
-        binding.activityMovieUserRating.text = "${rating}/5"
+        binding.activityMovieUserRating.text = "$rating/5"
 
         binding.floatingActionButton.setOnClickListener {
             openTelegramLink("https://t.me/JustForFunGroup_04")
@@ -89,6 +57,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
         setupMovieDetails()
         observeViewModel()
     }
+
 
     private fun observeViewModel() {
         viewModel.selectedCastMember.observe(viewLifecycleOwner) { castMember ->
@@ -102,12 +71,25 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
                 viewModel.onCastMemberNavigated()
             }
         }
+
+        viewModel.testCases.observe(viewLifecycleOwner) { testCases ->
+            if (testCases != null) {
+                val type = arguments?.getString("MOVIE_TYPE") ?: "Movie"
+                viewModel.setupMoreLikeThis(type)
+            }
+        }
+
+        viewModel.similarMovies.observe(viewLifecycleOwner) { similarMovies ->
+            setupMoreLikeThis(similarMovies)
+        }
+
+        viewModel.reviews.observe(viewLifecycleOwner) { reviews ->
+            reviews?.let { setupReviews(it) }
+        }
     }
 
     private fun setupMovieDetails() {
         setupCastAndCrew()
-        setupMoreLikeThis()
-        setupReviews()
     }
 
     private fun setupCastAndCrew() {
@@ -124,14 +106,13 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
         }
 
         binding.movieActivityCastAndCrew.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = castAdapter
             addItemDecoration(PosterItemDecoration(15))
         }
     }
 
-    private fun setupMoreLikeThis() {
+    private fun setupMoreLikeThis(similarMovies: List<MovieItem>) {
         val similarMoviesAdapter = SimilarMoviesAdapter(similarMovies) { movie ->
             val args = Bundle().apply {
                 putString("MOVIE_TITLE", movie.title)
@@ -144,63 +125,30 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
         }
 
         binding.movieActivityMoreLikeThis.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = similarMoviesAdapter
             addItemDecoration(PosterItemDecoration(15))
         }
     }
 
-    private fun setupReviews() {
-        try {
-            val assetManager = requireActivity().application.assets
-            val inputStream = assetManager.open("reviews.json")
-            val jsonString = inputStream.bufferedReader().use { it.readText() }
+    private fun setupReviews(reviews: List<Review>) {
+        val reviewsAdapter = ReviewsAdapter(reviews)
+        binding.activityMovieOthersReview.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = reviewsAdapter
+            isNestedScrollingEnabled = false
+        }
 
-            val gson = GsonBuilder()
-                .registerTypeAdapter(
-                    Review::class.java,
-                    ReviewDeserializer(requireActivity().application)
-                )
-                .registerTypeAdapter(
-                    Reply::class.java,
-                    ReplyDeserializer(requireActivity().application)
-                )
-                .create()
+        binding.root.findViewById<ImageButton>(R.id.post_review_button)?.setOnClickListener {
+            val reviewEditText = binding.root.findViewById<EditText>(R.id.your_review_edit_text)
+            val reviewText = reviewEditText?.text.toString()
 
-            val type = object : TypeToken<List<Review>>() {}.type
-            val reviews: List<Review> = gson.fromJson(jsonString, type)
-
-            val reviewsAdapter = ReviewsAdapter(reviews)
-            binding.activityMovieOthersReview.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = reviewsAdapter
-                isNestedScrollingEnabled = false
+            if (reviewText.isNotEmpty()) {
+                Toast.makeText(requireContext(), "Review submitted: $reviewText", Toast.LENGTH_SHORT).show()
+                reviewEditText?.text?.clear()
+            } else {
+                Toast.makeText(requireContext(), "Please write a review first", Toast.LENGTH_SHORT).show()
             }
-
-            binding.root.findViewById<ImageButton>(R.id.post_review_button)?.setOnClickListener {
-                val reviewEditText = binding.root.findViewById<EditText>(R.id.your_review_edit_text)
-                val reviewText = reviewEditText?.text.toString()
-
-                if (reviewText.isNotEmpty()) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Review submitted: $reviewText",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    reviewEditText?.text?.clear()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Please write a review first",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        } catch (e: IOException) {
-            Log.e("MovieFragment", "Error reading reviews JSON", e)
-        } catch (e: Exception) {
-            Log.e("MovieFragment", "Error parsing reviews JSON", e)
         }
     }
 
@@ -208,5 +156,4 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)
     }
-
 }
