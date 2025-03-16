@@ -18,7 +18,7 @@ class CelebrityRepository() {
         name = "Madhubala",
         age = 32,
         bio = "Legendary Bollywood actress",
-        imageUrl = "drawable/cast_one",
+        imageUrl = R.drawable.cast_one,
         filmographyCount = 72,
         awardsCount = 15
     )

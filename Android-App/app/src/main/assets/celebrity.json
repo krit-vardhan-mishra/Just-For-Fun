@@ -1,0 +1,7 @@
+[
+  {"id": "1", "name": "Madhubala", "age": 36, "bio": "Legendary Bollywood actress", "imageUrl": "cast_one", "filmographyCount": 72, "awardsCount": 15},
+  {"id": "2", "name": "Guru Dutt", "age": 39, "bio": "Visionary director, actor, and producer known for his poetic and melancholic films.", "imageUrl": "cast_two", "filmographyCount": 50, "awardsCount": 10},
+  {"id": "3", "name": "Lalit Pawar", "age": 81, "bio": "Versatile character actor known for his memorable villainous and supporting roles.", "imageUrl": "cast_three", "filmographyCount": 250, "awardsCount": 8},
+  {"id": "4", "name": "Johny Walker", "age": 79, "bio": "Beloved comedian known for his unique style and impeccable comic timing.", "imageUrl": "cast_four", "filmographyCount": 300, "awardsCount": 5},
+  {"id": "5", "name": "Tun-Tun Massi", "age": 23, "bio": "Comedic whirlwind, rumored to possess superhuman strength and the ability to cause spontaneous laughter with a single glance.", "imageUrl": "cast_five", "filmographyCount": 100, "awardsCount": 42}
+]

@@ -3,6 +3,7 @@ package com.just_for_fun.justforfun.ui.fragments.movie
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
@@ -11,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.CastAndCrewAdapter
 import com.just_for_fun.justforfun.adapters.ReviewsAdapter
@@ -21,6 +24,7 @@ import com.just_for_fun.justforfun.databinding.FragmentMovieOrShowsBinding
 import com.just_for_fun.justforfun.items.MovieItem
 import com.just_for_fun.justforfun.util.PosterItemDecoration
 import com.just_for_fun.justforfun.util.delegates.viewBinding
+import com.just_for_fun.justforfun.util.deserializer.CastCrewDeserializer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
@@ -93,22 +97,37 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
     }
 
     private fun setupCastAndCrew() {
-        val castAndCrew = listOf(
-            CastCrewMember("1", R.drawable.cast_one, "Madhubala", "Actress"),
-            CastCrewMember("2", R.drawable.cast_two, "GuruDutt", "Actor"),
-            CastCrewMember("3", R.drawable.cast_three, "Manthara", "Actress"),
-            CastCrewMember("4", R.drawable.cast_four, "Johny Walker", "Producer"),
-            CastCrewMember("5", R.drawable.cast_five, "TunTun-Massi", "Writer")
-        )
-
+        val castAndCrew = loadCastAndCrewFromJson()
         val castAdapter = CastAndCrewAdapter(castAndCrew) { member ->
             viewModel.selectCastMember(member)
         }
 
         binding.movieActivityCastAndCrew.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = castAdapter
             addItemDecoration(PosterItemDecoration(15))
+        }
+    }
+
+    private fun loadCastAndCrewFromJson(): List<CastCrewMember> {
+        return try {
+            val jsonString = requireContext().assets.open("cast_crew.json")
+                .bufferedReader().use { it.readText() }
+
+            val gson = GsonBuilder()
+                .registerTypeAdapter(
+                    CastCrewMember::class.java,
+                    CastCrewDeserializer(requireContext())
+                )
+                .create()
+
+            val listType = object : TypeToken<List<CastCrewMember>>() {}.type
+
+            gson.fromJson(jsonString, listType)
+        } catch (e: Exception) {
+            Log.d("MovieFragment", "Error loading cast and crew: ${e.message}")
+            emptyList()
         }
     }
 
@@ -125,7 +144,8 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
         }
 
         binding.movieActivityMoreLikeThis.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = similarMoviesAdapter
             addItemDecoration(PosterItemDecoration(15))
         }
@@ -144,10 +164,15 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
             val reviewText = reviewEditText?.text.toString()
 
             if (reviewText.isNotEmpty()) {
-                Toast.makeText(requireContext(), "Review submitted: $reviewText", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Review submitted: $reviewText",
+                    Toast.LENGTH_SHORT
+                ).show()
                 reviewEditText?.text?.clear()
             } else {
-                Toast.makeText(requireContext(), "Please write a review first", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please write a review first", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

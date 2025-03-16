@@ -12,7 +12,7 @@ import com.just_for_fun.justforfun.data.CastCrewMember
 
 class CastAndCrewAdapter(
     private val castAndCrew: List<CastCrewMember>,
-    private val onItemClick: (CastCrewMember) -> Unit // Add click listener lambda
+    private val onItemClick: (CastCrewMember) -> Unit
 ) : RecyclerView.Adapter<CastAndCrewAdapter.CastCrewViewHolder>() {
 
     inner class CastCrewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -20,7 +20,6 @@ class CastAndCrewAdapter(
         val name: TextView = itemView.findViewById(R.id.cast_crew_name)
         val role: TextView = itemView.findViewById(R.id.cast_crew_role)
 
-        // Bind click listener to the item view
         fun bind(member: CastCrewMember, onItemClick: (CastCrewMember) -> Unit) {
             itemView.setOnClickListener { onItemClick(member) }
         }
@@ -35,7 +34,6 @@ class CastAndCrewAdapter(
     override fun onBindViewHolder(holder: CastCrewViewHolder, position: Int) {
         val member = castAndCrew[position]
 
-        // Use Glide to load images
         Glide.with(holder.itemView.context)
             .load(member.image)
             .placeholder(R.drawable.placeholder_image)
@@ -45,7 +43,6 @@ class CastAndCrewAdapter(
         holder.name.text = member.name
         holder.role.text = member.role
 
-        // Bind click listener
         holder.bind(member, onItemClick)
     }
 

@@ -1,32 +1,32 @@
 [
   {
     "id": "1",
-    "castPoster": "R.drawable.cast_one",
-    "name": "Actor Name 1",
+    "castPoster": "cast_one",
+    "name": "Madhubala",
     "role": "Character 1"
   },
   {
     "id": "2",
-    "castPoster": "R.drawable.cast_two",
-    "name": "Actor Name 2",
+    "castPoster": "cast_two",
+    "name": "Guru Dutt",
     "role": "Character 2"
   },
   {
     "id": "3",
-    "castPoster": "R.drawable.cast_three",
-    "name": "Director Name",
+    "castPoster": "cast_three",
+    "name": "Lalita Pawar",
     "role": "Director"
   },
   {
     "id": "4",
-    "castPoster": "R.drawable.cast_four",
-    "name": "Producer Name",
+    "castPoster": "cast_four",
+    "name": "Johny Walker",
     "role": "Producer"
   },
   {
     "id": "5",
-    "castPoster": "R.drawable.cast_five",
-    "name": "Writer Name",
+    "castPoster": "cast_five",
+    "name": "Tun-Tun Massi",
     "role": "Writer"
   }
 ]

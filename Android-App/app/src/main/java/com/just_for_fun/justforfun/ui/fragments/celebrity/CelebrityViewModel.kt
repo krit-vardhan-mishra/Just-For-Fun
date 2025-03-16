@@ -11,7 +11,6 @@ import com.just_for_fun.justforfun.repository.CelebrityRepository
 class CelebrityViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = CelebrityRepository()
 
-    val celebrity: LiveData<Celebrity> = repository.celebrity
     val movies: LiveData<List<MovieItem>> = repository.movies
     val tvShows: LiveData<List<MovieItem>> = repository.tvShows
     val awards: LiveData<List<Awards>> = repository.awards
