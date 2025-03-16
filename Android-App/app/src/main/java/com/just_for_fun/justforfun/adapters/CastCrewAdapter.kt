@@ -10,10 +10,10 @@ import com.bumptech.glide.Glide
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.data.CastCrewMember
 
-class CastAndCrewAdapter(
+class CastCrewAdapter(
     private val castAndCrew: List<CastCrewMember>,
     private val onItemClick: (CastCrewMember) -> Unit
-) : RecyclerView.Adapter<CastAndCrewAdapter.CastCrewViewHolder>() {
+) : RecyclerView.Adapter<CastCrewAdapter.CastCrewViewHolder>() {
 
     inner class CastCrewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.cast_crew_image)

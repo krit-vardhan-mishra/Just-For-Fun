@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.SimilarMoviesAdapter
 import com.just_for_fun.justforfun.databinding.FragmentCelebrityBinding
@@ -18,7 +19,6 @@ class CelebrityFragment : Fragment(R.layout.fragment_celebrity) {
     private val binding by viewBinding(FragmentCelebrityBinding::bind)
     private val viewModel: CelebrityViewModel by viewModel()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -27,6 +27,23 @@ class CelebrityFragment : Fragment(R.layout.fragment_celebrity) {
 
         setupObservers()
         setupClickListeners()
+        observeCelebrityDetials()
+    }
+
+    private fun observeCelebrityDetials() {
+        viewModel.celebrity.observe(viewLifecycleOwner) { celebrity ->
+            celebrity?.let {
+                binding.activityCelebrityName.text = it.name
+                binding.activityCelebrityBio.text = it.bio
+                Glide.with(this)
+                    .load(it.imageUrl)
+                    .placeholder(R.drawable.placeholder_image)
+                    .into(binding.activityCelebrityPhoto)
+                binding.activityCelebrityAge.text = "${it.age} Years"
+                binding.activityCelebrityFilmographyCount.text = "${it.filmographyCount} Movies"
+                binding.activityCelebrityAwardsCounts.text = "${it.awardsCount} Awards"
+            }
+        }
     }
 
     private fun setupObservers() {

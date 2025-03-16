@@ -1,27 +1,22 @@
 package com.just_for_fun.justforfun.repository
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.data.Awards
 import com.just_for_fun.justforfun.data.Celebrity
 import com.just_for_fun.justforfun.items.MovieItem
+import com.just_for_fun.justforfun.util.deserializer.CelebrityDeserializer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class CelebrityRepository() {
-
-    private val sampleCelebrity = Celebrity(
-        id = "1",
-        name = "Madhubala",
-        age = 32,
-        bio = "Legendary Bollywood actress",
-        imageUrl = R.drawable.cast_one,
-        filmographyCount = 72,
-        awardsCount = 15
-    )
+class CelebrityRepository(private val context: Context) {
 
     private val sampleMovies = listOf(
         MovieItem(
@@ -79,9 +74,39 @@ class CelebrityRepository() {
 
     private suspend fun loadData() {
         delay(1000)
-        _celebrity.postValue(sampleCelebrity)
+
+        val loadedCelebrity = loadCelebrityFromJson() ?: getFallbackCelebrity()
+        _celebrity.postValue(loadedCelebrity)
         _movies.postValue(sampleMovies)
         _tvShows.postValue(sampleTVShows)
         _awards.postValue(sampleAwards)
+    }
+
+    private fun loadCelebrityFromJson(): Celebrity? {
+        return try {
+            val jsonString = context.assets.open("celebrity.json")
+                .bufferedReader().use { it.readText() }
+            val gson = GsonBuilder()
+                .registerTypeAdapter(Celebrity::class.java, CelebrityDeserializer(context))
+                .create()
+            val listType = object : TypeToken<List<Celebrity>>() {}.type
+            val celebrities: List<Celebrity> = gson.fromJson(jsonString, listType)
+            celebrities.firstOrNull()
+        } catch (e: Exception) {
+            Log.d("CelebrityRepository", "Error loading celebrity: ${e.message}")
+            null
+        }
+    }
+
+    private fun getFallbackCelebrity(): Celebrity {
+        return Celebrity(
+            id = "1",
+            name = "Madhubala",
+            age = 32,
+            bio = "Legendary Bollywood actress",
+            imageUrl = R.drawable.cast_one,
+            filmographyCount = 72,
+            awardsCount = 15
+        )
     }
 }

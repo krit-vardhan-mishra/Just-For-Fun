@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.just_for_fun.justforfun.ui.fragments.movie.MovieViewModel" />
@@ -44,8 +45,8 @@
                         android:layout_width="150dp"
                         android:layout_height="230dp"
                         android:contentDescription="Content Poster"
-                        android:src="@drawable/mirzapur_poster"
-                        android:scaleType="centerCrop"/>
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/mirzapur_poster" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -118,11 +119,11 @@
                             android:id="@+id/activity_movie_show_seasons"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:contentDescription="Will only be showed up if the content is a tv show"
                             android:text='@{viewModel.seasons + " Seasons"}'
                             android:textSize="10sp"
                             android:visibility="@{viewModel.isTvShow ? View.VISIBLE : View.GONE}"
-                            android:contentDescription="Will only be showed up if the content is a tv show"
-                            android:layout_margin="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/activity_movie_total_rating" />
 
@@ -130,11 +131,11 @@
                             android:id="@+id/activity_movie_show_episodes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:contentDescription="Will only be showed up if the content is a tv show"
                             android:text='@{viewModel.episodes + " Episodes"}'
                             android:textSize="10sp"
                             android:visibility="@{viewModel.isTvShow ? View.VISIBLE : View.GONE}"
-                            android:contentDescription="Will only be showed up if the content is a tv show"
-                            android:layout_margin="10dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/activity_movie_total_rating" />
 
@@ -156,11 +157,11 @@
                     android:id="@+id/activity_movie_director_or_showrunner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:contentDescription="This text shows the director for movies or showrunner for TV shows"
+                    android:paddingStart="10dp"
                     android:text='@{viewModel.isTvShow ? "Showrunner:" : "Director:"}'
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:contentDescription="This text shows the director for movies or showrunner for TV shows"
-                    android:paddingStart="10dp"/>
+                    android:textStyle="bold" />
 
                 <!-- Other Things (Cast & Crew, More Like This, Reviews) -->
                 <LinearLayout
@@ -240,12 +241,12 @@
             android:id="@+id/floatingActionButton"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:clickable="true"
             android:layout_margin="20dp"
             android:background="@drawable/telegram_icon"
+            android:clickable="true"
             android:contentDescription="Used to get the details from telegram too."
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,7 +1,6 @@
 package com.just_for_fun.justforfun.ui.fragments.movie
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.just_for_fun.justforfun.R
-import com.just_for_fun.justforfun.adapters.CastAndCrewAdapter
+import com.just_for_fun.justforfun.adapters.CastCrewAdapter
 import com.just_for_fun.justforfun.adapters.ReviewsAdapter
 import com.just_for_fun.justforfun.adapters.SimilarMoviesAdapter
 import com.just_for_fun.justforfun.data.CastCrewMember
@@ -26,6 +25,7 @@ import com.just_for_fun.justforfun.util.PosterItemDecoration
 import com.just_for_fun.justforfun.util.delegates.viewBinding
 import com.just_for_fun.justforfun.util.deserializer.CastCrewDeserializer
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.core.net.toUri
 
 class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
 
@@ -66,12 +66,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
     private fun observeViewModel() {
         viewModel.selectedCastMember.observe(viewLifecycleOwner) { castMember ->
             castMember?.let {
-                val args = Bundle().apply {
-                    putString("CELEBRITY_NAME", it.name)
-                    putString("CELEBRITY_ROLE", it.role)
-                    putString("CELEBRITY_IMAGE", it.id)
-                }
-                findNavController().navigate(R.id.nav_celebrityFragment, args)
+                findNavController().navigate(R.id.nav_celebrityFragment)
                 viewModel.onCastMemberNavigated()
             }
         }
@@ -98,7 +93,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
 
     private fun setupCastAndCrew() {
         val castAndCrew = loadCastAndCrewFromJson()
-        val castAdapter = CastAndCrewAdapter(castAndCrew) { member ->
+        val castAdapter = CastCrewAdapter(castAndCrew) { member ->
             viewModel.selectCastMember(member)
         }
 
@@ -178,7 +173,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
     }
 
     private fun openTelegramLink(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         startActivity(intent)
     }
 }
