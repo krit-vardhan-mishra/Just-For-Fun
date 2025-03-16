@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <bitmap
-            android:src="@drawable/account_circle"
-            android:gravity="fill" />
-    </item>
+
+    <item
+        android:drawable="@drawable/placeholder_image"/>
+
     <item>
         <shape android:shape="oval">
             <solid android:color="@android:color/transparent"/>
             <stroke android:width="2dp" android:color="@color/profile_border_color"/>
         </shape>
     </item>
+
 </layer-list>

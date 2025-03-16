@@ -3,7 +3,7 @@
     {
       "posterUrl": "R.drawable.mughal_e_azam_poster",
       "title": "Mughal-e-Azam",
-      "description": "Akbar and others story.",
+      "description": "An epic historical romance that tells the tragic love story of Prince Salim and court dancer Anarkali, against the backdrop of Emperor Akbar's reign. Known for its grand sets, classic dialogues, and mesmerizing music.",
       "rating": 4.6,
       "type": "Movie",
       "director": "K. Asif",
@@ -65,7 +65,7 @@
     {
       "posterUrl": "R.drawable.got_poster",
       "title": "Game of Thrones",
-      "description": "Noble families vie for control of the Iron Throne as an ancient enemy returns after millennia.",
+      "description": "An epic fantasy series where noble houses battle for the Iron Throne, while an ancient, mystical threat emerges beyond the Wall. Filled with political intrigue, betrayals, and breathtaking battles.",
       "rating": 4.7,
       "type": "TV Show",
       "totalSeasons": 8,

@@ -10,7 +10,6 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -23,12 +22,16 @@ import com.just_for_fun.justforfun.adapters.TVShowsAdapter
 import com.just_for_fun.justforfun.data.Movies
 import com.just_for_fun.justforfun.data.TVShows
 import com.just_for_fun.justforfun.databinding.FragmentHomeBinding
+import com.just_for_fun.justforfun.util.SpaceItemDecoration
+import com.just_for_fun.justforfun.util.delegates.viewBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    private lateinit var binding: FragmentHomeBinding
-    private lateinit var viewModel: HomeViewModel
+    private val binding by viewBinding(FragmentHomeBinding::bind)
+    private val viewModel: HomeViewModel by viewModel()
+
     private lateinit var sliderHandler: Handler
     private lateinit var sliderRunnable: Runnable
     private val sliderInterval = 3000L
@@ -44,9 +47,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentHomeBinding.bind(view)
 
-        viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -56,6 +57,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupMoviesRecyclerView()
         setupTVShowsRecyclerView()
         setupAutoSlider()
+        setupViewALl()
+    }
+
+    private fun setupViewALl() {
+        binding.textMovieViewAll.setOnClickListener {
+            val bundle = bundleOf(
+                "title" to "Movies",
+                "subtitle" to "All Movies",
+                "dataType" to "movies"
+            )
+            findNavController().navigate(R.id.nav_postersFragment, bundle)
+        }
+
+        binding.textShowsViewAll.setOnClickListener {
+            val bundle = bundleOf(
+                "title" to "TV Shows",
+                "subtitle" to "All TV Shows",
+                "dataType" to "tv_shows"
+            )
+            findNavController().navigate(R.id.nav_postersFragment, bundle)
+        }
     }
 
     private fun setupViewPager() {
@@ -99,7 +121,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            layoutParams.setMargins(8, 0, 8, 0)
+            layoutParams.setMargins(10, 0, 10, 0)
             indicator.layoutParams = layoutParams
             indicator.setImageDrawable(
                 ContextCompat.getDrawable(requireContext(), R.drawable.indicator_inactive)
@@ -119,6 +141,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setupMoviesRecyclerView() {
         binding.fragmentHomeMoviesRecyclerViewer.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.fragmentHomeMoviesRecyclerViewer.addItemDecoration(SpaceItemDecoration(15))
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
             binding.fragmentHomeMoviesRecyclerViewer.adapter =
                 MoviesAdapter(movies ?: emptyList(), ::onMovieClick)
@@ -128,6 +151,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setupTVShowsRecyclerView() {
         binding.fragmentHomeShowsRecyclerViewer.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.fragmentHomeShowsRecyclerViewer.addItemDecoration(SpaceItemDecoration(15))
         viewModel.tvShows.observe(viewLifecycleOwner) { tvShows ->
             binding.fragmentHomeShowsRecyclerViewer.adapter =
                 TVShowsAdapter(tvShows ?: emptyList(), ::onTVShowClick)

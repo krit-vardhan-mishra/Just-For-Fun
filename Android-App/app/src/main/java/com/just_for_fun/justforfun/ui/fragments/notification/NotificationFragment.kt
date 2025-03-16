@@ -3,24 +3,21 @@ package com.just_for_fun.justforfun.ui.fragments.notification
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.NotificationAdapter
 import com.just_for_fun.justforfun.databinding.FragmentNotificationBinding
 import com.just_for_fun.justforfun.items.NotificationType
+import com.just_for_fun.justforfun.util.delegates.viewBinding
 
 class NotificationFragment : Fragment(R.layout.fragment_notification) {
 
-    private lateinit var binding: FragmentNotificationBinding
-    private lateinit var viewModel: NotificationViewModel
+    private val binding by viewBinding(FragmentNotificationBinding::bind)
+    private val viewModel: NotificationViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentNotificationBinding.bind(view)
-
-        viewModel = ViewModelProvider(this)[NotificationViewModel::class.java]
 
         val notifications = listOf(
             NotificationType.COMMENTED,

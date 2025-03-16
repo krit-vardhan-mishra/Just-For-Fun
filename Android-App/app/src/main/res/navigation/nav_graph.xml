@@ -73,7 +73,7 @@
 
     <fragment
         android:id="@+id/nav_celebrityFragmentAwards"
-        android:name="com.just_for_fun.justforfun.ui.fragments.celebrity.CelebrityFragment"
+        android:name="com.just_for_fun.justforfun.ui.fragments.celebrity.awards.CelebrityAwardsFragment"
         android:label="Celebrity Fragment Awards"
         tools:layout="@layout/fragment_celebrity_awards">
     </fragment>
@@ -86,6 +86,16 @@
         <argument
             android:name="TYPE"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_postersFragment"
+        android:name="com.just_for_fun.justforfun.ui.fragments.poster.PosterFragment"
+        android:label="Posters"
+        tools:layout="@layout/fragment_recycler_viewers">
+        <argument android:name="title" app:argType="string" />
+        <argument android:name="subtitle" app:argType="string" />
+        <argument android:name="dataType" app:argType="string" />
     </fragment>
 
 </navigation>

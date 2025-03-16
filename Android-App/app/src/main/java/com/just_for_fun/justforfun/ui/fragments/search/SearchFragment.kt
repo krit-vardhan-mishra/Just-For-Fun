@@ -1,14 +1,12 @@
 package com.just_for_fun.justforfun.ui.fragments.search
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,19 +15,19 @@ import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.PosterAdapter
 import com.just_for_fun.justforfun.databinding.FragmentSearchBinding
 import com.just_for_fun.justforfun.items.MovieItem
-import com.just_for_fun.justforfun.ui.fragments.movie.MovieFragment
 import com.just_for_fun.justforfun.util.PosterItemDecoration
+import com.just_for_fun.justforfun.util.delegates.viewBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.getValue
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
-    private lateinit var binding: FragmentSearchBinding
-    private lateinit var viewModel: SearchViewModel
+    private val binding by viewBinding(FragmentSearchBinding::bind)
+    private val viewModel: SearchViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSearchBinding.bind(view)
 
-        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 

@@ -11,11 +11,14 @@ import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.data.Movies
 import com.just_for_fun.justforfun.data.TVShows
 import com.just_for_fun.justforfun.databinding.FragmentMovieOrShowDetailsBinding
+import com.just_for_fun.justforfun.util.delegates.viewBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MovieOrShowDetailsFragment : Fragment(R.layout.fragment_movie_or_show_details) {
 
-    private lateinit var binding: FragmentMovieOrShowDetailsBinding
-    private lateinit var viewModel: MovieOrShowDetailsViewModel
+    private val binding by viewBinding(FragmentMovieOrShowDetailsBinding::bind)
+    private val viewModel: MovieOrShowDetailsViewModel by viewModel()
 
     private var movie: Movies? = null
     private var tvShow: TVShows? = null
@@ -28,19 +31,9 @@ class MovieOrShowDetailsFragment : Fragment(R.layout.fragment_movie_or_show_deta
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMovieOrShowDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMovieOrShowDetailsBinding.bind(view)
 
-        viewModel = ViewModelProvider(this)[MovieOrShowDetailsViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 

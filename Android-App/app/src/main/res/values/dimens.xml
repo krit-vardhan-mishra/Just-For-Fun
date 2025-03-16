@@ -3,4 +3,6 @@
     <dimen name="viewpager_page_margin">16dp</dimen>
     <dimen name="page_margin">0dp</dimen>
     <dimen name="page_offset">40dp</dimen>
+    <dimen name="poster_width">150dp</dimen>
+    <dimen name="spacing">8dp</dimen>
 </resources>

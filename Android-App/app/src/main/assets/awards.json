@@ -1,0 +1,68 @@
+{
+  "awards": [
+    {
+      "id": "1",
+      "name": "Best Actor",
+      "year": 2020,
+      "awardName": "Golden Globe Award for Best Motion Picture – Drama",
+      "category": "For this movie",
+      "description": "Awarded for best performance by an actor"
+    },
+    {
+      "id": "2",
+      "name": "Best Actress",
+      "year": 2020,
+      "awardName": "Academy Award for Best Animated Feature Film",
+      "category": "For this movie",
+      "description": "Awarded for best performance by an actress"
+    },
+    {
+      "id": "3",
+      "name": "Lifetime Achievement",
+      "year": 2021,
+      "awardName": "Prime time Emmy Award for Outstanding Lead Actor in a Drama Series",
+      "category": "For this tv show",
+      "description": "Awarded for outstanding career achievements"
+    },
+    {
+      "id": "4",
+      "name": "Best Director",
+      "year": 2022,
+      "awardName": "Grammy Award for Album of the Year",
+      "category": "For this movie",
+      "description": "Awarded for best direction in a movie"
+    },
+    {
+      "id": "5",
+      "name": "Best Supporting Actor",
+      "year": 2020,
+      "awardName": "Tony Award for Best Play",
+      "category": "For this movie",
+      "description": "Awarded for best supporting actor"
+    },
+    {
+      "id": "6",
+      "name": "Best Newcomer",
+      "year": 2021,
+      "awardName": "BAFTA Award for Best British Film",
+      "category": "For best actor in this movie",
+      "description": "Awarded for best debut performance"
+    },
+    {
+      "id": "7",
+      "name": "Best Comedian",
+      "year": 2022,
+      "awardName": "Cannes Film Festival Palme d'Or",
+      "category": "For best actor in this movie",
+      "description": "Awarded for best comedic performance"
+    },
+    {
+      "id": "8",
+      "name": "Best TV Show",
+      "year": 2024,
+      "awardName": "Critics' Choice Television Award for Best Comedy Series",
+      "category": "For best tv show",
+      "description": "Awarded for best comedic performance"
+    }
+  ]
+}

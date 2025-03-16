@@ -4,9 +4,17 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.just_for_fun.justforfun.R
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonSyntaxException
+import java.lang.reflect.Type
 import com.just_for_fun.justforfun.data.Movies
 import com.just_for_fun.justforfun.data.TVShows
+import com.just_for_fun.justforfun.data.TestCases
+import okio.IOException
+import kotlin.jvm.java
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -17,145 +25,98 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val tvShows: LiveData<List<TVShows>> get() = _tvShows
 
     init {
-        loadMovies()
-        loadTVShows()
+        loadContentFromJson()
     }
 
-    private fun loadMovies() {
-        val moviesList = listOf(
-            Movies(
-                posterUrl = R.drawable.mughal_e_azam_poster,
-                title = "Mughal-e-Azam",
-                description = "Akbar and others story.",
-                rating = 4.6f,
-                type = "Movie",
-                director = "K. Asif",
-                releaseYear = 1960,
-                totalAwards = "3 National Film Awards, 1 Filmfare Award"
-            ),
-            Movies(
-                posterUrl = R.drawable.baazigar_poster,
-                title = "Baazigar",
-                description = "A young man with a vengeful plan strategically inserts himself into a wealthy businessman's life.",
-                rating = 4.6f,
-                type = "Movie",
-                director = "Abbas-Mustan",
-                releaseYear = 1993,
-                totalAwards = "4 Filmfare Awards"
-            ),
-            Movies(
-                posterUrl = R.drawable.ddlj_poster,
-                title = "Dilwale Dulhania Le Jayenge",
-                description = "A young man and woman fall in love on a European trip. When they return to India, the boy's dad challenges him to win the girl on his own.",
-                rating = 4.8f,
-                type = "Movie",
-                director = "Aditya Chopra",
-                releaseYear = 1995,
-                totalAwards = "10 Filmfare Awards, 1 National Film Award"
-            ),
-            Movies(
-                posterUrl = R.drawable.lagaan_poster,
-                title = "Lagaan",
-                description = "A village challenges British soldiers to a cricket match to avoid paying high taxes during drought season.",
-                rating = 4.5f,
-                type = "Movie",
-                director = "Ashutosh Gowariker",
-                releaseYear = 2001,
-                totalAwards = "8 National Film Awards, 8 Filmfare Awards, 1 Oscar Nomination"
-            ),
-            Movies(
-                posterUrl = R.drawable.mm_poster,
-                title = "Mr and Mrs 55",
-                description = "A cartoonist marries a wealthy woman to save her inheritance, planning to divorce soon after, but love has other plans.",
-                rating = 4.3f,
-                type = "Movie",
-                director = "Guru Dutt",
-                releaseYear = 1955,
-                totalAwards = "1 Filmfare Award"
-            ),
-            Movies(
-                posterUrl = R.drawable.kranti_poster,
-                title = "Kranti",
-                description = "A revolutionary fights for freedom from British rule in pre-independence India.",
-                rating = 4.2f,
-                type = "Movie",
-                director = "Manoj Kumar",
-                releaseYear = 1981,
-                totalAwards = "1 Filmfare Award"
-            )
-        )
-        _movies.value = moviesList
+    private fun loadContentFromJson() {
+        val jsonString = readJsonFromAssets("sample_cases.json")
+        val contentData = parseJsonToContentData(jsonString)
+        contentData?.let {
+            _movies.value = it.movies
+            _tvShows.value = it.tvShows
+        }
     }
 
-    private fun loadTVShows() {
-        val tvShowsList = listOf(
-            TVShows(
-                posterUrl = R.drawable.got_poster,
-                title = "Game of Thrones",
-                description = "Noble families vie for control of the Iron Throne as an ancient enemy returns after millennia.",
-                rating = 4.7f,
-                type = "TV Show",
-                totalSeasons = 8,
-                totalEpisodes = 73,
-                showRunner = "David Benioff, D. B. Weiss",
-                yearAired = "2011-2019"
-            ),
-            TVShows(
-                posterUrl = R.drawable.mirzapur_poster,
-                title = "Mirzapur",
-                description = "A power struggle erupts in the lawless city of Mirzapur, ruled by a ruthless mafia boss.",
-                rating = 4.5f,
-                type = "TV Show",
-                totalSeasons = 3,
-                totalEpisodes = 30,
-                showRunner = "Karan Anshuman, Puneet Krishna, Gurmmeet Singh",
-                yearAired = "2018-2022"
-            ),
-            TVShows(
-                posterUrl = R.drawable.stranger_things_poster,
-                title = "Stranger Things",
-                description = "A group of kids in a small town uncover a mystery involving secret experiments and supernatural forces.",
-                rating = 4.8f,
-                type = "TV Show",
-                totalSeasons = 5,
-                totalEpisodes = 42,
-                showRunner = "The Duffer Brothers",
-                yearAired = "2016-since"
-            ),
-            TVShows(
-                posterUrl = R.drawable.money_heist_poster,
-                title = "Money Heist",
-                description = "A criminal mastermind plans an elaborate heist on Spain's Royal Mint with a group of skilled criminals.",
-                rating = 4.6f,
-                type = "TV Show",
-                totalSeasons = 5,
-                totalEpisodes = 41,
-                showRunner = "Álex Pina",
-                yearAired = "2017-2021"
-            ),
-            TVShows(
-                posterUrl = R.drawable.loki_poster,
-                title = "Loki",
-                description = "The God of Mischief steps out of his brother's shadow and into a time-altering adventure with the TVA.",
-                rating = 4.4f,
-                type = "TV Show",
-                totalSeasons = 2,
-                totalEpisodes = 12,
-                showRunner = "Michael Waldron",
-                yearAired = "2021-2023"
-            ),
-            TVShows(
-                posterUrl = R.drawable.dark_poster,
-                title = "Dark",
-                description = "A small town's sinister past unfolds as four families become entangled in a time-travel mystery.",
-                rating = 4.7f,
-                type = "TV Show",
-                totalSeasons = 3,
-                totalEpisodes = 26,
-                showRunner = "Baran bo Odar, Jantje Friese",
-                yearAired = "2017-2020"
-            )
-        )
-        _tvShows.value = tvShowsList
+    private fun readJsonFromAssets(fileName: String): String {
+        return try {
+            val inputStream = getApplication<Application>().assets.open(fileName)
+            inputStream.bufferedReader().use { it.readText() }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            ""
+        }
+    }
+
+    private fun parseJsonToContentData(json: String): TestCases? {
+        return try {
+            val gson = GsonBuilder()
+                .registerTypeAdapter(TestCases::class.java, object : JsonDeserializer<TestCases> {
+                    override fun deserialize(
+                        json: JsonElement,
+                        typeOfT: Type,
+                        context: JsonDeserializationContext
+                    ): TestCases {
+                        val jsonObject = json.asJsonObject
+
+                        val moviesArray = jsonObject.getAsJsonArray("movies")
+                        val movies = mutableListOf<Movies>()
+                        for (element in moviesArray) {
+                            val movieObj = element.asJsonObject
+                            val posterString = movieObj.get("posterUrl").asString
+                            val resourceName = posterString.replace("R.drawable.", "")
+                            val resourceId = getApplication<Application>().resources.getIdentifier(
+                                resourceName,
+                                "drawable",
+                                getApplication<Application>().packageName
+                            )
+                            movies.add(
+                                Movies(
+                                    posterUrl = resourceId,
+                                    title = movieObj.get("title").asString,
+                                    description = movieObj.get("description").asString,
+                                    rating = movieObj.get("rating").asFloat,
+                                    type = movieObj.get("type").asString,
+                                    director = movieObj.get("director").asString,
+                                    releaseYear = movieObj.get("releaseYear").asInt,
+                                    totalAwards = movieObj.get("totalAwards").asString
+                                )
+                            )
+                        }
+
+                        val tvShowsArray = jsonObject.getAsJsonArray("tvShows")
+                        val tvShows = mutableListOf<TVShows>()
+                        for (element in tvShowsArray) {
+                            val tvObj = element.asJsonObject
+                            val posterString = tvObj.get("posterUrl").asString
+                            val resourceName = posterString.replace("R.drawable.", "")
+                            val resourceId = getApplication<Application>().resources.getIdentifier(
+                                resourceName,
+                                "drawable",
+                                getApplication<Application>().packageName
+                            )
+                            tvShows.add(
+                                TVShows(
+                                    posterUrl = resourceId,
+                                    title = tvObj.get("title").asString,
+                                    description = tvObj.get("description").asString,
+                                    rating = tvObj.get("rating").asFloat,
+                                    type = tvObj.get("type").asString,
+                                    totalSeasons = tvObj.get("totalSeasons").asInt,
+                                    totalEpisodes = tvObj.get("totalEpisodes").asInt,
+                                    showRunner = tvObj.get("showRunner").asString,
+                                    yearAired = tvObj.get("yearAired").asString
+                                )
+                            )
+                        }
+
+                        return TestCases(movies, tvShows)
+                    }
+                })
+                .create()
+            gson.fromJson(json, TestCases::class.java)
+        } catch (e: JsonSyntaxException) {
+            e.printStackTrace()
+            null
+        }
     }
 }

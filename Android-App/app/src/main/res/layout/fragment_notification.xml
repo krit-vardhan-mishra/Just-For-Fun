@@ -10,8 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        tools:context=".ui.fragments.notification.NotificationFragment">
+        tools:context=".ui.fragments.notification.NotificationFragment"
+        android:background="@color/fragment_bg">
 
         <TextView
             android:id="@+id/titleTextView"

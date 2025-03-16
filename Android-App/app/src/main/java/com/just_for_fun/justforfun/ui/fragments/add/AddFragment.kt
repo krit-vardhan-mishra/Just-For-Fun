@@ -4,22 +4,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.databinding.FragmentAddBinding
-import com.just_for_fun.justforfun.ui.fragments.celebrity.CelebrityViewModel
+import com.just_for_fun.justforfun.util.delegates.viewBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class AddFragment : Fragment(R.layout.fragment_add) {
 
-    private lateinit var binding: FragmentAddBinding
-    private lateinit var viewModel: AddViewModel
+    private val binding by viewBinding(FragmentAddBinding::bind)
+    private val viewModel: AddViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentAddBinding.bind(view)
 
-        viewModel = ViewModelProvider(this)[AddViewModel ::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 

@@ -3,23 +3,25 @@ package com.just_for_fun.justforfun.ui.fragments.celebrity
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.SimilarMoviesAdapter
 import com.just_for_fun.justforfun.databinding.FragmentCelebrityBinding
 import com.just_for_fun.justforfun.items.MovieItem
+import com.just_for_fun.justforfun.util.delegates.viewBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class CelebrityFragment : Fragment(R.layout.fragment_celebrity) {
-    private lateinit var binding: FragmentCelebrityBinding
-    private lateinit var viewModel: CelebrityViewModel
+
+    private val binding by viewBinding(FragmentCelebrityBinding::bind)
+    private val viewModel: CelebrityViewModel by viewModel()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentCelebrityBinding.bind(view)
 
-        viewModel = ViewModelProvider(this)[CelebrityViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 

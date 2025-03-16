@@ -73,5 +73,6 @@ dependencies {
     implementation (libs.androidx.lifecycle.viewmodel.ktx.v262)
     implementation (libs.androidx.lifecycle.livedata.ktx.v262)
     implementation (libs.androidx.databinding.runtime.v802)
-
+    implementation(libs.koin.androidx.navigation)
+    implementation(libs.koin.android)
 }

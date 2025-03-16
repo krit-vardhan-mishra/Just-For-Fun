@@ -14,13 +14,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"
         tools:context=".ui.fragments.movie.MovieFragment">
 
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -160,7 +159,6 @@
                     android:text='@{viewModel.isTvShow ? "Showrunner:" : "Director:"}'
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_margin="5dp"
                     android:contentDescription="This text shows the director for movies or showrunner for TV shows"
                     android:paddingStart="10dp"/>
 

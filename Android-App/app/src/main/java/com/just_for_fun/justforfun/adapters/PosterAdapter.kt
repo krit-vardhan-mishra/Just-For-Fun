@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.just_for_fun.justforfun.R
 
 class PosterAdapter(
-    private val posterItems: List<Int>,
+    private var posterItems: List<Int>,
     private val onPosterClick: (Int) -> Unit,
     private val onBookmarkClick: (Int) -> Unit
 ) : RecyclerView.Adapter<PosterAdapter.PosterViewHolder>() {

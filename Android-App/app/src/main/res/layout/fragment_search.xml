@@ -11,9 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:background="@color/status_bar_color"
-        tools:context=".ui.fragments.search.SearchFragment">
+        tools:context=".ui.fragments.search.SearchFragment"
+        android:background="@color/fragment_bg">
 
         <ScrollView
             android:layout_width="0dp"
@@ -25,8 +24,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/fragment_bg">
+                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_bar"

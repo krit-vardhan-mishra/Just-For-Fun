@@ -2,28 +2,26 @@ package com.just_for_fun.justforfun.ui.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.databinding.ActivityMainBinding
 import androidx.core.view.get
-import com.just_for_fun.justforfun.ui.activities.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.just_for_fun.justforfun.util.delegates.viewBinding
 
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private val binding by viewBinding(ActivityMainBinding::inflate)
+    private val viewModel: MainViewModel by viewModel()
+
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
