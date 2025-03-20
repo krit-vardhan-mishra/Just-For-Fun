@@ -1,4 +1,4 @@
-package com.just_for_fun.justforfun.ui.fragments.movie
+package com.just_for_fun.justforfun.ui.fragments.movie.movie_or_show
 
 import android.app.Application
 import android.util.Log
@@ -7,65 +7,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
-import com.just_for_fun.justforfun.data.CastCrewMember
-import com.just_for_fun.justforfun.data.Review
-import com.just_for_fun.justforfun.data.Reply
 import com.just_for_fun.justforfun.data.TestCases
 import com.just_for_fun.justforfun.items.MovieItem
 import com.just_for_fun.justforfun.util.deserializer.MoviesSeriesDeserializer
-import com.just_for_fun.justforfun.util.deserializer.ReplyDeserializer
-import com.just_for_fun.justforfun.util.deserializer.ReviewDeserializer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MovieViewModel(application: Application) : AndroidViewModel(application) {
-    private val _isTvShow = MutableLiveData<Boolean>(false)
-    val isTvShow: LiveData<Boolean> get() = _isTvShow
-
-    private val _title = MutableLiveData<String>("Default Title")
-    val title: LiveData<String> get() = _title
-
-    private val _description = MutableLiveData<String>("Default description about the content.")
-    val description: LiveData<String> get() = _description
-
-    private val _rating = MutableLiveData<Float>(0f)
-    val rating: LiveData<Float> get() = _rating
-
-    private val _totalRating = MutableLiveData<Float>(0f)
-    val totalRating: LiveData<Float> get() = _totalRating
-
-    private val _seasons = MutableLiveData<Int>(0)
-    val seasons: LiveData<Int> get() = _seasons
-
-    private val _episodes = MutableLiveData<Int>(0)
-    val episodes: LiveData<Int> get() = _episodes
-
-    private val _selectedCastMember = MutableLiveData<CastCrewMember?>()
-    val selectedCastMember: LiveData<CastCrewMember?> get() = _selectedCastMember
-
-    private val _testCases = MutableLiveData<TestCases?>()
-    val testCases: LiveData<TestCases?> get() = _testCases
-
-    private val _reviews = MutableLiveData<List<Review>?>()
-    val reviews: LiveData<List<Review>?> get() = _reviews
+class MovieOrShowViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _similarMovies = MutableLiveData<List<MovieItem>>()
     val similarMovies: LiveData<List<MovieItem>> get() = _similarMovies
 
-    init {
-        loadTestCases()
-        loadReviewsData()
-    }
-
-    fun selectCastMember(castMember: CastCrewMember) {
-        _selectedCastMember.value = castMember
-    }
-
-    fun onCastMemberNavigated() {
-        _selectedCastMember.value = null
-    }
+    private val _testCases = MutableLiveData<TestCases?>()
+    val testCases: LiveData<TestCases?> get() = _testCases
 
     private fun loadTestCases() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -87,29 +42,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             } catch (e: Exception) {
                 Log.e("MovieViewModel", "Error parsing sample_cases JSON", e)
                 _testCases.postValue(null)
-            }
-        }
-    }
-
-    private fun loadReviewsData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val assetManager = getApplication<Application>().assets
-                val inputStream = assetManager.open("reviews.json")
-                val jsonString = inputStream.bufferedReader().use { it.readText() }
-                val gson = GsonBuilder()
-                    .registerTypeAdapter(Review::class.java, ReviewDeserializer(getApplication()))
-                    .registerTypeAdapter(Reply::class.java, ReplyDeserializer(getApplication()))
-                    .create()
-                val type = object : TypeToken<List<Review>>() {}.type
-                val reviewsList: List<Review> = gson.fromJson(jsonString, type)
-                withContext(Dispatchers.Main) {
-                    _reviews.value = reviewsList
-                    Log.d("MovieViewModel", "Reviews parsed successfully")
-                }
-            } catch (e: Exception) {
-                Log.e("MovieViewModel", "Error parsing reviews JSON", e)
-                _reviews.postValue(null)
             }
         }
     }
@@ -146,4 +78,5 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             Log.e("MovieViewModel", "Test cases are null, cannot load similar movies")
         }
     }
+
 }

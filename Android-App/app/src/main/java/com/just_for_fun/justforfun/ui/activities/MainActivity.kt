@@ -32,11 +32,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navController.addOnDestinationChangedListener(this)
 
         setupBottomNavigation()
-
         binding.bottomNavigationView.background = null
-
         binding.bottomNavigationView.menu[2].isEnabled = false
-
         binding.fab.setOnClickListener {
             navController.navigate(R.id.nav_graph_addFragment)
         }
@@ -49,24 +46,32 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                     navController.navigate(R.id.nav_homeFragment)
                     return@setOnItemSelectedListener true
                 }
+
                 R.id.nav_searchFragment -> {
                     navController.navigate(R.id.nav_searchFragment)
                     return@setOnItemSelectedListener true
                 }
+
                 R.id.nav_notificationFragment -> {
                     navController.navigate(R.id.nav_notificationFragment)
                     return@setOnItemSelectedListener true
                 }
+
                 R.id.nav_accountFragment -> {
                     navController.navigate(R.id.nav_accountFragment)
                     return@setOnItemSelectedListener true
                 }
+
                 else -> false
             }
         }
     }
 
-    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
         when (destination.id) {
             R.id.nav_homeFragment -> binding.bottomNavigationView.menu.findItem(R.id.nav_homeFragment).isChecked = true
             R.id.nav_searchFragment -> binding.bottomNavigationView.menu.findItem(R.id.nav_searchFragment).isChecked = true

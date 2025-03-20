@@ -59,7 +59,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         )
 
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             this.adapter = adapter
             addItemDecoration(PosterItemDecoration(15))
         }

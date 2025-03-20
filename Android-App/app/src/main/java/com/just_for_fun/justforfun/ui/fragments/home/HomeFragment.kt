@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -17,8 +18,7 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.ImageSliderAdapter
-import com.just_for_fun.justforfun.adapters.MoviesAdapter
-import com.just_for_fun.justforfun.adapters.TVShowsAdapter
+import com.just_for_fun.justforfun.adapters.PosterAdapter
 import com.just_for_fun.justforfun.data.Movies
 import com.just_for_fun.justforfun.data.TVShows
 import com.just_for_fun.justforfun.databinding.FragmentHomeBinding
@@ -144,9 +144,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.fragmentHomeMoviesRecyclerViewer.addItemDecoration(SpaceItemDecoration(15))
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
             binding.fragmentHomeMoviesRecyclerViewer.adapter =
-                MoviesAdapter(movies ?: emptyList(), ::onMovieClick)
+                PosterAdapter(
+                    movies.map { it.posterUrl },
+                    onPosterClick = { position -> onMovieClick(movies[position]) },
+                    onBookmarkClick = { position ->
+                        Toast.makeText(requireContext(), "Bookmarked", Toast.LENGTH_SHORT).show()
+                    }
+                )
         }
     }
+
 
     private fun setupTVShowsRecyclerView() {
         binding.fragmentHomeShowsRecyclerViewer.layoutManager =
@@ -154,7 +161,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.fragmentHomeShowsRecyclerViewer.addItemDecoration(SpaceItemDecoration(15))
         viewModel.tvShows.observe(viewLifecycleOwner) { tvShows ->
             binding.fragmentHomeShowsRecyclerViewer.adapter =
-                TVShowsAdapter(tvShows ?: emptyList(), ::onTVShowClick)
+                PosterAdapter(
+                    tvShows.map { it.posterUrl },
+                    onPosterClick = { position -> onTVShowClick(tvShows[position]) },
+                    onBookmarkClick = { position ->
+                        Toast.makeText(requireContext(), "Bookmarked", Toast.LENGTH_SHORT).show()
+                    }
+                )
         }
     }
 

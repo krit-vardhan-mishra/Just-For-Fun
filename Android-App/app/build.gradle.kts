@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
+    kotlin("kapt")
 }
 
 android {
@@ -53,7 +54,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.material)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.databinding.runtime)
@@ -69,10 +69,8 @@ dependencies {
     implementation (libs.gson)
     implementation(libs.coil)
     implementation (libs.glide)
-    annotationProcessor (libs.compiler)
-    implementation (libs.androidx.lifecycle.viewmodel.ktx.v262)
-    implementation (libs.androidx.lifecycle.livedata.ktx.v262)
-    implementation (libs.androidx.databinding.runtime.v802)
+    kapt(libs.compiler)
     implementation(libs.koin.androidx.navigation)
     implementation(libs.koin.android)
+
 }

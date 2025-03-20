@@ -16,23 +16,19 @@ class ExpandableAwardsAdapter(private val context: Context, private val awardsMa
     private val categories: List<String> = awardsMap.keys.toList()
 
     override fun getGroupCount(): Int = categories.size
+    override fun getGroup(groupPosition: Int): Any? = categories[groupPosition]
 
     override fun getChildrenCount(groupPosition: Int): Int {
         val category = categories[groupPosition]
         return awardsMap[category]?.size ?: 0
     }
-
-    override fun getGroup(groupPosition: Int): Any? = categories[groupPosition]
-
     override fun getChild(groupPosition: Int, childPosition: Int): Any? {
         val category = categories[groupPosition]
         return awardsMap[category]?.get(childPosition) ?: Awards("", "", 0, "", "", "")
     }
 
     override fun getGroupId(groupPosition: Int): Long = groupPosition.toLong()
-
     override fun getChildId(groupPosition: Int, childPosition: Int): Long = childPosition.toLong()
-
     override fun hasStableIds(): Boolean = false
 
     override fun getGroupView(
@@ -72,5 +68,4 @@ class ExpandableAwardsAdapter(private val context: Context, private val awardsMa
     }
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean = true
-
 }

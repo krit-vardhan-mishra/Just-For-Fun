@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.just_for_fun.justforfun.ui.fragments.movie.movie_or_show.MovieOrShowViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Movie Poster -->
+            <ImageView
+                android:id="@+id/activityMoviePoster"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:contentDescription="Movie Poster"
+                android:scaleType="fitCenter"
+                android:src="@drawable/fallback_poster"
+                tools:src="@drawable/mirzapur_poster" />
+
+            <!-- Movie Title -->
+            <TextView
+                android:id="@+id/activityMovieTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="Movie Title"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:text="Mirzapur" />
+
+            <!-- Type (Movie/TV Show) -->
+            <TextView
+                android:id="@+id/activityMovieMovieOrShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Movie or Show"
+                android:textColor="@color/gray"
+                android:textSize="16sp"
+                tools:text="Show" />
+
+            <!-- Movie Description -->
+            <TextView
+                android:id="@+id/activityMovieDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:ellipsize="end"
+                android:focusable="true"
+                android:maxLines="3"
+                android:paddingTop="10dp"
+                android:text="Movie description goes here..."
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:text="A power struggle erupts in the lawless city of Mirzapur, ruled by a ruthless mafia boss..." />
+
+            <!-- Rating Bar -->
+            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:id="@+id/activityMovieRatingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:paddingTop="8dp"
+                android:rating="4.5"
+                android:stepSize="0.5" />
+
+            <TextView
+                android:id="@+id/activityMovieUserRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="4.5/5" />
+
+            <TextView
+                android:id="@+id/activityMovieTotalRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="4.9/5" />
+
+            <!-- Cast & Crew Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="Cast and Crew"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movieActivityCastAndCrew"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                android:paddingTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="5"
+                tools:listitem="@layout/cast_and_crew_layout" />
+
+            <!-- Similar Movies -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="More Like This"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movieActivityMoreLikeThis"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:orientation="horizontal"
+                android:paddingTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_similar_movie" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

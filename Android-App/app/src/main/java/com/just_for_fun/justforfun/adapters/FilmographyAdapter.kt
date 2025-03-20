@@ -1,34 +1,27 @@
 package com.just_for_fun.justforfun.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.just_for_fun.justforfun.databinding.FragmentMovieOrShowsBinding
+import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.items.MovieItem
 
-class FilmographyAdapter : ListAdapter<MovieItem, FilmographyAdapter.ViewHolder>(DiffCallback()) {
+class FilmographyAdapter : ListAdapter<MovieItem, FilmographyAdapter.FilmographyHolder>(DiffCallback()) {
 
-    inner class ViewHolder(private val binding: FragmentMovieOrShowsBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: MovieItem) {
-            binding.activityMovieTitle.text = movie.title
-            binding.activityMovieDescription.text = movie.description
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmographyHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_celebrity_filmography, parent, false)
+        return FilmographyHolder(view)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = FragmentMovieOrShowsBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return ViewHolder(binding)
+    override fun onBindViewHolder(holder: FilmographyHolder, position: Int) {
+        // No binding logic needed for now
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    class FilmographyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        // No view bindings or logic for now
     }
 
     class DiffCallback : DiffUtil.ItemCallback<MovieItem>() {

@@ -19,17 +19,17 @@ import com.just_for_fun.justforfun.adapters.ReviewsAdapter
 import com.just_for_fun.justforfun.adapters.SimilarMoviesAdapter
 import com.just_for_fun.justforfun.data.CastCrewMember
 import com.just_for_fun.justforfun.data.Review
-import com.just_for_fun.justforfun.databinding.FragmentMovieOrShowsBinding
 import com.just_for_fun.justforfun.items.MovieItem
 import com.just_for_fun.justforfun.util.PosterItemDecoration
 import com.just_for_fun.justforfun.util.delegates.viewBinding
 import com.just_for_fun.justforfun.util.deserializer.CastCrewDeserializer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.core.net.toUri
+import com.just_for_fun.justforfun.databinding.FragmentMovieOrShowsSelectedBinding
 
-class MovieFragment : Fragment(R.layout.fragment_movie_or_shows) {
+class MovieFragment : Fragment(R.layout.fragment_movie_or_shows_selected) {
 
-    private val binding by viewBinding(FragmentMovieOrShowsBinding::bind)
+    private val binding by viewBinding(FragmentMovieOrShowsSelectedBinding::bind)
     private val viewModel: MovieViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

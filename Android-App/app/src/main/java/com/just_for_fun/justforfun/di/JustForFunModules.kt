@@ -6,7 +6,6 @@ import com.just_for_fun.justforfun.ui.fragments.add.AddViewModel
 import com.just_for_fun.justforfun.ui.fragments.celebrity.CelebrityViewModel
 import com.just_for_fun.justforfun.ui.fragments.celebrity.awards.CelebrityAwardsViewModel
 import com.just_for_fun.justforfun.ui.fragments.celebrity.filmography.CelebrityFilmographyViewModel
-import com.just_for_fun.justforfun.ui.fragments.details.MovieOrShowDetailsViewModel
 import com.just_for_fun.justforfun.ui.fragments.home.HomeViewModel
 import com.just_for_fun.justforfun.ui.fragments.movie.MovieViewModel
 import com.just_for_fun.justforfun.ui.fragments.notification.NotificationViewModel
@@ -25,7 +24,6 @@ val appModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { CelebrityViewModel(get()) }
     viewModel { CelebrityFilmographyViewModel(get()) }
-    viewModel { MovieOrShowDetailsViewModel(get())}
     viewModel { MovieViewModel(get()) }
     viewModel { NotificationViewModel(get()) }
     viewModel { SettingViewModel(get()) }

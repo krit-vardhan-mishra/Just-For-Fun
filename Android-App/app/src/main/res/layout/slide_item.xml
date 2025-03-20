@@ -1,8 +1,8 @@
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_margin="4dp"
     app:cardElevation="30dp">
 
@@ -12,6 +12,7 @@
          android:layout_height="match_parent"
          android:adjustViewBounds="true"
          android:scaleType="centerCrop"
+         tool:src="@drawable/one"
          android:contentDescription="Poster Image" />
 
 </androidx.cardview.widget.CardView>
