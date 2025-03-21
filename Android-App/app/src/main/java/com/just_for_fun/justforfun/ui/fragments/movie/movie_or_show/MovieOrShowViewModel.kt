@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import com.just_for_fun.justforfun.data.CastCrewMember
 import com.just_for_fun.justforfun.data.TestCases
 import com.just_for_fun.justforfun.items.MovieItem
 import com.just_for_fun.justforfun.util.deserializer.MoviesSeriesDeserializer
@@ -15,6 +17,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MovieOrShowViewModel(application: Application) : AndroidViewModel(application) {
+    private val _movieDetails = MutableLiveData<MovieDetails>()
+    val movieDetails: LiveData<MovieDetails> get() = _movieDetails
+
+    private val _castAndCrew = MutableLiveData<List<CastCrewMember>>()
+    val castAndCrew: LiveData<List<CastCrewMember>> get() = _castAndCrew
 
     private val _similarMovies = MutableLiveData<List<MovieItem>>()
     val similarMovies: LiveData<List<MovieItem>> get() = _similarMovies
@@ -22,34 +29,68 @@ class MovieOrShowViewModel(application: Application) : AndroidViewModel(applicat
     private val _testCases = MutableLiveData<TestCases?>()
     val testCases: LiveData<TestCases?> get() = _testCases
 
+    private val _selectedCastMember = MutableLiveData<CastCrewMember?>()
+    val selectedCastMember: LiveData<CastCrewMember?> get() = _selectedCastMember
+
+    init {
+        loadTestCases()
+    }
+
+    fun setMovieDetails(title: String, posterUrl: Int, description: String, rating: Float, type: String) {
+        _movieDetails.value = MovieDetails(title, posterUrl, description, rating, type)
+    }
+
+    fun selectCastMember(castMember: CastCrewMember) {
+        _selectedCastMember.value = castMember
+    }
+
+    fun onCastMemberNavigated() {
+        _selectedCastMember.value = null
+    }
+
+    fun loadCastAndCrew() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val jsonString = getApplication<Application>().assets.open("cast_crew.json")
+                    .bufferedReader().use { it.readText() }
+
+                val gson = GsonBuilder()
+                    .registerTypeAdapter(CastCrewMember::class.java, MoviesSeriesDeserializer(getApplication()))
+                    .create()
+
+                val listType = object : TypeToken<List<CastCrewMember>>() {}.type
+                val castList = gson.fromJson(jsonString, listType) as List<CastCrewMember>
+
+                withContext(Dispatchers.Main) {
+                    _castAndCrew.value = castList
+                }
+            } catch (e: Exception) {
+                Log.e("MovieOrShowViewModel", "Error loading cast and crew", e)
+            }
+        }
+    }
+
     private fun loadTestCases() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val assetManager = getApplication<Application>().assets
-                Log.d("MovieViewModel", "Loading test cases from assets")
-
-                val inputStream = assetManager.open("sample_cases.json")
-                val jsonString = inputStream.bufferedReader().use { it.readText() }
+                val jsonString = getApplication<Application>().assets.open("sample_cases.json")
+                    .bufferedReader().use { it.readText() }
 
                 val gson = GsonBuilder()
                     .registerTypeAdapter(TestCases::class.java, MoviesSeriesDeserializer(getApplication()))
                     .create()
+
                 val testCasesData = gson.fromJson(jsonString, TestCases::class.java)
                 withContext(Dispatchers.Main) {
                     _testCases.value = testCasesData
                 }
-                Log.d("MovieViewModel", "Test cases parsed successfully")
             } catch (e: Exception) {
-                Log.e("MovieViewModel", "Error parsing sample_cases JSON", e)
-                _testCases.postValue(null)
+                Log.e("MovieOrShowViewModel", "Error loading test cases", e)
             }
         }
     }
 
     fun setupMoreLikeThis(movieType: String) {
-        Log.d("MovieViewModel", "Setting up more like this for type: $movieType")
-        Log.d("MovieViewModel", "Test cases available: ${_testCases.value != null}")
-
         _testCases.value?.let { testCases ->
             val similarMovies = if (movieType == "Movie") {
                 testCases.movies.map { movie ->
@@ -72,11 +113,15 @@ class MovieOrShowViewModel(application: Application) : AndroidViewModel(applicat
                     )
                 }
             }
-            Log.d("MovieViewModel", "Similar movies count: ${similarMovies.size}")
             _similarMovies.postValue(similarMovies)
-        } ?: run {
-            Log.e("MovieViewModel", "Test cases are null, cannot load similar movies")
         }
     }
 
+    data class MovieDetails(
+        val title: String,
+        val posterUrl: Int,
+        val description: String,
+        val rating: Float,
+        val type: String
+    )
 }

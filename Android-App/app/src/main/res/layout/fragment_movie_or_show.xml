@@ -112,7 +112,6 @@
                 android:layout_height="120dp"
                 android:orientation="horizontal"
                 android:paddingTop="8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="5"
                 tools:listitem="@layout/cast_and_crew_layout" />
 
@@ -132,7 +131,6 @@
                 android:layout_height="160dp"
                 android:orientation="horizontal"
                 android:paddingTop="8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="5"
                 tools:listitem="@layout/item_similar_movie" />
         </LinearLayout>

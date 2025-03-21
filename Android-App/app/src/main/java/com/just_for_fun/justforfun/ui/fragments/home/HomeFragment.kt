@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -15,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.ImageSliderAdapter
 import com.just_for_fun.justforfun.adapters.PosterAdapter
@@ -23,9 +21,11 @@ import com.just_for_fun.justforfun.data.Movies
 import com.just_for_fun.justforfun.data.TVShows
 import com.just_for_fun.justforfun.databinding.FragmentHomeBinding
 import com.just_for_fun.justforfun.util.SpaceItemDecoration
+import androidx. viewpager2.widget. ViewPager2
 import com.just_for_fun.justforfun.util.delegates.viewBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -57,10 +57,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupMoviesRecyclerView()
         setupTVShowsRecyclerView()
         setupAutoSlider()
-        setupViewALl()
+        setupViewAll()
     }
 
-    private fun setupViewALl() {
+    private fun setupViewAll() {
         binding.textMovieViewAll.setOnClickListener {
             val bundle = bundleOf(
                 "title" to "Movies",
@@ -101,7 +101,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             page.scaleY = scaleFactor
             page.scaleX = scaleFactor
         }
-
         binding.viewPager.setPageTransformer(compositePageTransformer)
 
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -118,8 +117,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         for (i in images.indices) {
             val indicator = ImageView(requireContext())
             val layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
             )
             layoutParams.setMargins(10, 0, 10, 0)
             indicator.layoutParams = layoutParams
@@ -153,7 +152,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 )
         }
     }
-
 
     private fun setupTVShowsRecyclerView() {
         binding.fragmentHomeShowsRecyclerViewer.layoutManager =

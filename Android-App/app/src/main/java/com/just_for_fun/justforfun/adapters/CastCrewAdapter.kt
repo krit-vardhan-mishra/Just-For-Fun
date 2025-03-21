@@ -11,7 +11,7 @@ import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.data.CastCrewMember
 
 class CastCrewAdapter(
-    private val castAndCrew: List<CastCrewMember>,
+    private var castAndCrew: List<CastCrewMember>,
     private val onItemClick: (CastCrewMember) -> Unit
 ) : RecyclerView.Adapter<CastCrewAdapter.CastCrewViewHolder>() {
 
@@ -20,7 +20,7 @@ class CastCrewAdapter(
         val name: TextView = itemView.findViewById(R.id.cast_crew_name)
         val role: TextView = itemView.findViewById(R.id.cast_crew_role)
 
-        fun bind(member: CastCrewMember, onItemClick: (CastCrewMember) -> Unit) {
+        fun bind(member: CastCrewMember) {
             itemView.setOnClickListener { onItemClick(member) }
         }
     }
@@ -33,18 +33,19 @@ class CastCrewAdapter(
 
     override fun onBindViewHolder(holder: CastCrewViewHolder, position: Int) {
         val member = castAndCrew[position]
-
         Glide.with(holder.itemView.context)
             .load(member.image)
             .placeholder(R.drawable.placeholder_image)
-            .error(R.drawable.error_image)
             .into(holder.image)
-
         holder.name.text = member.name
         holder.role.text = member.role
-
-        holder.bind(member, onItemClick)
+        holder.bind(member)
     }
 
     override fun getItemCount() = castAndCrew.size
+
+    fun submitList(newList: List<CastCrewMember>) {
+        castAndCrew = newList
+        (this as? CastCrewAdapter)?.notifyDataSetChanged()
+    }
 }

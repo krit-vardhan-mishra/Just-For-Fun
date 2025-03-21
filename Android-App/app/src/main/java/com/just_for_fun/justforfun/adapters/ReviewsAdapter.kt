@@ -14,7 +14,7 @@ import com.just_for_fun.justforfun.data.Reply
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
 import java.util.*
 
-class ReviewsAdapter(private var reviews: List<Review>) :
+class ReviewsAdapter(private var reviews: List<Review> = emptyList()) :
     RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>() {
 
     inner class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

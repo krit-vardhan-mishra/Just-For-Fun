@@ -8,10 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.just_for_fun.justforfun.R
+import com.just_for_fun.justforfun.data.Movies
 import com.just_for_fun.justforfun.items.MovieItem
 
 class SimilarMoviesAdapter(
-    private val movies: List<MovieItem>,
+    private var movies: List<MovieItem>,
     private val onMovieClick: (MovieItem) -> Unit
 ) : RecyclerView.Adapter<SimilarMoviesAdapter.MovieViewHolder>() {
 
@@ -34,16 +35,17 @@ class SimilarMoviesAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = movies[position]
-
         Glide.with(holder.itemView.context)
             .load(movie.posterUrl)
             .placeholder(R.drawable.placeholder_image)
-            .error(R.drawable.error_image)
             .into(holder.poster)
-
         holder.title.text = movie.title
     }
 
-
     override fun getItemCount() = movies.size
+
+    fun submitList(newMovies: List<MovieItem>) {
+        movies = newMovies
+        notifyDataSetChanged()
+    }
 }

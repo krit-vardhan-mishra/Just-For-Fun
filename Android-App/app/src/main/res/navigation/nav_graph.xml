@@ -44,7 +44,8 @@
         android:id="@+id/nav_movieFragment"
         android:name="com.just_for_fun.justforfun.ui.fragments.movie.MovieFragment"
         android:label="Movie"
-        tools:layout="@layout/fragment_movie_or_shows" >
+        tools:layout="@layout/fragment_movie_or_shows_selected" >
+
         <argument android:name="MOVIE_TITLE" app:argType="string" />
         <argument android:name="MOVIE_POSTER" app:argType="integer" />
         <argument android:name="MOVIE_DESCRIPTION" app:argType="string" />
@@ -97,5 +98,23 @@
         <argument android:name="subtitle" app:argType="string" />
         <argument android:name="dataType" app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/moviesOrShows"
+        android:name="com.just_for_fun.justforfun.ui.fragments.movie.movie_or_show.MovieOrShow"
+        android:label="Movies or Shows"
+        tools:layout="@layout/fragment_movie_or_show">
+        <argument android:name="MOVIE_TITLE" app:argType="string" />
+        <argument android:name="MOVIE_POSTER" app:argType="integer" />
+        <argument android:name="MOVIE_DESCRIPTION" app:argType="string" />
+        <argument android:name="MOVIE_RATING" app:argType="float" />
+        <argument android:name="MOVIE_TYPE" app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reviews"
+        android:name="com.just_for_fun.justforfun.ui.fragments.movie.review.Reviews"
+        android:label="Reviews"
+        tools:layout="@layout/fragment_review"/>
 
 </navigation>

@@ -8,6 +8,7 @@ import com.just_for_fun.justforfun.ui.fragments.celebrity.awards.CelebrityAwards
 import com.just_for_fun.justforfun.ui.fragments.celebrity.filmography.CelebrityFilmographyViewModel
 import com.just_for_fun.justforfun.ui.fragments.home.HomeViewModel
 import com.just_for_fun.justforfun.ui.fragments.movie.MovieViewModel
+import com.just_for_fun.justforfun.ui.fragments.movie.movie_or_show.MovieOrShowViewModel
 import com.just_for_fun.justforfun.ui.fragments.notification.NotificationViewModel
 import com.just_for_fun.justforfun.ui.fragments.poster.PostersViewModel
 import com.just_for_fun.justforfun.ui.fragments.search.SearchViewModel
@@ -29,4 +30,5 @@ val appModule = module {
     viewModel { SettingViewModel(get()) }
     viewModel { PostersViewModel(get()) }
     viewModel { CelebrityAwardsViewModel(get()) }
+    viewModel { MovieOrShowViewModel(get()) }
 }
