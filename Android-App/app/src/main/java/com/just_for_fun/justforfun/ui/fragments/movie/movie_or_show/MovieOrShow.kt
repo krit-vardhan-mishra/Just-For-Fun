@@ -68,7 +68,6 @@ class MovieOrShow : Fragment(R.layout.fragment_movie_or_show) {
         }
     }
 
-
     private fun setupAdapters() {
         // Initialize CastCrewAdapter with an empty list
         val castAdapter = CastCrewAdapter(emptyList()) { member ->
@@ -135,7 +134,11 @@ class MovieOrShow : Fragment(R.layout.fragment_movie_or_show) {
         // Observe selected cast member and navigate to celebrity fragment
         viewModel.selectedCastMember.observe(viewLifecycleOwner) { castMember ->
             castMember?.let {
-                findNavController().navigate(R.id.nav_celebrityFragment)
+                // Pass the cast member's ID to the celebrity fragment
+                val bundle = Bundle().apply {
+                    putString("CELEBRITY_ID", it.id)
+                }
+                findNavController().navigate(R.id.nav_celebrityFragment, bundle)
                 viewModel.onCastMemberNavigated()
             }
         }

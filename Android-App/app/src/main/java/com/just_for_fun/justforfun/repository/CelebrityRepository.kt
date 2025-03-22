@@ -66,23 +66,34 @@ class CelebrityRepository(private val context: Context) {
     val tvShows: LiveData<List<MovieItem>> get() = _tvShows
     val awards: LiveData<List<Awards>> get() = _awards
 
+    private var celebrityId: String? = null
+
     init {
         CoroutineScope(Dispatchers.IO).launch {
             loadData()
         }
     }
 
+    fun setCelebrityId(id: String) {
+        if (this.celebrityId != id) {
+            this.celebrityId = id
+            CoroutineScope(Dispatchers.IO).launch {
+                loadData()
+            }
+        }
+    }
+
     private suspend fun loadData() {
         delay(1000)
 
-        val loadedCelebrity = loadCelebrityFromJson() ?: getFallbackCelebrity()
+        val loadedCelebrity = loadCelebrityById(celebrityId) ?: getFallbackCelebrity()
         _celebrity.postValue(loadedCelebrity)
         _movies.postValue(sampleMovies)
         _tvShows.postValue(sampleTVShows)
         _awards.postValue(sampleAwards)
     }
 
-    private fun loadCelebrityFromJson(): Celebrity? {
+    private fun loadCelebrityById(id: String?): Celebrity? {
         return try {
             val jsonString = context.assets.open("celebrity.json")
                 .bufferedReader().use { it.readText() }
@@ -91,9 +102,14 @@ class CelebrityRepository(private val context: Context) {
                 .create()
             val listType = object : TypeToken<List<Celebrity>>() {}.type
             val celebrities: List<Celebrity> = gson.fromJson(jsonString, listType)
-            celebrities.firstOrNull()
+
+            if (id != null) {
+                celebrities.find { it.id == id } ?: celebrities.firstOrNull()
+            } else {
+                celebrities.firstOrNull()
+            }
         } catch (e: Exception) {
-            Log.d("CelebrityRepository", "Error loading celebrity: ${e.message}")
+            Log.e("CelebrityRepository", "Error loading celebrity: ${e.message}")
             null
         }
     }

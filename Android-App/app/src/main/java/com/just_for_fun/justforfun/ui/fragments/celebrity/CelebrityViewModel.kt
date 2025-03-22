@@ -15,4 +15,8 @@ class CelebrityViewModel(application: Application) : AndroidViewModel(applicatio
     val movies: LiveData<List<MovieItem>> = repository.movies
     val tvShows: LiveData<List<MovieItem>> = repository.tvShows
     val awards: LiveData<List<Awards>> = repository.awards
+
+    fun setCelebrityId(id: String) {
+        repository.setCelebrityId(id)
+    }
 }

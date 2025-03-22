@@ -25,12 +25,17 @@ class CelebrityFragment : Fragment(R.layout.fragment_celebrity) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        // Get celebrity ID from arguments
+        arguments?.getString("CELEBRITY_ID")?.let { celebrityId ->
+            viewModel.setCelebrityId(celebrityId)
+        }
+
         setupObservers()
         setupClickListeners()
-        observeCelebrityDetials()
+        observeCelebrityDetails()
     }
 
-    private fun observeCelebrityDetials() {
+    private fun observeCelebrityDetails() {
         viewModel.celebrity.observe(viewLifecycleOwner) { celebrity ->
             celebrity?.let {
                 binding.activityCelebrityName.text = it.name
