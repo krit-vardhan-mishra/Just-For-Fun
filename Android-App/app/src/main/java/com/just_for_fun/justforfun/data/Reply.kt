@@ -8,6 +8,6 @@ data class Reply(
     val avatarResId: Int,
     val comment: String,
     val date: Date,
-    var likedCount: Int = 0,
+    var likeCount: Int = 0,
     var isLiked: Boolean = false
 )

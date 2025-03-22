@@ -28,17 +28,23 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
     private fun loadReviewsData() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                Log.d("ReviewViewModel", "Starting to load reviews data")
                 val assetManager = getApplication<Application>().assets
                 val inputStream = assetManager.open("reviews.json")
                 val jsonString = inputStream.bufferedReader().use { it.readText() }
+                Log.d("ReviewViewModel", "JSON loaded: ${jsonString.take(100)}...") // Log the first 100 chars
+
                 val gson = GsonBuilder()
                     .registerTypeAdapter(Review::class.java, ReviewDeserializer(getApplication()))
                     .create()
                 val type = object : TypeToken<List<Review>>() {}.type
                 val reviewsList: List<Review> = gson.fromJson(jsonString, type)
+
+                Log.d("ReviewViewModel", "Parsed ${reviewsList.size} reviews")
+
                 withContext(Dispatchers.Main) {
                     _reviews.value = reviewsList
-                    Log.d("ReviewViewModel", "Reviews parsed successfully")
+                    Log.d("ReviewViewModel", "Reviews loaded into LiveData")
                 }
             } catch (e: Exception) {
                 Log.e("ReviewViewModel", "Error parsing reviews JSON", e)
@@ -51,7 +57,7 @@ class ReviewViewModel(application: Application) : AndroidViewModel(application) 
         val newReview = Review(
             id = Random.nextInt(),
             username = "Current User",
-            avatarResId = R.drawable.account_circle,
+            avatarResId = R.drawable.placeholder_image,
             comment = text,
             date = Date(),
             rating = 0f,

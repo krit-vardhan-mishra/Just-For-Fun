@@ -110,7 +110,7 @@ class ReviewsAdapter(private var reviews: List<Review> = emptyList()) :
             avatarResId = R.drawable.account_circle,
             comment = text,
             date = Date(),
-            likedCount = 0,
+            likeCount = 0,
             isLiked = false
         )
 
@@ -140,7 +140,7 @@ class ReviewsAdapter(private var reviews: List<Review> = emptyList()) :
             username.text = reply.username
             date.text = formatDate(reply.date)
             comment.text = reply.comment
-            likeCount.text = reply.likedCount.toString()
+            likeCount.text = reply.likeCount.toString()
 
             // Set like status
             if (reply.isLiked) {
@@ -152,8 +152,8 @@ class ReviewsAdapter(private var reviews: List<Review> = emptyList()) :
             // Handle like click for replies
             likeContainer.setOnClickListener {
                 reply.isLiked = !reply.isLiked
-                reply.likedCount += if (reply.isLiked) 1 else -1
-                likeCount.text = reply.likedCount.toString()
+                reply.likeCount += if (reply.isLiked) 1 else -1
+                likeCount.text = reply.likeCount.toString()
 
                 if (reply.isLiked) {
                     likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary))

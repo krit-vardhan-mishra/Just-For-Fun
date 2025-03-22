@@ -15,11 +15,12 @@ class ReplyDeserializer(private val application: Application) : JsonDeserializer
     ): Reply {
         val jsonObject = json.asJsonObject
 
-        val avatarResIdString = jsonObject.get("avatarResId").asString
-        val resourceName = avatarResIdString.replace("R.drawable.", "")
-        val avatarResId = application.resources.getIdentifier(
-            resourceName, "drawable", application.packageName
-        )
+        val avatarResId = try {
+            jsonObject.get("avatarResId").asInt
+        } catch (e: Exception) {
+            val avatarResIdString = jsonObject.get("avatarResId").asString
+            application.resources.getIdentifier(avatarResIdString, "drawable", application.packageName)
+        }
 
         return Reply(
             id = jsonObject.get("id").asString,
@@ -27,7 +28,7 @@ class ReplyDeserializer(private val application: Application) : JsonDeserializer
             avatarResId = avatarResId,
             comment = jsonObject.get("comment").asString,
             date = context.deserialize(jsonObject.get("date"), Date::class.java),
-            likedCount = jsonObject.get("likedCount").asInt,
+            likeCount = jsonObject.get("likeCount").asInt,
             isLiked = jsonObject.get("isLiked").asBoolean
         )
     }

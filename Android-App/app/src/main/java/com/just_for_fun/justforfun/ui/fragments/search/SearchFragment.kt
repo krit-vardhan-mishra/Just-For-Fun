@@ -33,6 +33,38 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         setupBottomNavListener()
         observeViewModel()
+        setupViewAll()
+    }
+
+    private fun setupViewAll() {
+        binding.viewAllMostSearched.setOnClickListener {
+            val bundle = bundleOf(
+                "title" to "Movies",
+                "subtitle" to "All Movies",
+                "dataType" to "movies"
+            )
+            findNavController().navigate(R.id.nav_postersFragment, bundle)
+        }
+
+        binding.viewAllPreviousSearch.setOnClickListener {
+            val bundle = bundleOf(
+                "title" to "Movies",
+                "subtitle" to "All Movies",
+                "dataType" to "movies"
+            )
+            findNavController().navigate(R.id.nav_postersFragment, bundle)
+        }
+
+        binding.viewAllBasedOnYourSearch.setOnClickListener {
+            val bundle = bundleOf(
+                "title" to "Movies",
+                "subtitle" to "All Movies",
+                "dataType" to "movies"
+            )
+            findNavController().navigate(R.id.nav_postersFragment, bundle)
+        }
+
+
     }
 
     private fun observeViewModel() {

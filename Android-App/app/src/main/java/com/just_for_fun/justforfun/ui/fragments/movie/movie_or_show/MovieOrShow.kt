@@ -3,6 +3,7 @@ package com.just_for_fun.justforfun.ui.fragments.movie.movie_or_show
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.CastCrewAdapter
 import com.just_for_fun.justforfun.adapters.SimilarMoviesAdapter
 import com.just_for_fun.justforfun.databinding.FragmentMovieOrShowBinding
+import com.just_for_fun.justforfun.ui.fragments.poster.PosterFragment
 import com.just_for_fun.justforfun.util.PosterItemDecoration
 import com.just_for_fun.justforfun.util.delegates.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,7 +42,32 @@ class MovieOrShow : Fragment(R.layout.fragment_movie_or_show) {
         setupAdapters()
         observeViewModel()
         viewModel.loadCastAndCrew()
+        setupViewAll()
     }
+
+    private fun setupViewAll() {
+        binding.btnViewAllSimilarMovies.setOnClickListener {
+            val movieType = requireArguments().getString("MOVIE_TYPE") ?: "Movie"
+            val dataType = if (movieType == "Movie") "movies" else "tvShows"
+
+            val bundle = bundleOf(
+                "title" to (requireArguments().getString("MOVIE_TITLE") ?: "Unknown"),
+                "subtitle" to "All",
+                "dataType" to dataType
+            )
+            findNavController().navigate(R.id.nav_postersFragment, bundle)
+        }
+
+        binding.btnViewAllCastAndCrew.setOnClickListener {
+            val bundle = bundleOf(
+                "title" to "Cast And Crew",
+                "subtitle" to "All",
+                "dataType" to "cast_and_crew"
+            )
+            findNavController().navigate(R.id.nav_postersFragment, bundle)
+        }
+    }
+
 
     private fun setupAdapters() {
         // Initialize CastCrewAdapter with an empty list

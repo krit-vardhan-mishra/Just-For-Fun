@@ -97,47 +97,86 @@
                 android:textSize="14sp"
                 tools:text="4.9/5" />
 
-            <!-- Cast & Crew Section -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Cast & Crew Section with "View All" Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:text="Cast and Crew"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cast and Crew"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnViewAllCastAndCrew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View All"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:padding="4dp"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/movieActivityCastAndCrew"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
-                android:layout_weight="1"
                 android:nestedScrollingEnabled="false"
                 android:orientation="horizontal"
                 android:paddingTop="8dp"
                 tools:itemCount="5"
                 tools:listitem="@layout/cast_and_crew_layout" />
 
-            <!-- Similar Movies -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Similar Movies Section with "View All" Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:text="More Like This"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="More Like This"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnViewAllSimilarMovies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View All"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:padding="4dp"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/movieActivityMoreLikeThis"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
-                android:layout_weight="1"
                 android:nestedScrollingEnabled="false"
                 android:orientation="horizontal"
                 android:paddingTop="8dp"
                 tools:itemCount="5"
                 tools:listitem="@layout/item_similar_movie" />
+
         </LinearLayout>
     </ScrollView>
 </layout>

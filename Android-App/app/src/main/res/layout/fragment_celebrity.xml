@@ -65,7 +65,7 @@
                         android:layout_height="230dp"
                         android:background="@android:color/transparent"
                         android:contentDescription="Celebrity Photo"
-                        android:src="@drawable/cast_one" />
+                        tools:src="@drawable/cast_one" />
 
                     <!-- Details container; note that constraints here are relative to the inner layout -->
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,7 +79,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="start"
-                            android:text="Madhubala"
+                            tools:text="Madhubala"
                             android:textSize="40sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
@@ -89,8 +89,7 @@
                             android:id="@+id/activity_celebrity_age"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="32 Years"
+                            tools:text="32 Years"
                             android:textSize="30sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
@@ -100,8 +99,7 @@
                             android:id="@+id/activity_celebrity_filmography_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="Number of Movies"
+                            tools:text="Number of Movies"
                             android:textSize="30sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
@@ -111,8 +109,7 @@
                             android:id="@+id/activity_celebrity_awards_counts"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="Num Awards"
+                            tools:text="Num Awards"
                             android:textSize="30sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Profile Image -->
+    <ImageView
+        android:id="@+id/imgCastProfile"
+        android:layout_width="100dp"
+        android:layout_height="110dp"
+        android:layout_margin="3dp"
+        android:background="@drawable/circle_mask"
+        android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/cast_one" />
+
+    <!-- Cast Name -->
+    <TextView
+        android:id="@+id/txtCastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Madhubala"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:paddingTop="4dp" />
+
+    <!-- Character Name -->
+    <TextView
+        android:id="@+id/txtCharacterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Role"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:textColor="#888888" />
+</LinearLayout>

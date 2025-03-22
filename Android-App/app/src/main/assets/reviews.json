@@ -2,7 +2,7 @@
   {
     "id": "1",
     "username": "User 1",
-    "avatarResId": "R.drawable.account_circle",
+    "avatarResId": "placeholder_image",
     "comment": "Great movie! Loved the storyline and acting.",
     "rating": 4.5,
     "date": "2023-10-01T12:00:00Z",
@@ -12,10 +12,10 @@
       {
         "id": "1-1",
         "username": "User 1",
-        "avatarResId": "R.drawable.account_circle",
+        "avatarResId": "placeholder_image",
         "comment": "Thank you!",
         "date": "2023-10-01T12:05:00Z",
-        "likedCount": 2,
+        "likeCount": 2,
         "isLiked": true
       }
     ]
@@ -23,7 +23,7 @@
   {
     "id": "2",
     "username": "User 2",
-    "avatarResId": "R.drawable.account_circle",
+    "avatarResId": "placeholder_image",
     "comment": "Good film but the ending could have been better.",
     "rating": 3.8,
     "date": "2023-10-01T12:10:00Z",
@@ -34,7 +34,7 @@
   {
     "id": "3",
     "username": "User 3",
-    "avatarResId": "R.drawable.account_circle",
+    "avatarResId": "placeholder_image",
     "comment": "Classic! One of my favorites of all time.",
     "rating": 5.0,
     "date": "2023-10-01T12:15:00Z",

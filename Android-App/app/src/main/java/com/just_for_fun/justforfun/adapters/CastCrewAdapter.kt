@@ -46,6 +46,6 @@ class CastCrewAdapter(
 
     fun submitList(newList: List<CastCrewMember>) {
         castAndCrew = newList
-        (this as? CastCrewAdapter)?.notifyDataSetChanged()
+        notifyDataSetChanged()
     }
 }

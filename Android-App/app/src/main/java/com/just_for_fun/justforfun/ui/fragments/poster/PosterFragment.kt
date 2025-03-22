@@ -5,12 +5,12 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.just_for_fun.justforfun.R
+import com.just_for_fun.justforfun.adapters.CastCrewAdapter
 import com.just_for_fun.justforfun.adapters.PosterAdapter
 import com.just_for_fun.justforfun.data.TVShows
 import com.just_for_fun.justforfun.databinding.FragmentRecyclerViewersBinding
@@ -35,9 +35,25 @@ class PosterFragment : Fragment(R.layout.fragment_recycler_viewers) {
         binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.setToolbarData(title ?: "Default Title", subtitle ?: "Default Subtitle")
-        viewModel.loadPosters(dataType ?: "movies")
 
-        viewModel.posterList.observe(viewLifecycleOwner, Observer { posterIds ->
+        if (dataType == "cast_and_crew") {
+            binding.recyclerViewPosters.visibility = View.GONE
+            binding.recyclerViewCastCrew.visibility = View.VISIBLE
+            viewModel.loadCastCrew()
+        } else {
+            binding.recyclerViewPosters.visibility = View.VISIBLE
+            binding.recyclerViewCastCrew.visibility = View.GONE
+            viewModel.loadPosters(dataType ?: "movies")
+        }
+
+        setupCastCrewRecyclerView()
+        setupPostersRecyclerView()
+    }
+
+    private fun setupPostersRecyclerView() {
+        if (dataType == "cast_and_crew") return
+
+        viewModel.posterList.observe(viewLifecycleOwner) { posterIds ->
             val spanCount = calculateSpanCount()
             binding.recyclerViewPosters.apply {
                 layoutManager = GridLayoutManager(context, spanCount)
@@ -63,7 +79,6 @@ class PosterFragment : Fragment(R.layout.fragment_recycler_viewers) {
                             putString("MOVIE_DESCRIPTION", movieData.description)
                             putFloat("MOVIE_RATING", movieData.rating)
                             putString("MOVIE_TYPE", movieData.type)
-                            // Additional TV Show data if applicable:
                             if (movieData.type == "TV Show" && dataType == "tvShows") {
                                 putBoolean("IS_TV_SHOW", true)
                                 val tvShowData = getTVShowData(movieData.title)
@@ -81,7 +96,7 @@ class PosterFragment : Fragment(R.layout.fragment_recycler_viewers) {
                     Toast.makeText(requireContext(), "Bookmark clicked", Toast.LENGTH_SHORT).show()
                 })
             }
-        })
+        }
     }
 
     private fun calculateSpanCount(): Int {
@@ -89,6 +104,35 @@ class PosterFragment : Fragment(R.layout.fragment_recycler_viewers) {
         val screenWidthPx = displayMetrics.widthPixels
         val posterWidthPx = resources.getDimensionPixelSize(R.dimen.poster_width)
         return (screenWidthPx / posterWidthPx).coerceAtLeast(2)
+    }
+
+    private fun setupCastCrewRecyclerView() {
+        val spanCount = calculateSpanCount()
+        binding.recyclerViewCastCrew.apply {
+            layoutManager = GridLayoutManager(context, spanCount)
+            // Remove existing decorations to avoid overlaps
+            while (itemDecorationCount > 0) {
+                removeItemDecorationAt(0)
+            }
+            val spacingInPx = resources.getDimensionPixelSize(R.dimen.spacing)
+            addItemDecoration(
+                GridSpacingItemDecoration(
+                    spanCount = spanCount,
+                    spacing = spacingInPx,
+                    includeEdge = true
+                )
+            )
+        }
+
+        val castCrewAdapter = CastCrewAdapter(emptyList()) { member ->
+            Toast.makeText(requireContext(), "Clicked: ${member.name}", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.recyclerViewCastCrew.adapter = castCrewAdapter
+
+        viewModel.castCrewList.observe(viewLifecycleOwner) { castCrew ->
+            castCrewAdapter.submitList(castCrew)
+        }
     }
 
     private fun getMovieOrShowData(posterId: Int, dataType: String): MovieItem? {

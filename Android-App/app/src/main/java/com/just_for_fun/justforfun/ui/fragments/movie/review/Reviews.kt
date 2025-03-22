@@ -1,6 +1,7 @@
 package com.just_for_fun.justforfun.ui.fragments.movie.review
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +28,9 @@ class Reviews : Fragment(R.layout.fragment_review) {
     }
 
     private fun observeViewModel() {
+        Log.d("ReviewsFragment", "Setting up observer")
         viewModel.reviews.observe(viewLifecycleOwner) { reviews ->
+            Log.d("ReviewsFragment", "Received ${reviews.size} reviews from ViewModel")
             adapter.updateReviews(reviews ?: emptyList())
         }
     }
