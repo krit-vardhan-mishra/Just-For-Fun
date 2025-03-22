@@ -1,6 +1,7 @@
 package com.just_for_fun.justforfun.ui.fragments.movie.movie_or_show
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -96,6 +97,11 @@ class MovieOrShow : Fragment(R.layout.fragment_movie_or_show) {
 
         // Observe similar movies data and update adapter
         viewModel.similarMovies.observe(viewLifecycleOwner) { movies ->
+            Log.d("MovieOrShow", "Similar movies list size: ${movies.size}")
+            movies.forEach { movie ->
+                Log.d("MovieOrShow", "Similar Movie Title: ${movie.title}, Poster URL: ${movie.posterUrl}")
+            }
+
             (binding.movieActivityMoreLikeThis.adapter as? SimilarMoviesAdapter)?.submitList(movies)
         }
 

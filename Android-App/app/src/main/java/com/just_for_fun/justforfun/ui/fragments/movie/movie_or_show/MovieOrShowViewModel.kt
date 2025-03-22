@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken
 import com.just_for_fun.justforfun.data.CastCrewMember
 import com.just_for_fun.justforfun.data.TestCases
 import com.just_for_fun.justforfun.items.MovieItem
+import com.just_for_fun.justforfun.util.deserializer.CastCrewDeserializer
 import com.just_for_fun.justforfun.util.deserializer.MoviesSeriesDeserializer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,7 +56,7 @@ class MovieOrShowViewModel(application: Application) : AndroidViewModel(applicat
                     .bufferedReader().use { it.readText() }
 
                 val gson = GsonBuilder()
-                    .registerTypeAdapter(CastCrewMember::class.java, MoviesSeriesDeserializer(getApplication()))
+                    .registerTypeAdapter(CastCrewMember::class.java, CastCrewDeserializer(getApplication()))
                     .create()
 
                 val listType = object : TypeToken<List<CastCrewMember>>() {}.type

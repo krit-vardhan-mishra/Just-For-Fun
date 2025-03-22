@@ -20,6 +20,10 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows_selected) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        arguments?.getString("MOVIE_TYPE")?.let { type ->
+            viewModel.typeText.value = if (type == "Movie") "Movie" else "TV Show"
+        }
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -48,9 +52,12 @@ class MovieFragment : Fragment(R.layout.fragment_movie_or_shows_selected) {
             .replace(R.id.fragment_container, movieOrShowFragment)
             .commit()
     }
+
     private fun loadReviewFragment() {
+        val reviewFragment = Reviews()
+        reviewFragment.arguments = arguments
         childFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, Reviews())
+            .replace(R.id.fragment_container, reviewFragment)
             .commit()
     }
 

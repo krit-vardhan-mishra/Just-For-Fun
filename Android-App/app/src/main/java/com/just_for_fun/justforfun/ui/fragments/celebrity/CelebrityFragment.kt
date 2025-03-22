@@ -1,6 +1,7 @@
 package com.just_for_fun.justforfun.ui.fragments.celebrity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -12,7 +13,6 @@ import com.just_for_fun.justforfun.databinding.FragmentCelebrityBinding
 import com.just_for_fun.justforfun.items.MovieItem
 import com.just_for_fun.justforfun.util.delegates.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class CelebrityFragment : Fragment(R.layout.fragment_celebrity) {
 
@@ -48,7 +48,11 @@ class CelebrityFragment : Fragment(R.layout.fragment_celebrity) {
 
     private fun setupObservers() {
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
-            setupMoviesAdapter(movies)
+            if (movies.isNotEmpty()) {
+                setupMoviesAdapter(movies)
+            } else {
+                Log.e("CelebrityFragment", "Movies list is empty")
+            }
         }
 
         viewModel.tvShows.observe(viewLifecycleOwner) { tvShows ->
@@ -61,6 +65,11 @@ class CelebrityFragment : Fragment(R.layout.fragment_celebrity) {
     }
 
     private fun setupMoviesAdapter(movies: List<MovieItem>) {
+        Log.d("CelebrityFragment", "Movies list size: ${movies.size}")
+        movies.forEach { movie ->
+            Log.d("CelebrityFragment", "Movie Title: ${movie.title}, Poster URL: ${movie.posterUrl}")
+        }
+
         val adapter = SimilarMoviesAdapter(movies) { movie ->
             navigateToMovieFragment(movie, "movie")
         }
@@ -70,6 +79,11 @@ class CelebrityFragment : Fragment(R.layout.fragment_celebrity) {
     }
 
     private fun setupTVShowsAdapter(tvShows: List<MovieItem>) {
+        Log.d("CelebrityFragment", "TV Shows list size: ${tvShows.size}")
+        tvShows.forEach { show ->
+            Log.d("CelebrityFragment", "TV Show Title: ${show.title}, Poster URL: ${show.posterUrl}")
+        }
+
         val adapter = SimilarMoviesAdapter(tvShows) { show ->
             navigateToMovieFragment(show, "tvshow")
         }
