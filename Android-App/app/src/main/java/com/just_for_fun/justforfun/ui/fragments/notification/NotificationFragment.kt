@@ -39,8 +39,9 @@ class NotificationFragment : Fragment(R.layout.fragment_notification) {
         )
 
         binding.notificationsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = NotificationAdapter(notifications)
+        val adapter = NotificationAdapter()
         binding.notificationsRecyclerView.adapter = adapter
+        adapter.submitList(notifications)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

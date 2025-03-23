@@ -12,8 +12,7 @@ import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.CastCrewAdapter
 import com.just_for_fun.justforfun.adapters.SimilarMoviesAdapter
 import com.just_for_fun.justforfun.databinding.FragmentMovieOrShowBinding
-import com.just_for_fun.justforfun.ui.fragments.poster.PosterFragment
-import com.just_for_fun.justforfun.util.PosterItemDecoration
+import com.just_for_fun.justforfun.util.decoration.PosterItemDecoration
 import com.just_for_fun.justforfun.util.delegates.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -70,12 +69,12 @@ class MovieOrShow : Fragment(R.layout.fragment_movie_or_show) {
 
     private fun setupAdapters() {
         // Initialize CastCrewAdapter with an empty list
-        val castAdapter = CastCrewAdapter(emptyList()) { member ->
+        val castAdapter = CastCrewAdapter { member ->
             viewModel.selectCastMember(member)
         }
 
         // Initialize SimilarMoviesAdapter with an empty list
-        val similarMoviesAdapter = SimilarMoviesAdapter(emptyList()) { movie ->
+        val similarMoviesAdapter = SimilarMoviesAdapter { movie ->
             viewModel.setMovieDetails(
                 title = movie.title,
                 posterUrl = movie.posterUrl,

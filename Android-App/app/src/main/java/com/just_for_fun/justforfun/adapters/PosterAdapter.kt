@@ -4,15 +4,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.just_for_fun.justforfun.R
+import com.just_for_fun.justforfun.util.SimpleDiffCallback
 
 class PosterAdapter(
-    private var posterItems: List<Int>,
     private val onPosterClick: (Int) -> Unit,
     private val onBookmarkClick: (Int) -> Unit
-) : RecyclerView.Adapter<PosterAdapter.PosterViewHolder>() {
+) : ListAdapter<Int, PosterAdapter.PosterViewHolder>(
+    SimpleDiffCallback(
+        areItemsSame = { old, new -> old == new },
+        areContentsSame = { old, new -> old == new }
+    )
+) {
 
     inner class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val poster: AppCompatImageButton = itemView.findViewById(R.id.poster)
@@ -38,10 +44,8 @@ class PosterAdapter(
         return PosterViewHolder(view)
     }
 
-    override fun getItemCount(): Int = posterItems.size
-
     override fun onBindViewHolder(holder: PosterViewHolder, position: Int) {
-        val imageResId = posterItems[position]
+        val imageResId = getItem(position)
         Glide.with(holder.itemView.context)
             .load(imageResId)
             .placeholder(R.drawable.placeholder_image)

@@ -31,7 +31,7 @@ class Reviews : Fragment(R.layout.fragment_review) {
         Log.d("ReviewsFragment", "Setting up observer")
         viewModel.reviews.observe(viewLifecycleOwner) { reviews ->
             Log.d("ReviewsFragment", "Received ${reviews.size} reviews from ViewModel")
-            adapter.updateReviews(reviews ?: emptyList())
+            adapter.submitList(reviews ?: emptyList())
         }
     }
 

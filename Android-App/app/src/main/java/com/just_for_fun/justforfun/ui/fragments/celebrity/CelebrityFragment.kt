@@ -75,9 +75,10 @@ class CelebrityFragment : Fragment(R.layout.fragment_celebrity) {
             Log.d("CelebrityFragment", "Movie Title: ${movie.title}, Poster URL: ${movie.posterUrl}")
         }
 
-        val adapter = SimilarMoviesAdapter(movies) { movie ->
+        val adapter = SimilarMoviesAdapter { movie ->
             navigateToMovieFragment(movie, "movie")
         }
+        adapter.submitList((movies))
         binding.activityCelebrityMoviesListView.adapter = adapter
         binding.activityCelebrityMoviesListView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -89,9 +90,10 @@ class CelebrityFragment : Fragment(R.layout.fragment_celebrity) {
             Log.d("CelebrityFragment", "TV Show Title: ${show.title}, Poster URL: ${show.posterUrl}")
         }
 
-        val adapter = SimilarMoviesAdapter(tvShows) { show ->
+        val adapter = SimilarMoviesAdapter { show ->
             navigateToMovieFragment(show, "tvshow")
         }
+        adapter.submitList(tvShows)
         binding.activityCelebrityTvShowsListView.adapter = adapter
         binding.activityCelebrityTvShowsListView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

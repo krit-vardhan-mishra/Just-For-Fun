@@ -6,16 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.data.Review
 import com.just_for_fun.justforfun.data.Reply
+import com.just_for_fun.justforfun.util.SimpleDiffCallback
 import me.zhanghai.android.materialratingbar.MaterialRatingBar
 import java.util.*
+import androidx.core.view.isVisible
 
-class ReviewsAdapter(private var reviews: List<Review> = emptyList()) :
-    RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>() {
+class ReviewsAdapter :
+    ListAdapter<Review, ReviewsAdapter.ReviewViewHolder>(
+        SimpleDiffCallback(
+            areItemsSame = { old, new -> old.id == new.id },
+            areContentsSame = { old, new -> old == new }
+        )
+    ) {
 
     inner class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val userAvatar: ImageView = itemView.findViewById(R.id.review_user_avatar)
@@ -47,7 +54,7 @@ class ReviewsAdapter(private var reviews: List<Review> = emptyList()) :
 
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
         val context = holder.itemView.context
-        val review = reviews[position]
+        val review = getItem(position)
 
         // Set basic review information
         holder.userAvatar.setImageResource(review.avatarResId)
@@ -86,7 +93,7 @@ class ReviewsAdapter(private var reviews: List<Review> = emptyList()) :
         review.isLiked = !review.isLiked
         review.likeCount += if (review.isLiked) 1 else -1
         updateLikeUI(holder, review)
-        notifyItemChanged(holder.adapterPosition)
+        // notifyItemChanged is unnecessary as ListAdapter handles diffing on submitList.
     }
 
     private fun updateLikeUI(holder: ReviewViewHolder, review: Review) {
@@ -98,7 +105,7 @@ class ReviewsAdapter(private var reviews: List<Review> = emptyList()) :
     }
 
     private fun toggleReplyInput(holder: ReviewViewHolder) {
-        val isVisible = holder.replyInputContainer.visibility == View.VISIBLE
+        val isVisible = holder.replyInputContainer.isVisible
         holder.replyInputContainer.visibility = if (isVisible) View.GONE else View.VISIBLE
         if (!isVisible) holder.repliesContainer.visibility = View.VISIBLE
     }
@@ -180,32 +187,6 @@ class ReviewsAdapter(private var reviews: List<Review> = emptyList()) :
             diff < 86400 -> "${diff / 3600}h ago"
             diff < 2592000 -> "${diff / 86400}d ago"
             else -> "${diff / 2592000}mo ago"
-        }
-    }
-
-    override fun getItemCount() = reviews.size
-
-    fun updateReviews(newReviews: List<Review>) {
-        val diffCallback = ReviewDiffCallback(reviews, newReviews)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        this.reviews = newReviews
-        diffResult.dispatchUpdatesTo(this)
-    }
-
-    class ReviewDiffCallback(
-        private val oldList: List<Review>,
-        private val newList: List<Review>
-    ) : DiffUtil.Callback() {
-
-        override fun getOldListSize() = oldList.size
-        override fun getNewListSize() = newList.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == newList[newItemPosition].id
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
 }

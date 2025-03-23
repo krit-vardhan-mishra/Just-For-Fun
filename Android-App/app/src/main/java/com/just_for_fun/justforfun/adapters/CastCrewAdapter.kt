@@ -5,15 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.data.CastCrewMember
+import com.just_for_fun.justforfun.util.SimpleDiffCallback
 
 class CastCrewAdapter(
-    private var castAndCrew: List<CastCrewMember>,
     private val onItemClick: (CastCrewMember) -> Unit
-) : RecyclerView.Adapter<CastCrewAdapter.CastCrewViewHolder>() {
+) : ListAdapter<CastCrewMember, CastCrewAdapter.CastCrewViewHolder>(diffCallback) {
 
     inner class CastCrewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.cast_crew_image)
@@ -25,6 +26,13 @@ class CastCrewAdapter(
         }
     }
 
+    companion object {
+        private val diffCallback = SimpleDiffCallback<CastCrewMember>(
+            areItemsSame = { old, new -> old.id == new.id },
+            areContentsSame = { old, new -> old == new }
+        )
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastCrewViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.cast_and_crew_layout, parent, false)
@@ -32,7 +40,7 @@ class CastCrewAdapter(
     }
 
     override fun onBindViewHolder(holder: CastCrewViewHolder, position: Int) {
-        val member = castAndCrew[position]
+        val member = getItem(position)
         Glide.with(holder.itemView.context)
             .load(member.image)
             .placeholder(R.drawable.placeholder_image)
@@ -40,12 +48,5 @@ class CastCrewAdapter(
         holder.name.text = member.name
         holder.role.text = member.role
         holder.bind(member)
-    }
-
-    override fun getItemCount() = castAndCrew.size
-
-    fun submitList(newList: List<CastCrewMember>) {
-        castAndCrew = newList
-        notifyDataSetChanged()
     }
 }

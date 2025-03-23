@@ -1,4 +1,4 @@
-package com.just_for_fun.justforfun.util
+package com.just_for_fun.justforfun.util.decoration
 
 import android.graphics.Rect
 import android.view.View

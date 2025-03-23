@@ -20,8 +20,8 @@ import com.just_for_fun.justforfun.adapters.PosterAdapter
 import com.just_for_fun.justforfun.data.Movies
 import com.just_for_fun.justforfun.data.TVShows
 import com.just_for_fun.justforfun.databinding.FragmentHomeBinding
-import com.just_for_fun.justforfun.util.SpaceItemDecoration
-import androidx. viewpager2.widget. ViewPager2
+import com.just_for_fun.justforfun.util.decoration.SpaceItemDecoration
+import androidx.viewpager2.widget.ViewPager2
 import com.just_for_fun.justforfun.util.delegates.viewBinding
 import kotlin.math.abs
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -81,8 +81,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setupViewPager() {
-        val sliderAdapter = ImageSliderAdapter(images)
+        val sliderAdapter = ImageSliderAdapter()
         binding.viewPager.adapter = sliderAdapter
+        sliderAdapter.submitList(images)
 
         val pageMarginPx = resources.getDimensionPixelOffset(R.dimen.page_margin)
         val offsetPx = resources.getDimensionPixelOffset(R.dimen.page_offset)
@@ -132,7 +133,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setCurrentIndicator(position: Int) {
         for (i in indicators.indices) {
-            val drawable = if (i == position) R.drawable.indicator_active else R.drawable.indicator_inactive
+            val drawable =
+                if (i == position) R.drawable.indicator_active else R.drawable.indicator_inactive
             indicators[i].setImageDrawable(ContextCompat.getDrawable(requireContext(), drawable))
         }
     }
@@ -141,15 +143,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.fragmentHomeMoviesRecyclerViewer.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.fragmentHomeMoviesRecyclerViewer.addItemDecoration(SpaceItemDecoration(15))
+
+        val moviesAdapter = PosterAdapter(
+            onPosterClick = { position ->
+                viewModel.movies.value?.get(position)?.let { onMovieClick(it) }
+            },
+            onBookmarkClick = { position ->
+                Toast.makeText(requireContext(), "Bookmarked", Toast.LENGTH_SHORT).show()
+            }
+        )
+
+        binding.fragmentHomeMoviesRecyclerViewer.adapter = moviesAdapter
+
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
-            binding.fragmentHomeMoviesRecyclerViewer.adapter =
-                PosterAdapter(
-                    movies.map { it.posterUrl },
-                    onPosterClick = { position -> onMovieClick(movies[position]) },
-                    onBookmarkClick = { position ->
-                        Toast.makeText(requireContext(), "Bookmarked", Toast.LENGTH_SHORT).show()
-                    }
-                )
+            moviesAdapter.submitList(movies.map { it.posterUrl })
         }
     }
 
@@ -157,15 +164,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.fragmentHomeShowsRecyclerViewer.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.fragmentHomeShowsRecyclerViewer.addItemDecoration(SpaceItemDecoration(15))
+
+        val tvShowsAdapter = PosterAdapter(
+            onPosterClick = { position ->
+                viewModel.tvShows.value?.get(position)?.let { onTVShowClick(it) }
+            },
+            onBookmarkClick = { position ->
+                Toast.makeText(requireContext(), "Bookmarked", Toast.LENGTH_SHORT).show()
+            }
+        )
+
+        binding.fragmentHomeShowsRecyclerViewer.adapter = tvShowsAdapter
+
         viewModel.tvShows.observe(viewLifecycleOwner) { tvShows ->
-            binding.fragmentHomeShowsRecyclerViewer.adapter =
-                PosterAdapter(
-                    tvShows.map { it.posterUrl },
-                    onPosterClick = { position -> onTVShowClick(tvShows[position]) },
-                    onBookmarkClick = { position ->
-                        Toast.makeText(requireContext(), "Bookmarked", Toast.LENGTH_SHORT).show()
-                    }
-                )
+            tvShowsAdapter.submitList(tvShows.map { it.posterUrl })
         }
     }
 
@@ -196,7 +208,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         sliderRunnable = Runnable {
             val currentItem = binding.viewPager.currentItem
             val totalItems = binding.viewPager.adapter?.itemCount ?: 0
-            binding.viewPager.currentItem = if (currentItem == totalItems - 1) 0 else currentItem + 1
+            binding.viewPager.currentItem =
+                if (currentItem == totalItems - 1) 0 else currentItem + 1
             sliderHandler.postDelayed(sliderRunnable, sliderInterval)
         }
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

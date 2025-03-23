@@ -15,7 +15,7 @@ import com.just_for_fun.justforfun.adapters.PosterAdapter
 import com.just_for_fun.justforfun.data.TVShows
 import com.just_for_fun.justforfun.databinding.FragmentRecyclerViewersBinding
 import com.just_for_fun.justforfun.items.MovieItem
-import com.just_for_fun.justforfun.util.GridSpacingItemDecoration
+import com.just_for_fun.justforfun.util.decoration.GridSpacingItemDecoration
 import com.just_for_fun.justforfun.util.delegates.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -53,25 +53,12 @@ class PosterFragment : Fragment(R.layout.fragment_recycler_viewers) {
     private fun setupPostersRecyclerView() {
         if (dataType == "cast_and_crew") return
 
-        viewModel.posterList.observe(viewLifecycleOwner) { posterIds ->
-            val spanCount = calculateSpanCount()
-            binding.recyclerViewPosters.apply {
-                layoutManager = GridLayoutManager(context, spanCount)
-                while (itemDecorationCount > 0) {
-                    removeItemDecorationAt(0)
-                }
-                val spacingInPx = resources.getDimensionPixelSize(R.dimen.spacing)
-                addItemDecoration(
-                    GridSpacingItemDecoration(
-                        spanCount = spanCount,
-                        spacing = spacingInPx,
-                        includeEdge = true
-                    )
-                )
-                adapter = PosterAdapter(posterIds, onPosterClick = { position ->
-                    val selectedPosterId = posterIds[position]
+        // Create the adapter with click listeners
+        val postersAdapter = PosterAdapter(
+            onPosterClick = { position ->
+                val selectedPosterId = viewModel.posterList.value?.get(position)
+                if (selectedPosterId != null) {
                     val movieData = getMovieOrShowData(selectedPosterId, dataType ?: "movies")
-
                     if (movieData != null) {
                         val args = Bundle().apply {
                             putString("MOVIE_TITLE", movieData.title)
@@ -92,10 +79,35 @@ class PosterFragment : Fragment(R.layout.fragment_recycler_viewers) {
                     } else {
                         Toast.makeText(requireContext(), "Error loading content details", Toast.LENGTH_SHORT).show()
                     }
-                }, onBookmarkClick = { position ->
-                    Toast.makeText(requireContext(), "Bookmark clicked", Toast.LENGTH_SHORT).show()
-                })
+                }
+            },
+            onBookmarkClick = { position ->
+                Toast.makeText(requireContext(), "Bookmark clicked", Toast.LENGTH_SHORT).show()
             }
+        )
+
+        // Set up RecyclerView
+        binding.recyclerViewPosters.apply {
+            layoutManager = GridLayoutManager(requireContext(), calculateSpanCount())
+            adapter = postersAdapter
+            // Remove existing decorations to avoid overlaps
+            while (itemDecorationCount > 0) {
+                removeItemDecorationAt(0)
+            }
+            // Add spacing between items
+            val spacingInPx = resources.getDimensionPixelSize(R.dimen.spacing)
+            addItemDecoration(
+                GridSpacingItemDecoration(
+                    spanCount = calculateSpanCount(),
+                    spacing = spacingInPx,
+                    includeEdge = true
+                )
+            )
+        }
+
+        // Observe poster list changes and submit to adapter
+        viewModel.posterList.observe(viewLifecycleOwner) { posterIds ->
+            postersAdapter.submitList(posterIds)
         }
     }
 
@@ -124,7 +136,7 @@ class PosterFragment : Fragment(R.layout.fragment_recycler_viewers) {
             )
         }
 
-        val castCrewAdapter = CastCrewAdapter(emptyList()) { member ->
+        val castCrewAdapter = CastCrewAdapter { member ->
             Toast.makeText(requireContext(), "Clicked: ${member.name}", Toast.LENGTH_SHORT).show()
         }
 

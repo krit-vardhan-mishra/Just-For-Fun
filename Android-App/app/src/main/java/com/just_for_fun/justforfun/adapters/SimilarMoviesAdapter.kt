@@ -5,16 +5,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.util.Log
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.items.MovieItem
-import android.util.Log
+import com.just_for_fun.justforfun.util.SimpleDiffCallback
 
 class SimilarMoviesAdapter(
-    private var movies: List<MovieItem>,
     private val onMovieClick: (MovieItem) -> Unit
-) : RecyclerView.Adapter<SimilarMoviesAdapter.MovieViewHolder>() {
+) : ListAdapter<MovieItem, SimilarMoviesAdapter.MovieViewHolder>(
+    SimpleDiffCallback(
+        areItemsSame = { old, new -> old.posterUrl == new.posterUrl },
+        areContentsSame = { old, new -> old == new }
+    )
+) {
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val poster: ImageView = itemView.findViewById(R.id.similar_movie_poster)
@@ -22,7 +28,9 @@ class SimilarMoviesAdapter(
 
         init {
             itemView.setOnClickListener {
-                onMovieClick(movies[adapterPosition])
+                bindingAdapterPosition.takeIf { it != RecyclerView.NO_POSITION }?.let { position ->
+                    onMovieClick(getItem(position))
+                }
             }
         }
     }
@@ -34,7 +42,7 @@ class SimilarMoviesAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val movie = movies[position]
+        val movie = getItem(position)
         Log.d("SimilarMoviesAdapter", "Binding Movie: Title = ${movie.title}, Poster URL = ${movie.posterUrl}")
         Glide.with(holder.itemView.context)
             .load(movie.posterUrl)
@@ -42,12 +50,5 @@ class SimilarMoviesAdapter(
             .into(holder.poster)
         holder.title.text = movie.title
         Log.d("SimilarMoviesAdapter", "Text set to TextView: ${holder.title.text}")
-    }
-
-    override fun getItemCount() = movies.size
-
-    fun submitList(newMovies: List<MovieItem>) {
-        movies = newMovies
-        notifyDataSetChanged()
     }
 }

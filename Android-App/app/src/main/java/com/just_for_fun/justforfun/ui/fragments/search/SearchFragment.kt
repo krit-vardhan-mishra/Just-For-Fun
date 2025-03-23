@@ -9,14 +9,13 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.adapters.PosterAdapter
 import com.just_for_fun.justforfun.databinding.FragmentSearchBinding
 import com.just_for_fun.justforfun.items.MovieItem
-import com.just_for_fun.justforfun.util.PosterItemDecoration
+import com.just_for_fun.justforfun.util.decoration.PosterItemDecoration
 import com.just_for_fun.justforfun.util.delegates.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -83,7 +82,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun setupRecyclerView(recyclerView: RecyclerView, items: List<MovieItem>) {
         val adapter = PosterAdapter(
-            posterItems = items.map { it.posterUrl },
             onPosterClick = { position -> openMovieActivity(items[position]) },
             onBookmarkClick = { position ->
                 Toast.makeText(context, "Bookmarked ${items[position].title}", Toast.LENGTH_SHORT).show()
@@ -94,6 +92,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             this.adapter = adapter
             addItemDecoration(PosterItemDecoration(15))
         }
+
+        adapter.submitList(items.map { it.posterUrl })
     }
 
     private fun openMovieActivity(movie: MovieItem) {
