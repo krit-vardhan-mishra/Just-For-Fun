@@ -3,7 +3,7 @@ package com.just_for_fun.justforfun.data
 import java.util.Date
 
 data class Review(
-    val id: Int,
+    val id: String,
     val username: String,
     val avatarResId: Int,
     val comment: String,

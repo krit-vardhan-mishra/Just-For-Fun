@@ -35,6 +35,10 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val _basedOnYourSearchItems = MutableLiveData<List<MovieItem>>()
     val basedOnYourSearchItems: LiveData<List<MovieItem>> get() = _basedOnYourSearchItems
 
+    // New LiveData for filtered search results.
+    private val _searchResults = MutableLiveData<List<MovieItem>>()
+    val searchResults: LiveData<List<MovieItem>> get() = _searchResults
+
     init {
         loadDataFromJson()
     }
@@ -53,23 +57,24 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 val contentType = object : TypeToken<TestCases>() {}.type
                 val contentData: TestCases = gson.fromJson(jsonString, contentType)
 
-                val movieItems = contentData.movies.map { movies ->
+                val movieItems = contentData.movies.map { movie ->
                     MovieItem(
-                        title = movies.title,
-                        posterUrl = movies.posterUrl,
-                        description = movies.description,
-                        rating = movies.rating,
-                        type = movies.type
+                        title = movie.title,
+                        posterUrl = movie.posterUrl,
+                        description = movie.description,
+                        rating = movie.rating,
+                        type = movie.type
                     )
                 }
 
-                val tvShowItems = contentData.tvShows.map { tvShows ->
+                // Convert TVShows to MovieItem if they share similar properties.
+                val tvShowItems = contentData.tvShows.map { tvShow ->
                     MovieItem(
-                        title = tvShows.title,
-                        posterUrl = tvShows.posterUrl,
-                        description = tvShows.description,
-                        rating = tvShows.rating,
-                        type = tvShows.type
+                        title = tvShow.title,
+                        posterUrl = tvShow.posterUrl,
+                        description = tvShow.description,
+                        rating = tvShow.rating,
+                        type = tvShow.type
                     )
                 }
 
@@ -85,7 +90,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 }
             } catch (e: IOException) {
                 Log.e("SearchViewModel", "Error loading data", e)
-
                 withContext(Dispatchers.Main) {
                     _movies.value = emptyList()
                     _tvShows.value = emptyList()
@@ -95,5 +99,38 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 }
             }
         }
+    }
+
+    /**
+     * Filters movies and TV shows based on the search query and type filter.
+     *
+     * @param query The search string entered by the user.
+     * @param typeFilter The filter selected ("MOVIE", "TV SHOW", or "ALL").
+     */
+    fun filterResults(query: String, typeFilter: String) {
+        // Combine movies and tvShows (converted to MovieItem)
+        val movieList = movies.value.orEmpty()
+        val tvShowList = tvShows.value.orEmpty().map { tvShow ->
+            MovieItem(
+                title = tvShow.title,
+                posterUrl = tvShow.posterUrl,
+                description = tvShow.description,
+                rating = tvShow.rating,
+                type = tvShow.type
+            )
+        }
+        val allItems = movieList + tvShowList
+
+        // Filter based on search query and type filter.
+        val filtered = allItems.filter { item ->
+            val matchesType = when (typeFilter.uppercase()) {
+                "MOVIE" -> item.type.equals("Movie", ignoreCase = true)
+                "TV SHOW" -> item.type.equals("TV Show", ignoreCase = true)
+                else -> true // "ALL" or any unknown selection.
+            }
+            val matchesQuery = item.title.contains(query, ignoreCase = true)
+            matchesType && matchesQuery
+        }
+        _searchResults.value = filtered
     }
 }

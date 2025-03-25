@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.just_for_fun.justforfun.R
 import com.just_for_fun.justforfun.databinding.ActivityMainBinding
 import androidx.core.view.get
+import com.just_for_fun.justforfun.ui.activities.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.just_for_fun.justforfun.util.delegates.viewBinding
 

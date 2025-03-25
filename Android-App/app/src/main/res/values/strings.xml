@@ -10,4 +10,15 @@
     <string name="more_like_this">More Like This:</string>
     <string name="reviews">Reviews:</string>
     <string name="review_hint">Write Your Review Here...</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="enterYourText"><u>E\u00A0N\u00A0T\u00A0E\u00A0R\u00A0  Y\u00A0O\u00A0U\u00A0R\u00A0  D\u00A0E\u00A0T\u00A0A\u00A0I\u00A0L\u00A0S</u></string>
+
 </resources>

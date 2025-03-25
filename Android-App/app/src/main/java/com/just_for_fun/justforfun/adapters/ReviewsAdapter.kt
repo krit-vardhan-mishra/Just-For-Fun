@@ -1,6 +1,7 @@
 package com.just_for_fun.justforfun.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,7 @@ import androidx.core.view.isVisible
 
 class ReviewsAdapter :
     ListAdapter<Review, ReviewsAdapter.ReviewViewHolder>(
-        SimpleDiffCallback(
-            areItemsSame = { old, new -> old.id == new.id },
-            areContentsSame = { old, new -> old == new }
-        )
+        SimpleDiffCallback(areItemsSame = { old, new -> old.id == new.id }, areContentsSame = { old, new -> old == new })
     ) {
 
     inner class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -129,7 +127,10 @@ class ReviewsAdapter :
     private fun setupReplies(context: Context, holder: ReviewViewHolder, review: Review) {
         holder.repliesContainer.removeAllViews()
 
+        Log.d("ReviewsAdapter", "Setting up ${review.replies.size} replies for review by ${review.username}")
+
         review.replies.forEach { reply ->
+            Log.d("ReviewsAdapter", "Adding reply by ${reply.username}: ${reply.comment}")
             val replyView = LayoutInflater.from(context)
                 .inflate(R.layout.item_reply, holder.repliesContainer, false)
 
