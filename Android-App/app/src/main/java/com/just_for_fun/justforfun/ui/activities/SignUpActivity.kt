@@ -11,6 +11,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.just_for_fun.justforfun.databinding.ActivitySignUpBinding
@@ -26,6 +27,8 @@ class SignUpActivity : AppCompatActivity() {
     companion object {
         private val PICK_IMAGE_REQUEST = 1
     }
+
+    private var profilePhotoUri: Uri? = null  // Variable to store selected profile photo URI
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +55,28 @@ class SignUpActivity : AppCompatActivity() {
         binding.imageSelector.setOnClickListener {
             openGallery()
         }
+
+        binding.btnSubmitSignUp.setOnClickListener {
+            val name = binding.nameInputSignup.text.toString()
+            val email = binding.emailInputSignup.text.toString()
+            val username = binding.usernameInputSignup.text.toString()
+            val password = binding.passwordInputSignup.text.toString()
+
+            viewModel.signUp(name, email, username, password, profilePhotoUri)
+        }
+
+        viewModel.signupStatus.observe(this) { result ->
+            result.fold(
+                onSuccess = {
+                    Toast.makeText(this@SignUpActivity, it, Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@SignUpActivity, MainActivity::class.java))
+                },
+                onFailure = {
+                    Toast.makeText(this@SignUpActivity, it.message, Toast.LENGTH_SHORT).show()
+                }
+            )
+        }
+
     }
 
     private fun openGallery() {
@@ -64,8 +89,8 @@ class SignUpActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            val selectedImageUri: Uri? = data.data
-            binding.imageSelector.setImageURI(selectedImageUri)
+            profilePhotoUri = data.data
+            binding.imageSelector.setImageURI(profilePhotoUri)
         }
     }
 }

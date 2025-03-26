@@ -1,5 +1,6 @@
 package com.just_for_fun.justforfun.data
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
@@ -8,5 +9,6 @@ data class User(
     val name: String,
     val email: String,
     val username: String,
-    val password: String
+    val password: String,
+    val profilePhoto: Uri?
 ) : Parcelable

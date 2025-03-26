@@ -16,9 +16,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
     private val _loginStatus = MutableLiveData<Result<String>>()
     val loginStatus: LiveData<Result<String>> = _loginStatus
 
-    private val _signupStatus = MutableLiveData<Result<String>>()
-    val signupStatus: LiveData<Result<String>> = _signupStatus
-
     fun login(email: String, password: String) {
         viewModelScope.launch {
             val result = authRepository.login(email, password)
@@ -26,10 +23,4 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
         }
     }
 
-    fun signUp(name: String, email: String, username: String, password: String) {
-        viewModelScope.launch {
-            val result = authRepository.signUp(name, email, username, password)
-            _signupStatus.postValue(result)
-        }
-    }
 }

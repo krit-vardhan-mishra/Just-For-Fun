@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Krit",
+    "email": "sdaldfsadj@gmail.com",
+    "username": "krit",
+    "password": "12345"
+  },
+  {
+    "name": "Alice Wonderland",
+    "email": "alice.wonderland@example.com",
+    "username": "alice_w",
+    "password": "securePass123"
+  },
+  {
+    "name": "Bob Builder",
+    "email": "bob.builder@construction.net",
+    "username": "bob_b",
+    "password": "buildItRight456"
+  },
+  {
+    "name": "Charlie Chaplin",
+    "email": "charlie.chaplin@silentfilm.org",
+    "username": "charlie_c",
+    "password": "funnyWalk789"
+  }
+]

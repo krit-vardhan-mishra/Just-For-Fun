@@ -45,8 +45,22 @@ class LoginActivity : AppCompatActivity() {
         binding.tvSignUp.movementMethod = LinkMovementMethod.getInstance()
 
         binding.btnSubmit.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-            Toast.makeText(this@LoginActivity, "Hello, ${binding.emailInputLogin.text}", Toast.LENGTH_SHORT).show()
+            val email = binding.emailInputLogin.text.toString()
+            val password = binding.passwordInputLogin.text.toString()
+
+            viewModel.login(email, password)
+        }
+
+        viewModel.loginStatus.observe(this) { result ->
+            result.fold(
+                onSuccess = {
+                    Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                },
+                onFailure = {
+                    Toast.makeText(this@LoginActivity, it.message, Toast.LENGTH_SHORT).show()
+                }
+            )
         }
     }
 }

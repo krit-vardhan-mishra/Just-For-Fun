@@ -1,6 +1,5 @@
 package com.just_for_fun.justforfun.di
 
-import com.just_for_fun.justforfun.network.AuthApiService
 import com.just_for_fun.justforfun.repository.AuthRepository
 import com.just_for_fun.justforfun.ui.activities.viewmodel.LoginViewModel
 import com.just_for_fun.justforfun.ui.activities.viewmodel.MainViewModel
@@ -18,12 +17,9 @@ import com.just_for_fun.justforfun.ui.fragments.notification.NotificationViewMod
 import com.just_for_fun.justforfun.ui.fragments.poster.PostersViewModel
 import com.just_for_fun.justforfun.ui.fragments.search.SearchViewModel
 import com.just_for_fun.justforfun.ui.fragments.setting.SettingViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import org.koin.dsl.single
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.jvm.java
 
 val appModule = module {
     viewModel { MainViewModel(get()) }
@@ -43,14 +39,5 @@ val appModule = module {
     viewModel { ReviewViewModel(get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { SignUpViewModel(get()) }
-
-    single {
-        Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(AuthApiService::class.java)
-    }
-
-    single { AuthRepository(get()) }
+    single { AuthRepository(androidContext()) }
 }
