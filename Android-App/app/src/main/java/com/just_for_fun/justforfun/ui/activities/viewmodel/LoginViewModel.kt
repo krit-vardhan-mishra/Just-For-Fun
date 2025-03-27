@@ -22,5 +22,4 @@ class LoginViewModel(application: Application) : AndroidViewModel(application), 
             _loginStatus.postValue(result)
         }
     }
-
 }

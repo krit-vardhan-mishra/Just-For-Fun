@@ -6,11 +6,13 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.just_for_fun.justforfun.data.User
+import okio.IOException
 import java.io.File
 
 class AuthRepository(private val context: Context) {
 
     private val FILE_NAME = "user.json"
+    private val gson = Gson()
 
     private fun getJsonFile(): File {
         return File(context.filesDir, FILE_NAME)
@@ -18,14 +20,26 @@ class AuthRepository(private val context: Context) {
 
     private fun readUserData(): MutableList<User> {
         val file = getJsonFile()
-        if (!file.exists()) return mutableListOf()
+
+        if (!file.exists()) {
+            try {
+                file.createNewFile()
+                file.writeText("[]")
+                return mutableListOf()
+            } catch (e: IOException) {
+                Log.e("AuthRepository", "Failed to create file: ${e.message}")
+                return mutableListOf()
+            }
+        }
 
         return try {
             val jsonString = file.readText()
+            if (jsonString.isBlank()) return mutableListOf()
+
             val type = object : TypeToken<MutableList<User>>() {}.type
-            Gson().fromJson(jsonString, type) ?: mutableListOf()
+            gson.fromJson(jsonString, type) ?: mutableListOf()
         } catch (e: Exception) {
-            Log.d("AuthRepository", "Error reading JSON file: ${e.message}")
+            Log.e("AuthRepository", "Error reading JSON file", e)
             mutableListOf()
         }
     }
@@ -36,29 +50,57 @@ class AuthRepository(private val context: Context) {
             val jsonString = Gson().toJson(users)
             file.writeText(jsonString)
         } catch (e: Exception) {
-            Log.d("AuthRepository", "Error writing JSON file: ${e.message}")
+            Log.e("AuthRepository", "Error writing JSON file: ${e.message}")
         }
     }
 
     fun login(email: String, password: String): Result<String> {
+        if (email.isBlank() || password.isBlank()) {
+            return Result.failure(Exception("Email and password cannot be empty"))
+        }
+
         val users = readUserData()
-        val user = users.find { it.email == email && it.password == password }
+        val user = users.find {
+            it.email.equals(email, ignoreCase = true) && it.password == password
+        }
 
         return if (user != null) {
-            Result.success("Login successful (Local)!")
+            Result.success("Login successful!")
         } else {
-            Result.failure(Exception("Invalid credentials"))
+            Result.failure(Exception("Invalid email or password"))
         }
     }
 
-    fun signUp(name: String, email: String, username: String, password: String, profilePhoto: Uri?): Result<String> {
-        val users = readUserData()
-
-        if (users.any { it.username == username || it.email == email }) {
-            return Result.failure(Exception("User already exists (Local)"))
+    fun signUp(
+        name: String,
+        email: String,
+        username: String,
+        password: String,
+        profilePhoto: Uri?
+    ): Result<String> {
+        when {
+            name.isBlank() -> return Result.failure(Exception("Name cannot be empty"))
+            email.isBlank() -> return Result.failure(Exception("Email cannot be empty"))
+            username.isBlank() -> return Result.failure(Exception("Username cannot be empty"))
+            password.isBlank() -> return Result.failure(Exception("Password cannot be empty"))
+            password.length < 6 -> return Result.failure(Exception("Password must be at least 6 characters"))
         }
 
-        users.add(User(name, email, username, password, profilePhoto))
+        val users = readUserData()
+
+        if (users.any { it.username.equals(username, ignoreCase = true) }) {
+            return Result.failure(Exception("Username is already taken"))
+        }
+
+        users.add(
+            User(
+                name = name.trim(),
+                email = email.trim(),
+                username = username.trim(),
+                password = password,
+                profilePhoto = profilePhoto
+            )
+        )
         writeUserData(users)
 
         return Result.success("Sign-up successful (Local)!")

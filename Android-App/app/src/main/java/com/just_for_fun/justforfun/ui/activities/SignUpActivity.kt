@@ -28,7 +28,7 @@ class SignUpActivity : AppCompatActivity() {
         private val PICK_IMAGE_REQUEST = 1
     }
 
-    private var profilePhotoUri: Uri? = null  // Variable to store selected profile photo URI
+    private var profilePhotoUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
