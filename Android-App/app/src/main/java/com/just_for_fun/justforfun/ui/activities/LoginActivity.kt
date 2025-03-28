@@ -23,6 +23,7 @@ import com.just_for_fun.justforfun.util.delegates.viewBinding
 import okio.IOException
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import androidx.core.content.edit
 
 class LoginActivity : AppCompatActivity() {
     private val binding by viewBinding(ActivityLoginBinding::inflate)
@@ -65,16 +66,13 @@ class LoginActivity : AppCompatActivity() {
             result.fold(
                 onSuccess = { message ->
                     val users = readUserData()
-                    val loggedInUser = users.find {
-                        it.email == binding.emailInputLogin.text.toString()
-                    }
+                    val loggedInUser = users.find { it.email == binding.emailInputLogin.text.toString() }
 
                     loggedInUser?.let { user ->
-                        accountViewModel.setCurrentUser(user)
-                        accountViewModel.currentUser.observe(this) {
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finish()
-                        }
+                        val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                        sharedPref.edit { putString("current_user_email", user.email) }
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
                     }
 
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -92,7 +90,7 @@ class LoginActivity : AppCompatActivity() {
         if (!file.exists()) {
             try {
                 file.createNewFile()
-                file.writeText("[]") // Ensure the file contains a valid empty JSON array
+                file.writeText("[]")
                 return mutableListOf()
             } catch (e: IOException) {
                 Log.e("AuthRepository", "Failed to create file: ${e.message}")
@@ -113,6 +111,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun getJsonFile(): File {
-        return File(filesDir, FILE_NAME) // Use filesDir instead of context.filesDir
+        return File(filesDir, FILE_NAME)
     }
 }
