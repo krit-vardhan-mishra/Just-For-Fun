@@ -5,7 +5,7 @@ import android.net.Uri
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.just_for_fun.justforfun.data.User
+import com.just_for_fun.justforfun.data.UserLoginData
 import okio.IOException
 import java.io.File
 
@@ -18,7 +18,7 @@ class AuthRepository(private val context: Context) {
         return File(context.filesDir, FILE_NAME)
     }
 
-    private fun readUserData(): MutableList<User> {
+    private fun readUserData(): MutableList<UserLoginData> {
         val file = getJsonFile()
 
         if (!file.exists()) {
@@ -36,7 +36,7 @@ class AuthRepository(private val context: Context) {
             val jsonString = file.readText()
             if (jsonString.isBlank()) return mutableListOf()
 
-            val type = object : TypeToken<MutableList<User>>() {}.type
+            val type = object : TypeToken<MutableList<UserLoginData>>() {}.type
             gson.fromJson(jsonString, type) ?: mutableListOf()
         } catch (e: Exception) {
             Log.e("AuthRepository", "Error reading JSON file", e)
@@ -44,10 +44,10 @@ class AuthRepository(private val context: Context) {
         }
     }
 
-    private fun writeUserData(users: MutableList<User>) {
+    private fun writeUserData(userLoginData: MutableList<UserLoginData>) {
         val file = getJsonFile()
         try {
-            val jsonString = Gson().toJson(users)
+            val jsonString = Gson().toJson(userLoginData)
             file.writeText(jsonString)
         } catch (e: Exception) {
             Log.e("AuthRepository", "Error writing JSON file: ${e.message}")
@@ -93,7 +93,7 @@ class AuthRepository(private val context: Context) {
         }
 
         users.add(
-            User(
+            UserLoginData(
                 name = name.trim(),
                 email = email.trim(),
                 username = username.trim(),

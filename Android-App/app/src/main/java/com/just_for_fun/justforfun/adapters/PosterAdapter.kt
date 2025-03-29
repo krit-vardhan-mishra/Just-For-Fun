@@ -15,11 +15,9 @@ class PosterAdapter(
     private val onBookmarkClick: (Int) -> Unit
 ) : ListAdapter<Int, PosterAdapter.PosterViewHolder>(
     SimpleDiffCallback(
-        areItemsSame = { old, new -> old == new },
-        areContentsSame = { old, new -> old == new }
+        { old, new -> old == new }, { old, new -> old == new }
     )
 ) {
-
     inner class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val poster: AppCompatImageButton = itemView.findViewById(R.id.poster)
         val bookmark: AppCompatImageButton = itemView.findViewById(R.id.bookmark_button)

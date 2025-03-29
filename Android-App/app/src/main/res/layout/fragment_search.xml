@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.just_for_fun.justforfun.ui.fragments.search.SearchViewModel" />
@@ -34,13 +35,13 @@
                     android:gravity="center"
                     android:text="ALL"
                     app:layout_constraintBottom_toBottomOf="@+id/search_bar"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/search_bar"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/search_bar" />
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_bar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="35dp"
                     android:layout_margin="8dp"
                     android:background="@drawable/search_view_bg"
@@ -53,20 +54,25 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/searchResultsRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="260dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@id/search_bar"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    tools:listitem="@layout/search_result_item" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/search_bar" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/search_fragment_most_searched_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="260dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -85,9 +91,11 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/search_fragment_previous_search_list"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="25dp"
+                    android:layout_marginEnd="10dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -106,9 +114,11 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/search_fragment_based_on_your_search_list"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="25dp"
+                    android:layout_marginEnd="10dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
