@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="@string/enterYourText"
+            android:textColor="@android:color/black"
             android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/input_boxes"
@@ -74,6 +75,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:hint="Name"
+                app:hintTextColor="@android:color/black"
+                app:boxStrokeColor="@android:color/black"
+                android:textColorHint="@android:color/black"
                 app:boxCornerRadiusBottomEnd="50dp"
                 app:boxCornerRadiusBottomStart="50dp"
                 app:boxCornerRadiusTopEnd="50dp"
@@ -85,8 +89,7 @@
                     android:id="@+id/name_input_signup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    tools:text="Name" />
+                    android:inputType="textPersonName" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,6 +99,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:hint="Email"
+                app:hintTextColor="@android:color/black"
+                app:boxStrokeColor="@android:color/black"
+                android:textColorHint="@android:color/black"
                 app:boxCornerRadiusBottomEnd="50dp"
                 app:boxCornerRadiusBottomStart="50dp"
                 app:boxCornerRadiusTopEnd="50dp"
@@ -107,8 +113,7 @@
                     android:id="@+id/email_input_signup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    tools:text="Email Address" />
+                    android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -118,6 +123,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:hint="Username"
+                app:hintTextColor="@android:color/black"
+                app:boxStrokeColor="@android:color/black"
+                android:textColorHint="@android:color/black"
                 app:boxCornerRadiusBottomEnd="50dp"
                 app:boxCornerRadiusBottomStart="50dp"
                 app:boxCornerRadiusTopEnd="50dp"
@@ -129,8 +137,7 @@
                     android:id="@+id/username_input_signup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    tools:text="Username" />
+                    android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,6 +147,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:hint="Passowrd"
+                app:hintTextColor="@android:color/black"
+                app:boxStrokeColor="@android:color/black"
+                android:textColorHint="@android:color/black"
                 app:boxCornerRadiusBottomEnd="50dp"
                 app:boxCornerRadiusBottomStart="50dp"
                 app:boxCornerRadiusTopEnd="50dp"
@@ -162,7 +172,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:backgroundTint="?attr/colorPrimary"
+            android:backgroundTint="#4169E1"
             android:text="Create Account"
             android:textColor="@android:color/white"
             app:cornerRadius="15dp"
